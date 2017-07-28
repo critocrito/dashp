@@ -11,6 +11,7 @@
   },
   "scripts": {
     "commitmsg": "validate-commit-msg",
+    "bump": "npm version $(conventional-recommended-bump -p angular) -s -m \"chore(release): Bumped to version %s.\"",
     "changelog": "conventional-changelog -i Changelog.md -s",
     "test": "mocha -c --reporter $npm_package_config_reporter --compilers js:babel-register $npm_package_config_testDir/**/*.spec.js",
     "lint:src": "eslint --cache $npm_package_config_testDir $npm_package_config_srcDir",
@@ -46,6 +47,7 @@
     "chokidar-cli": "^1.2.0",
     "concurrently": "^3.5.0",
     "conventional-changelog-cli": "^1.3.2",
+    "conventional-recommended-bump": "^1.0.1",
     "documentation": "^5.0.1",
     "eslint": "^4.3.0",
     "eslint-config-airbnb-base": "^11.3.1",
