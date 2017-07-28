@@ -1,2 +1,5 @@
 test/
 lib/
+npm-*.log
+.npmrc
+.eslintcache
