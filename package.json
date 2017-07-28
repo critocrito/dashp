@@ -11,7 +11,8 @@
   },
   "scripts": {
     "commitmsg": "validate-commit-msg",
-    "prepublishOnly": "git push --follow-tags origin master && npm run build",
+    "prepublishOnly": "npm run build",
+    "publish": "git push --follow-tags origin master",
     "watch:test": "chokidar \"$npm_package_config_testDir/**/*.js\" \"$npm_package_config_srcDir/**/*.js\" -c \"npm run test -s\"",
     "watch:lint": "chokidar \"$npm_package_config_testDir/**/*.js\" \"$npm_package_config_srcDir/**/*.js\" -c \"npm run lint -s\"",
     "watch:docs": "chokidar \"$npm_package_config_srcDir/**/*.js\" -c \"npm run docs\"",
