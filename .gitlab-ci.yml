@@ -1,0 +1,13 @@
+before_script:
+  - npm install
+  - npm run build
+
+test:lts:
+  image: node:6.11
+  script:
+    - npm run test
+
+test:latest:
+  image: node:latest
+  script:
+    - npm run test
