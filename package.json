@@ -7,9 +7,7 @@
     "srcDir": "lib",
     "testDir": "test",
     "distDir": "_dist",
-    "reporter": "spec",
-    "changelog": "Changelog.md",
-    "readme": "Readme.md"
+    "reporter": "spec"
   },
   "scripts": {
     "commitmsg": "validate-commit-msg",
@@ -25,7 +23,7 @@
     "docs": "documentation lint $npm_package_config_srcDir/**/*.js && documentation readme --shallow --readme-file Readme.md -s \"API\" lib/index.js && doctoc --maxlevel 3 --notitle Readme.md",
     "clean": "rimraf $npm_package_config_distDir",
     "build": "npm run clean && npm run lint && npm run test && npm run docs && npm run compile",
-    "release": "standard-version -i $npm_package_config_changelog -m \"chore(release): Bumped to version %s.\" --sign",
+    "release": "standard-version -i Changelog.md -m \"chore(release): Bumped to version %s.\" --sign",
     "release-candidate": "npm run release -- --prerelease \"rc\""
   },
   "repository": {
