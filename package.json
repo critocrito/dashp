@@ -11,6 +11,7 @@
   },
   "scripts": {
     "commitmsg": "validate-commit-msg",
+    "changelog": "conventional-changelog -i Changelog.md -s",
     "test": "mocha -c --reporter $npm_package_config_reporter --compilers js:babel-register $npm_package_config_testDir/**/*.spec.js",
     "lint:src": "eslint --cache $npm_package_config_testDir $npm_package_config_srcDir",
     "lint:docs": "documentation lint $npm_package_config_srcDir/**/*.js",
@@ -44,6 +45,7 @@
     "babel-preset-es2015": "^6.24.1",
     "chokidar-cli": "^1.2.0",
     "concurrently": "^3.5.0",
+    "conventional-changelog-cli": "^1.3.2",
     "documentation": "^5.0.1",
     "eslint": "^4.3.0",
     "eslint-config-airbnb-base": "^11.3.1",
