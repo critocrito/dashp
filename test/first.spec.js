@@ -6,4 +6,6 @@ import {add} from "../lib";
 describe("basic math", () => {
   it("adds two numbers", () =>
     assertForall(nat, nat, (a, b) => isEqual(add(a, b), b + a)));
+
+  it("runs chai tests as well", () => true.should.equal(true));
 });
