@@ -1,5 +1,5 @@
 {
-  "extends": "../.eslintrc",
+  "extends": "../.eslintrc.json",
   "env": {
     "mocha": true
   },
@@ -7,6 +7,6 @@
     "prefer-arrow-callback": "off",
     "func-names": "off",
     "newline-per-chained-call": "off",
-    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["test/**/*.js"]}]
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.js"]}]
   }
 }
