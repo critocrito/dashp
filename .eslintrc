@@ -5,7 +5,8 @@
     "plugin:lodash-fp/recommended",
     "plugin:promise/recommended",
     "plugin:import/errors",
-    "plugin:import/warnings"
+    "plugin:import/warnings",
+    "prettier"
   ],
   "env": {
     "node": true
@@ -14,12 +15,13 @@
     "no-underscore-dangle": "off",
     "arrow-parens": "off",
     "object-curly-spacing": "off",
-    "comma-dangle": ["error", "always-multiline"],
-    "no-console": 1
+    "no-console": "warn",
+    "prettier/prettier": ["error", {"trailingComma": "es5", "bracketSpacing": false}]
   },
   "plugins": [
     "import",
     "promise",
-    "lodash-fp"
+    "lodash-fp",
+    "prettier"
   ]
 }
