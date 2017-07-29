@@ -4,10 +4,35 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
+- [Starting a new project](#starting-a-new-project)
+- [Updating the project](#updating-the-project)
 - [API](#api)
   - [add](#add)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+## Starting a new project
+
+-   Go to `gitlab.com` and create a new repository.
+-   Create a new directory: `md new-project`
+-   Initialize the git repo: `git it`
+-   Add the remotes:
+
+        git remote add origin <git url of the newly created repository>
+        git remote add scaffold git@gitlab.com:critocrito/nodejs-lib-scaffold.git
+        git fetch --all
+
+-   Rebase the new project from the scaffold: `git rebase scaffold/master`
+
+## Updating the project
+
+-   Fetch the latest commits: `git fetch --all`
+-   If only some commits are interesting, cherry pick them:
+
+        git log scaffold/master
+        git cherry-pick -e <sha>
+
+-   Otherwise merge the whole scaffolding branch: `git merge scaffold/master`
 
 ## API
 
