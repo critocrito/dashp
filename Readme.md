@@ -42,8 +42,8 @@ Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 ### compose
 
 Compose two function that return promises to yield a third function that
-returns a promise. The resulting composite function is denoted `g∘f : X →
-Z`, defined by `(g∘f)(x) = g(f(x))` for all `x` in `X`.
+returns a promise. The resulting composite function is denoted
+`g∘f : X → Z`, defined by `(g∘f)(x) = g(f(x))` for all `x` in `X`.
 
 **Parameters**
 
