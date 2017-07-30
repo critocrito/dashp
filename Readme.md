@@ -1,4 +1,23 @@
-# A NodeJs Library
+# `combinators-p`
+
+Program with promises in a functional style.
+
+## Synopsis
+
+    import {getJson, storeDb} from './async-utils';
+    import {flow as flowP} from 'combinators-p';
+
+    const url = "https://url.horse/api";
+
+    const apiCall = flow([getJson, storeDb]);
+
+    await apiCall(url);
+
+## Get started
+
+    npm install --save combinators-p
+
+## Contents
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
