@@ -1,7 +1,7 @@
 {
-  "name": "nodejs-lib-scaffold",
+  "name": "combinators-p",
   "version": "0.0.0",
-  "description": "A scaffolding repository to quick start a new NodeJS library.",
+  "description": "A collection of combinators for promisified JavaScript code.",
   "main": "_dist/index.js",
   "config": {
     "srcDir": "lib",
@@ -28,15 +28,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/critocrito/nodejs-lib-scaffold.git"
+    "url": "https://gitlab.com/critocrito/combinators-p.git"
   },
   "keywords": [],
   "author": "Christo <christo@cryptodrunks.net>",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://gitlab.com/critocrito/nodejs-lib-scaffold/issues"
+    "url": "https://gitlab.com/critocrito/combinators-p/issues"
   },
-  "homepage": "https://gitlab.com/critocrito/nodejs-lib-scaffold#Readme.md",
+  "homepage": "https://gitlab.com/critocrito/combinators-p#Readme.md",
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
