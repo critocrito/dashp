@@ -25,6 +25,7 @@ Program with promises in a functional style.
 
 - [API](#api)
   - [future](#future)
+  - [constant](#constant)
   - [map](#map)
   - [fold](#fold)
   - [flow](#flow)
@@ -52,6 +53,24 @@ const f = a => future(a + 1);
 ```
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value inside a promise.
+
+### constant
+
+Create a function that always returns the same value.
+
+**Parameters**
+
+-   `x` **any** The value to return. This can either be a value or a promise
+    for a value.
+
+**Examples**
+
+```javascript
+const f = constant("Hello");
+f().then(console.log); // Returns "Hello"
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** A promise that resolves to `x`.
 
 ### map
 

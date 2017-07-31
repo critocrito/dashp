@@ -1,6 +1,6 @@
 import {curry} from "lodash/fp";
 import Promise from "bluebird";
-import {random} from "jsverify";
+import {oneof, array, number, char, string, json, bool, random} from "jsverify";
 
 export const maybePromisify = val => {
   switch (random(0, 1)) {
@@ -15,9 +15,23 @@ export const add = curry((x, y) => x + y);
 export const addP = curry((x, y) => Promise.resolve(add(x, y)));
 export const addMaybeP = curry((x, y) => maybePromisify(add(x, y)));
 
+export const anyArb = oneof([
+  number,
+  char,
+  string,
+  json,
+  bool,
+  array(number),
+  array(char),
+  array(string),
+  array(json),
+  array(bool),
+]);
+
 export default {
   maybePromisify,
   add,
   addP,
   addMaybeP,
+  anyArb,
 };
