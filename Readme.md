@@ -25,8 +25,8 @@ Program with promises in a functional style.
 
 - [API](#api)
   - [future](#future)
-  - [fold](#fold)
   - [map](#map)
+  - [fold](#fold)
   - [flow](#flow)
   - [compose](#compose)
 
@@ -53,6 +53,29 @@ const f = a => future(a + 1);
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value inside a promise.
 
+### map
+
+Map a function over every element of a list. This is equivalent to
+`Array.map`.
+
+**Parameters**
+
+-   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>** The function that is applied to every element. This
+    function can either return a value or the promise for a value.
+-   `xs` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** The list to map `f` over. This can either be an
+    array, or the promise for an array.
+
+**Examples**
+
+```javascript
+const f = x => future(x + 1);
+const xs = [...Array(5).keys()];
+map(f, xs).then(console.log); // Prints [1, 2, 3, 4, 5]
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)>** A list of the same length as `xs`, but with `f`
+applied to each of its elements.
+
 ### fold
 
 Reduce a list of values to a single value, using a reduction function. This
@@ -70,35 +93,12 @@ is equivalent to `Array.reduce`.
 **Examples**
 
 ```javascript
-const f = (acc, x) => Promise.resolve(acc + x);
+const f = (acc, x) => future(acc + x);
 const xs = [...Array(5).keys()];
 fold(f, 0, xs).then(console.log); // The sum of [0, 1, 2, 3, 4], returns 10;
 ```
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value of `xs` reduced over `f`.
-
-### map
-
-Map a function over every element of a list. This is equivalent to
-`Array.map`.
-
-**Parameters**
-
--   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>** The function that is applied to every element. This
-    function can either return a value or the promise for a value.
--   `xs` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** The list to map `f` over. This can either be an
-    array, or the promise for an array.
-
-**Examples**
-
-```javascript
-const f = x => Promise.resolve(x + 1);
-const xs = [...Array(5).keys()];
-map(f, xs).then(console.log); // Prints [1, 2, 3, 4, 5]
-```
-
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)>** A list of the same length as `xs`, but with `f`
-applied to each of its elements.
 
 ### flow
 
@@ -117,7 +117,7 @@ speak. It's a shortcut for composing more than two functions.
 **Examples**
 
 ```javascript
-const f = (x, y) => Promise.resolve(x + y);
+const f = (x, y) => future(x + y);
 const fs = map(f, [...Array(5).keys()]);
 flow(fs, 0).then(console.log); // The sum of [0, 1, 2, 3, 4], returns 10
 ```
@@ -143,8 +143,8 @@ returns a promise. The resulting composite function is denoted
 **Examples**
 
 ```javascript
-const f = x => Promise.resolve(x + 1);
-const g = x => Promise.resolve(x + 5);
+const f = x => future(x + 1);
+const g = x => future(x + 5);
 const h = compose(f, g);
 h(10).then(console.log); // 10 + 1 + 5, returns 16.
 ```
