@@ -200,10 +200,14 @@ returns a promise. The resulting composite function is denoted
 
 **Parameters**
 
--   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** The first function to compose. The function can either
-    return a value or a promise for a value.
--   `g` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** The second function to compose. The function can either
-    return a value or a promise for a value.
+-   `f` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)> | [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function))** The first function to
+    compose. This argument can either be a function, or a promise that resolves
+    to a function. The function can either return a value or a promise for a
+    value.
+-   `g` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)> | [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function))** The second function to
+    compose. This argument can either be a function, or a promise that resolves
+    to a function. The function can either return a value or a promise for a
+    value.
 -   `x` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) | any)** The argument to call `(g∘f)` with. It can either be
     any value, or the promise for any value.
 

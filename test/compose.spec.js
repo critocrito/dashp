@@ -7,9 +7,11 @@ import compose from "../lib/combinators/compose";
 describe("The compose combinator", () => {
   it("accepts non promisified and promisified arguments", () =>
     assertForall(nat, nat, nat, (x, y, z) =>
-      compose(addMaybeP(x), addMaybeP(y), maybePromisify(z)).then(
-        isEqual(sum([x, y, z]))
-      )
+      compose(
+        maybePromisify(addMaybeP(x)),
+        maybePromisify(addMaybeP(y)),
+        maybePromisify(z)
+      ).then(isEqual(sum([x, y, z])))
     ));
 
   it("is always associative", () =>
