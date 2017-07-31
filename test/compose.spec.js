@@ -18,7 +18,7 @@ describe("The compose combinator", () => {
       ).then(isEqual(sum([x, y, z])))
   );
 
-  property("is always associative", "nat", "nat", "nat", (w, x, y, z) =>
+  property("is always associative", "nat", "nat", "nat", "nat", (w, x, y, z) =>
     Promise.all([
       compose(addP(w), compose(addP(x), addP(y)), z),
       compose(compose(addP(w), addP(x)), addP(y), z),
