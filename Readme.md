@@ -26,6 +26,7 @@ Program with promises in a functional style.
 - [API](#api)
   - [constant](#constant)
   - [future](#future)
+  - [fmap](#fmap)
   - [tap](#tap)
   - [all](#all)
   - [map](#map)
@@ -74,6 +75,20 @@ const f = a => future(a + 1);
 ```
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value inside a promise.
+
+### fmap
+
+Map a function over a promise.
+
+**Parameters**
+
+-   `f` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)> | [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>)** The function to apply. `f` can
+    either be a function, or a promise that resolves to a promise. The function
+    can either return a value, or a promise that resolves to a promise.
+-   `x` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any> | any)** The value to apply to `f`. This can either be a
+    value, or a promise that resolves to a value.
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The result of `x` applied to `f`.
 
 ### tap
 
