@@ -13,6 +13,8 @@ describe("The all combinator", () => {
 
   it("accepts non promisified and promisified values", () =>
     assertForall(anyArb, nat, nat, (x, y, z) =>
-      all([maybePromisify(x), addMaybeP(y, z)])().then(isEqual([x, y + z]))
+      all(maybePromisify([maybePromisify(x), addMaybeP(y, z)]))().then(
+        isEqual([x, y + z])
+      )
     ));
 });

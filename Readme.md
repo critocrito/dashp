@@ -26,8 +26,8 @@ Program with promises in a functional style.
 - [API](#api)
   - [constant](#constant)
   - [future](#future)
-  - [all](#all)
   - [tap](#tap)
+  - [all](#all)
   - [map](#map)
   - [flow](#flow)
   - [fold](#fold)
@@ -75,27 +75,6 @@ const f = a => future(a + 1);
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value inside a promise.
 
-### all
-
-Create a function that evaluates all promises in an array when called. This
-is equivalent to `Promise.all`, with the difference that it creates a
-callable function.
-
-**Parameters**
-
--   `xs` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** An array of values that are resolved. Each element
-    can either be a value, or a promise that resolves to a value.
-
-**Examples**
-
-```javascript
-const f = all([openFile1(), opeFile2(), openFile3()]);
-f().then(console.log); // Returns [a, b, c];
-```
-
-Returns **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;Promise.Array&lt;any>>** A function, that when called, resolves all
-promises and returns an Array of values.
-
 ### tap
 
 Run a function for side effect and return the original value. The original
@@ -116,6 +95,29 @@ flow([f, tap(console.log)])(23); // Print "23" to the console.
 ```
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** Returns `x`.
+
+### all
+
+Create a function that evaluates all promises in an array when called. This
+is equivalent to `Promise.all`, with the difference that it creates a
+callable function.
+
+**Parameters**
+
+-   `xs` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)> | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>)** An array of values that are
+    resolved. `xs` can either be an array, or a promise that resolves to an
+    array. Each element of `xs` can either be a value, or a promise that
+    resolves to a value.
+
+**Examples**
+
+```javascript
+const f = all([openFile1(), opeFile2(), openFile3()]);
+f().then(console.log); // Returns [a, b, c];
+```
+
+Returns **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;Promise.Array&lt;any>>** A function, that when called, resolves all
+promises and returns an Array of values.
 
 ### map
 
