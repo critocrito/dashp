@@ -1,7 +1,7 @@
 import {curry} from "lodash/fp";
 import {property} from "jsverify";
 
-import {curry2, curry3} from "../lib/utils";
+import {curry2, curry3} from "../lib/curryN";
 
 describe("The custom curry2 functions", () => {
   property("equivalency when fully saturated", "nat", "nat", (x, y) => {
