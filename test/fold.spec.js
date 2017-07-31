@@ -8,9 +8,11 @@ import fold from "../lib/combinators/fold";
 describe("The fold combinator", () => {
   it("accepts non promisified and promisified arguments", () =>
     assertForall(array(nat), nat, (xs, y) =>
-      fold(addMaybeP, maybePromisify(y), maybePromisify(xs)).then(
-        isEqual(sum(xs) + y)
-      )
+      fold(
+        maybePromisify(addMaybeP),
+        maybePromisify(y),
+        maybePromisify(xs)
+      ).then(isEqual(sum(xs) + y))
     ));
 
   it("produces the same result as a synchronous reduce", () =>

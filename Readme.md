@@ -29,8 +29,8 @@ Program with promises in a functional style.
   - [tap](#tap)
   - [all](#all)
   - [map](#map)
-  - [fold](#fold)
   - [flow](#flow)
+  - [fold](#fold)
   - [compose](#compose)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -142,31 +142,6 @@ map(f, xs).then(console.log); // Prints [1, 2, 3, 4, 5]
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)>** A list of the same length as `xs`, but with `f`
 applied to each of its elements.
 
-### fold
-
-Reduce a list of values to a single value, using a reduction function. This
-is equivalent to `Array.reduce`.
-
-**Parameters**
-
--   `f` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)> | [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>)** The reduce function to map
-    over the list. This function can either return a value or the promise for a
-    value.
--   `acc` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any> | any)** The initial value to apply to the first call
-    of `f`. It can either be any value or the promise for any value.
--   `xs` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)> | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>)** The list to reduce to a single
-    value. This can either be an array, or the promise for an array.
-
-**Examples**
-
-```javascript
-const f = (acc, x) => future(acc + x);
-const xs = [...Array(5).keys()];
-fold(f, 0, xs).then(console.log); // The sum of [0, 1, 2, 3, 4], returns 10;
-```
-
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value of `xs` reduced over `f`.
-
 ### flow
 
 Create a function out of a list of functions, where each successive
@@ -192,6 +167,32 @@ flow(fs, 0).then(console.log); // The sum of [0, 1, 2, 3, 4], returns 10
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The result of applying `x` to the pipeline of
 `fs`.
+
+### fold
+
+Reduce a list of values to a single value, using a reduction function. This
+is equivalent to `Array.reduce`.
+
+**Parameters**
+
+-   `f` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)> | [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>)** The reduce function to map
+    over the list. `f` can either be a function, or a promise that resolves to
+    a promise. This function can either return a value or the promise for a
+    value.
+-   `acc` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any> | any)** The initial value to apply to the first call
+    of `f`. It can either be any value or the promise for any value.
+-   `xs` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)> | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>)** The list to reduce to a single
+    value. This can either be an array, or the promise for an array.
+
+**Examples**
+
+```javascript
+const f = (acc, x) => future(acc + x);
+const xs = [...Array(5).keys()];
+fold(f, 0, xs).then(console.log); // The sum of [0, 1, 2, 3, 4], returns 10;
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value of `xs` reduced over `f`.
 
 ### compose
 
