@@ -15,7 +15,9 @@ describe("The flow combinator", () => {
   it("it accepts non promisified and promisified arguments", () =>
     assertForall(array(nat), nat, (xs, y) => {
       const fs = map(addMaybeP, xs);
-      return flow(fs, maybePromisify(y)).then(isEqual(sum(xs) + y));
+      return flow(maybePromisify(fs), maybePromisify(y)).then(
+        isEqual(sum(xs) + y)
+      );
     }));
 
   it("is equivalent to composing compositions of functions", () =>
