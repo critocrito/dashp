@@ -25,6 +25,7 @@ Program with promises in a functional style.
 
 - [API](#api)
   - [fold](#fold)
+  - [map](#map)
   - [flow](#flow)
   - [compose](#compose)
 
@@ -57,6 +58,29 @@ fold(f, 0, xs).then(console.log); // The sum of [0, 1, 2, 3, 4], returns 10;
 ```
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value of `xs` reduced over `f`.
+
+### map
+
+Map a function over every element of a list. This is equivalent to
+`Array.map`.
+
+**Parameters**
+
+-   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>** The function that is applied to every element. This
+    function can either return a value or the promise for a value.
+-   `xs` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** The list to map `f` over. This can either be an
+    array, or the promise for an array.
+
+**Examples**
+
+```javascript
+const f = x => Promise.resolve(x + 1);
+const xs = [...Array(5).keys()];
+map(f, xs).then(console.log); // Prints [1, 2, 3, 4, 5]
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)>** A list of the same length as `xs`, but with `f`
+applied to each of its elements.
 
 ### flow
 
