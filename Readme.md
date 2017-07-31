@@ -26,6 +26,7 @@ Program with promises in a functional style.
 - [API](#api)
   - [future](#future)
   - [constant](#constant)
+  - [tap](#tap)
   - [map](#map)
   - [fold](#fold)
   - [flow](#flow)
@@ -71,6 +72,27 @@ f().then(console.log); // Returns "Hello"
 ```
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** A promise that resolves to `x`.
+
+### tap
+
+Run a function for side effect and return the original value. The original
+value gets cloned and therefore can be modified in the tap handler.
+
+**Parameters**
+
+-   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** The function for side effect. The return value of this
+    function will be ignored.
+-   `x` **any** The value to use for side effect. This can either be a value
+    or a promise that resolves to a value.
+
+**Examples**
+
+```javascript
+const f = a => future(a);
+flow([f, tap(console.log)])(23); // Print "23" to the console.
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** Returns `x`.
 
 ### map
 
