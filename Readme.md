@@ -26,6 +26,7 @@ Program with promises in a functional style.
 - [API](#api)
   - [future](#future)
   - [constant](#constant)
+  - [all](#all)
   - [tap](#tap)
   - [map](#map)
   - [fold](#fold)
@@ -72,6 +73,27 @@ f().then(console.log); // Returns "Hello"
 ```
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** A promise that resolves to `x`.
+
+### all
+
+Create a function that evaluates all promises in an array when called. This
+is equivalent to `Promise.all`, with the difference that it creates a
+callable function.
+
+**Parameters**
+
+-   `xs` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** An array of values that are resolved. Each element
+    can either be a value, or a promise that resolves to a value.
+
+**Examples**
+
+```javascript
+const f = all([openFile1(), opeFile2(), openFile3()]);
+f().then(console.log); // Returns [a, b, c];
+```
+
+Returns **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;Promise.Array&lt;any>>** A function, that when called, resolves all
+promises and returns an Array of values.
 
 ### tap
 
