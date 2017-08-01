@@ -32,6 +32,7 @@ Program with promises in a functional style.
   - [map](#map)
   - [flow](#flow)
   - [fold](#fold)
+  - [lift2](#lift2)
   - [compose](#compose)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -208,6 +209,32 @@ fold(f, 0, xs).then(console.log); // The sum of [0, 1, 2, 3, 4], returns 10;
 ```
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value of `xs` reduced over `f`.
+
+### lift2
+
+Lift a binary function over two promises.
+
+**Parameters**
+
+-   `f` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)> | [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any, any>)** A binary function. This
+    can either be a function, or a promise that resolves to a function. The
+    function can either return a value, or a promise that resolves to a value.
+-   `x` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any> | any)** A value that gets lifted as the first argument
+    of `f`. This can either be a value, or a promise that resolves to a value.
+-   `y` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any> | any)** A value that gets lifted as the first argument
+    of `f`. This can either be a value, or a promise that resolves to a value.
+
+**Examples**
+
+```javascript
+const f = (x, y) => future(x = y);
+const a = future(1);
+const b = future(2);
+lift2(f, a, b).then(console.log); // Returns 3.
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value that f returns when applied to `x` and
+`y`.
 
 ### compose
 
