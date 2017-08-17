@@ -63,6 +63,7 @@
     "mocha": "^3.4.2",
     "prettier": "^1.5.3",
     "rimraf": "^2.6.1",
+    "sinon": "^3.2.1",
     "standard-version": "^4.2.0",
     "validate-commit-msg": "^2.13.1"
   },
