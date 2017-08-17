@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.2.0"></a>
+# [0.2.0](https://gitlab.com/critocrito/combinators-p/compare/v0.1.0...v0.2.0) (2017-08-17)
+
+
+### Features
+
+* **isPromise:** Added the isPromise check. ([1f0c366](https://gitlab.com/critocrito/combinators-p/commit/1f0c366))
+
+
+
 <a name="0.1.0"></a>
 # 0.1.0 (2017-08-01)
 
