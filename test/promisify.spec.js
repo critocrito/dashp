@@ -2,7 +2,7 @@ import {property} from "jsverify";
 import {identity, isEqual} from "lodash/fp";
 import sinon from "sinon";
 import promisify from "../lib/promisify";
-import {isPromise} from "./arbitraries";
+import isPromise from "../lib/utils/is-promise";
 
 describe("The promisification of arguments", () => {
   property("returns a promise", "nat", x => isPromise(promisify(identity)(x)));

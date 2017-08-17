@@ -2,11 +2,6 @@ import {curry} from "lodash/fp";
 import Promise from "bluebird";
 import {oneof, array, number, char, string, json, bool, random} from "jsverify";
 
-export const isPromise = p =>
-  !!p &&
-  (typeof p === "object" || typeof p === "function") &&
-  typeof p.then === "function";
-
 export const maybePromisify = val => {
   switch (random(0, 1)) {
     case 0:
@@ -34,7 +29,6 @@ export const anyArb = oneof([
 ]);
 
 export default {
-  isPromise,
   maybePromisify,
   add,
   addP,
