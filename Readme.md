@@ -32,6 +32,7 @@ Program with promises in a functional style.
   - [all](#all)
   - [tap](#tap)
   - [lift2](#lift2)
+  - [spread](#spread)
   - [flow](#flow)
   - [fold](#fold)
   - [compose](#compose)
@@ -200,6 +201,31 @@ lift2(f, a, b).then(console.log); // Returns 3.
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value that f returns when applied to `x` and
 `y`.
+
+### spread
+
+Call a variadic function with the value of a promise as it's arguments. If
+the value is an array, flatten it to the formal parameters of the
+fulfillment handler.
+
+**Parameters**
+
+-   `f` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)> | [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>)** The function to apply to the
+    value of p. This function can either return a value or the promise for a
+    value. This function can also be a promise that resolves to a function.
+-   `p` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any> | any)** The promise that resolves to the arguments for
+    the function. This can either be a single value, an Array or a promise
+    resolving to any of those.
+
+**Examples**
+
+```javascript
+const add = (x, y) => x + y;
+const p = future([1, 2]);
+spread(add, p).then(console.log); // Prints 3
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The result of applying the value of `p` to `f`.
 
 ### flow
 
