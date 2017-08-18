@@ -1,7 +1,7 @@
 import {isEqual} from "lodash/fp";
 import {property} from "jsverify";
 import {addP} from "./arbitraries";
-import map from "../lib/combinators/map";
+import {map} from "../lib/combinators/map";
 
 describe("Compatibility with await", () => {
   property("map", "array nat", "nat", (xs, y) =>

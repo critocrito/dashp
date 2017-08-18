@@ -33,10 +33,14 @@ Program with promises in a functional style.
   - [tap](#tap)
   - [lift2](#lift2)
   - [spread](#spread)
-  - [flow](#flow)
   - [fold](#fold)
+  - [flow](#flow)
   - [compose](#compose)
   - [map](#map)
+  - [map2](#map2)
+  - [map3](#map3)
+  - [map4](#map4)
+  - [map5](#map5)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -227,32 +231,6 @@ spread(add, p).then(console.log); // Prints 3
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The result of applying the value of `p` to `f`.
 
-### flow
-
-Create a function out of a list of functions, where each successive
-invocation is supplied the return value of the previous function call. The
-new function forms a pipe where the results flow from left to right so to
-speak. It's a shortcut for composing more than two functions.
-
-**Parameters**
-
--   `fs` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)> | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)>)** An array of functions to
-    compose. `fs` can either be an array, or a promise that resolves to an
-    array. Each function can either return a value or a promise for a value.
--   `x` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) | any)** The argument to call the function pipeline with. It
-    can either be any value, or the promise for any value.
-
-**Examples**
-
-```javascript
-const f = (x, y) => future(x + y);
-const fs = map(f, [...Array(5).keys()]);
-flow(fs, 0).then(console.log); // The sum of [0, 1, 2, 3, 4], returns 10
-```
-
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The result of applying `x` to the pipeline of
-`fs`.
-
 ### fold
 
 Reduce a list of values to a single value, using a reduction function. This
@@ -278,6 +256,32 @@ fold(f, 0, xs).then(console.log); // The sum of [0, 1, 2, 3, 4], returns 10;
 ```
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value of `xs` reduced over `f`.
+
+### flow
+
+Create a function out of a list of functions, where each successive
+invocation is supplied the return value of the previous function call. The
+new function forms a pipe where the results flow from left to right so to
+speak. It's a shortcut for composing more than two functions.
+
+**Parameters**
+
+-   `fs` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)> | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)>)** An array of functions to
+    compose. `fs` can either be an array, or a promise that resolves to an
+    array. Each function can either return a value or a promise for a value.
+-   `x` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) | any)** The argument to call the function pipeline with. It
+    can either be any value, or the promise for any value.
+
+**Examples**
+
+```javascript
+const f = (x, y) => future(x + y);
+const fs = map(f, [...Array(5).keys()]);
+flow(fs, 0).then(console.log); // The sum of [0, 1, 2, 3, 4], returns 10
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The result of applying `x` to the pipeline of
+`fs`.
 
 ### compose
 
@@ -332,3 +336,19 @@ map(f, xs).then(console.log); // Prints [1, 2, 3, 4, 5]
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)>** A list of the same length as `xs`, but with `f`
 applied to each of its elements.
+
+### map2
+
+The same as `map`, but run two promises concurrently.
+
+### map3
+
+The same as `map`, but run three promises concurrently.
+
+### map4
+
+The same as `map`, but run four promises concurrently.
+
+### map5
+
+The same as `map`, but run five promises concurrently.
