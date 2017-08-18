@@ -1,7 +1,7 @@
 import {isEqual} from "lodash/fp";
 import {property} from "jsverify";
 
-import {maybePromisify, addP, addMaybeP} from "./arbitraries";
+import {maybePromisify, addP, addMaybeP, isEqualAry} from "./arbitraries";
 import future from "../lib/combinators/future";
 import compose from "../lib/combinators/compose";
 import all from "../lib/combinators/all";
@@ -16,7 +16,7 @@ describe("The functor fmap", () => {
 
   // fmap id === id
   property("holds for the first functor law", "nat", x =>
-    all([fmap(id, future(x)), id(x)])().spread(isEqual)
+    all([fmap(id, future(x)), id(x)])().then(isEqualAry)
   );
 
   // fmap f . fmap g === fmap (f . g)
@@ -32,7 +32,7 @@ describe("The functor fmap", () => {
       return all([
         compose(fmap(f), fmap(g), future(z)),
         fmap(compose(f, g), future(z)),
-      ])().spread(isEqual);
+      ])().then(isEqualAry);
     }
   );
 

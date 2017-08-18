@@ -1,7 +1,6 @@
-import {isEqual} from "lodash/fp";
 import {property} from "jsverify";
 
-import {addP} from "./arbitraries";
+import {addP, isEqualAry} from "./arbitraries";
 
 import future from "../lib/combinators/future";
 import apply from "../lib/combinators/apply";
@@ -14,7 +13,7 @@ describe("The applicative functor", () => {
 
   // future id <*> v = v
   property("holds for the law of identity for applicative", "nat", x =>
-    all([apply(future(id), future(x)), future(x)])().spread(isEqual)
+    all([apply(future(id), future(x)), future(x)])().then(isEqualAry)
   );
 
   // future f <*> future x = future (f x)
@@ -25,7 +24,9 @@ describe("The applicative functor", () => {
     (x, y) => {
       const f = addP(x);
 
-      return all([apply(future(f), future(y)), future(f(y))])().spread(isEqual);
+      return all([apply(future(f), future(y)), future(f(y))])().then(
+        isEqualAry
+      );
     }
   );
 
@@ -38,7 +39,7 @@ describe("The applicative functor", () => {
       const u = future(addP(x));
       const p = future(y);
 
-      return all([apply(u, p), apply(future(f => f(y)), u)])().spread(isEqual);
+      return all([apply(u, p), apply(future(f => f(y)), u)])().then(isEqualAry);
     }
   );
 
@@ -56,7 +57,7 @@ describe("The applicative functor", () => {
       return all([
         apply(apply(apply(future(compose), u), v), p),
         apply(u, apply(v, p)),
-      ])().spread(isEqual);
+      ])().then(isEqualAry);
     }
   );
 
@@ -69,7 +70,7 @@ describe("The applicative functor", () => {
       const f = addP(x);
       const p = future(y);
 
-      return all([fmap(f, p), apply(future(f), p)])().spread(isEqual);
+      return all([fmap(f, p), apply(future(f), p)])().then(isEqualAry);
     }
   );
 });

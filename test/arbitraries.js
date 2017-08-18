@@ -1,6 +1,7 @@
-import {curry} from "lodash/fp";
-import Promise from "bluebird";
+import {curry, isEqual} from "lodash/fp";
 import {oneof, array, number, char, string, json, bool, random} from "jsverify";
+
+export const isEqualAry = xs => isEqual(...xs);
 
 export const maybePromisify = val => {
   switch (random(0, 1)) {
@@ -29,6 +30,7 @@ export const anyArb = oneof([
 ]);
 
 export default {
+  isEqualAry,
   maybePromisify,
   add,
   addP,
