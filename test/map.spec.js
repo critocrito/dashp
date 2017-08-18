@@ -1,5 +1,5 @@
 import {map as loMap, every, isEqual} from "lodash/fp";
-import {property} from "jsverify";
+import {property, assert, forall, unit, random} from "jsverify";
 import Promise from "bluebird";
 
 import {maybePromisify, add, addP, addMaybeP} from "./arbitraries";
@@ -38,7 +38,7 @@ describe("The map operator", () => {
     ]).then(rs => rs.every(isEqual(rs[0])))
   );
 
-  property("adheres to the concurrency limit", () => {
+  property("adheres to the concurrency limit", "unit", () => {
     const xs = Array(100).fill(0);
     const test = (mapper, concurrency) => {
       let running = 0;
@@ -59,4 +59,13 @@ describe("The map operator", () => {
       test(map5, 5),
     ]).then(every(isTrue));
   });
+
+  it("adheres to the order of inputs", () =>
+    assert(
+      forall(unit, () => {
+        const xs = Array(20).fill(0).map(() => random(0, 15));
+        return map3(x => Promise.resolve(x).delay(x), xs).then(isEqual(xs));
+      }),
+      {tests: 25}
+    ));
 });
