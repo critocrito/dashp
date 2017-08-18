@@ -1,9 +1,11 @@
-import {map as loMap, isEqual} from "lodash/fp";
+import {map as loMap, every, isEqual} from "lodash/fp";
 import {property} from "jsverify";
 import Promise from "bluebird";
 
 import {maybePromisify, add, addP, addMaybeP} from "./arbitraries";
 import {map, map2, map3, map4, map5} from "../lib/combinators/map";
+
+const isTrue = isEqual(true);
 
 describe("The map operator", () => {
   property(
@@ -35,4 +37,26 @@ describe("The map operator", () => {
       map5(add(y), xs),
     ]).then(rs => rs.every(isEqual(rs[0])))
   );
+
+  property("adheres to the concurrency limit", () => {
+    const xs = Array(100).fill(0);
+    const test = (mapper, concurrency) => {
+      let running = 0;
+      return mapper(() => {
+        running += 1;
+        if (running <= concurrency)
+          // eslint-disable-next-line no-return-assign
+          return Promise.resolve(true).tap(() => (running -= 1));
+        return Promise.resolve(false);
+      }, xs).then(every(isTrue));
+    };
+
+    return Promise.all([
+      test(map, 1),
+      test(map2, 2),
+      test(map3, 3),
+      test(map4, 4),
+      test(map5, 5),
+    ]).then(every(isTrue));
+  });
 });
