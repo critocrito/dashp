@@ -25,17 +25,17 @@ Program with promises in a functional style.
 
 - [API](#api)
   - [isPromise](#ispromise)
-  - [constant](#constant)
   - [future](#future)
+  - [constant](#constant)
   - [fmap](#fmap)
   - [apply](#apply)
   - [all](#all)
   - [tap](#tap)
-  - [map](#map)
   - [lift2](#lift2)
   - [flow](#flow)
   - [fold](#fold)
   - [compose](#compose)
+  - [map](#map)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -61,24 +61,6 @@ isPromise(p); // Returns true;
 Returns **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Returns `true` if the object is a promise, otherwise
 `false`;
 
-### constant
-
-Create a function that always returns the same value.
-
-**Parameters**
-
--   `x` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any> | any)** The value to return. This can either be a value
-    or a promise for a value.
-
-**Examples**
-
-```javascript
-const f = constant("Hello");
-f().then(console.log); // Returns "Hello"
-```
-
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** A promise that resolves to `x`.
-
 ### future
 
 Lift a value into a promise. This is equivalent to `Promise.resolve`.
@@ -96,6 +78,24 @@ const f = a => future(a + 1);
 ```
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value inside a promise.
+
+### constant
+
+Create a function that always returns the same value.
+
+**Parameters**
+
+-   `x` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any> | any)** The value to return. This can either be a value
+    or a promise for a value.
+
+**Examples**
+
+```javascript
+const f = constant("Hello");
+f().then(console.log); // Returns "Hello"
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** A promise that resolves to `x`.
 
 ### fmap
 
@@ -174,29 +174,6 @@ flow([f, tap(console.log)])(23); // Print "23" to the console.
 ```
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** Returns `x`.
-
-### map
-
-Map a function over every element of a list. This is equivalent to
-`Array.map`.
-
-**Parameters**
-
--   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>** The function that is applied to every element. This
-    function can either return a value or the promise for a value.
--   `xs` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)> | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>)** The list to map `f` over. This can
-    either be an array, or the promise for an array.
-
-**Examples**
-
-```javascript
-const f = x => future(x + 1);
-const xs = [...Array(5).keys()];
-map(f, xs).then(console.log); // Prints [1, 2, 3, 4, 5]
-```
-
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)>** A list of the same length as `xs`, but with `f`
-applied to each of its elements.
 
 ### lift2
 
@@ -306,3 +283,26 @@ h(10).then(console.log); // 10 + 1 + 5, returns 16.
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The result of calling `g` with the result of
 `f(x)`.
+
+### map
+
+Map a function over every element of a list. This is equivalent to
+`Array.map`. Only one promise at a time get's resolved.
+
+**Parameters**
+
+-   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>** The function that is applied to every element. This
+    function can either return a value or the promise for a value.
+-   `xs` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)> | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>)** The list to map `f` over. This can
+    either be an array, or the promise for an array.
+
+**Examples**
+
+```javascript
+const f = x => future(x + 1);
+const xs = [...Array(5).keys()];
+map(f, xs).then(console.log); // Prints [1, 2, 3, 4, 5]
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)>** A list of the same length as `xs`, but with `f`
+applied to each of its elements.
