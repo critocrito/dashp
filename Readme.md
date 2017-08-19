@@ -31,11 +31,16 @@ Program with promises in a functional style.
   - [apply](#apply)
   - [all](#all)
   - [tap](#tap)
+  - [flatmap](#flatmap)
   - [lift2](#lift2)
   - [spread](#spread)
   - [fold](#fold)
   - [flow](#flow)
+  - [flatmap2](#flatmap2)
   - [compose](#compose)
+  - [flatmap3](#flatmap3)
+  - [flatmap4](#flatmap4)
+  - [flatmap5](#flatmap5)
   - [map](#map)
   - [map2](#map2)
   - [map3](#map3)
@@ -180,6 +185,29 @@ flow([f, tap(console.log)])(23); // Print "23" to the console.
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** Returns `x`.
 
+### flatmap
+
+Map a function over every element of a list and concatenate the results
+into a single list. Only one promise at a time get's resolved.
+
+**Parameters**
+
+-   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>** The function that is applied to every element. This
+    function can either return a value or the promise for a value.
+-   `xs` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)> | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>)** The list to map `f` over. This can
+    either be an array, or the promise for an array.
+
+**Examples**
+
+```javascript
+const f = x => [x, x];
+const xs = [1, 2];
+flatmap(f, xs).then(console.log); // Prints [1, 1, 2, 2];
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)>** The concatenation of applying every element of
+`xs` to `f`.
+
 ### lift2
 
 Lift a binary function over two promises.
@@ -283,6 +311,10 @@ flow(fs, 0).then(console.log); // The sum of [0, 1, 2, 3, 4], returns 10
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The result of applying `x` to the pipeline of
 `fs`.
 
+### flatmap2
+
+The same as `flatmap`, but run two promises concurrently.
+
 ### compose
 
 Compose two function that return promises to yield a third function that
@@ -313,6 +345,18 @@ h(10).then(console.log); // 10 + 1 + 5, returns 16.
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The result of calling `g` with the result of
 `f(x)`.
+
+### flatmap3
+
+The same as `flatmap`, but run three promises concurrently.
+
+### flatmap4
+
+The same as `flatmap`, but run four promises concurrently.
+
+### flatmap5
+
+The same as `flatmap`, but run five promises concurrently.
 
 ### map
 
