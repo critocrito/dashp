@@ -31,16 +31,20 @@ Program with promises in a functional style.
   - [apply](#apply)
   - [all](#all)
   - [tap](#tap)
-  - [flatmap](#flatmap)
   - [lift2](#lift2)
+  - [flatmap](#flatmap)
   - [spread](#spread)
-  - [fold](#fold)
   - [flow](#flow)
+  - [fold](#fold)
+  - [whenElse](#whenelse)
   - [flatmap2](#flatmap2)
   - [compose](#compose)
   - [flatmap3](#flatmap3)
   - [flatmap4](#flatmap4)
+  - [unlessElse](#unlesselse)
   - [flatmap5](#flatmap5)
+  - [when](#when)
+  - [unless](#unless)
   - [map](#map)
   - [map2](#map2)
   - [map3](#map3)
@@ -185,29 +189,6 @@ flow([f, tap(console.log)])(23); // Print "23" to the console.
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** Returns `x`.
 
-### flatmap
-
-Map a function over every element of a list and concatenate the results
-into a single list. Only one promise at a time get's resolved.
-
-**Parameters**
-
--   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>** The function that is applied to every element. This
-    function can either return a value or the promise for a value.
--   `xs` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)> | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>)** The list to map `f` over. This can
-    either be an array, or the promise for an array.
-
-**Examples**
-
-```javascript
-const f = x => [x, x];
-const xs = [1, 2];
-flatmap(f, xs).then(console.log); // Prints [1, 1, 2, 2];
-```
-
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)>** The concatenation of applying every element of
-`xs` to `f`.
-
 ### lift2
 
 Lift a binary function over two promises.
@@ -234,6 +215,29 @@ lift2(f, a, b).then(console.log); // Returns 3.
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value that f returns when applied to `x` and
 `y`.
 
+### flatmap
+
+Map a function over every element of a list and concatenate the results
+into a single list. Only one promise at a time get's resolved.
+
+**Parameters**
+
+-   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>** The function that is applied to every element. This
+    function can either return a value or the promise for a value.
+-   `xs` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)> | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>)** The list to map `f` over. This can
+    either be an array, or the promise for an array.
+
+**Examples**
+
+```javascript
+const f = x => [x, x];
+const xs = [1, 2];
+flatmap(f, xs).then(console.log); // Prints [1, 1, 2, 2];
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)>** The concatenation of applying every element of
+`xs` to `f`.
+
 ### spread
 
 Call a variadic function with the value of a promise as it's arguments. If
@@ -258,6 +262,32 @@ spread(add, p).then(console.log); // Prints 3
 ```
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The result of applying the value of `p` to `f`.
+
+### flow
+
+Create a function out of a list of functions, where each successive
+invocation is supplied the return value of the previous function call. The
+new function forms a pipe where the results flow from left to right so to
+speak. It's a shortcut for composing more than two functions.
+
+**Parameters**
+
+-   `fs` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)> | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)>)** An array of functions to
+    compose. `fs` can either be an array, or a promise that resolves to an
+    array. Each function can either return a value or a promise for a value.
+-   `x` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) | any)** The argument to call the function pipeline with. It
+    can either be any value, or the promise for any value.
+
+**Examples**
+
+```javascript
+const f = (x, y) => future(x + y);
+const fs = map(f, [...Array(5).keys()]);
+flow(fs, 0).then(console.log); // The sum of [0, 1, 2, 3, 4], returns 10
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The result of applying `x` to the pipeline of
+`fs`.
 
 ### fold
 
@@ -285,31 +315,32 @@ fold(f, 0, xs).then(console.log); // The sum of [0, 1, 2, 3, 4], returns 10;
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value of `xs` reduced over `f`.
 
-### flow
+### whenElse
 
-Create a function out of a list of functions, where each successive
-invocation is supplied the return value of the previous function call. The
-new function forms a pipe where the results flow from left to right so to
-speak. It's a shortcut for composing more than two functions.
+Make a conditional test and either call the left or the right branch.
 
 **Parameters**
 
--   `fs` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)> | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)>)** An array of functions to
-    compose. `fs` can either be an array, or a promise that resolves to an
-    array. Each function can either return a value or a promise for a value.
--   `x` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) | any)** The argument to call the function pipeline with. It
-    can either be any value, or the promise for any value.
+-   `predicate` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** Test if a condition is `true` or `false`.
+-   `consequent` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** Apply `value` to this function if the
+    predicate return `true`;
+-   `alternative` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** Apply `value` to this function if the
+    predicate return `false`;
+-   `value` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) | any)** Test this value to decide whether to call the
+    consequent or the alternative.
 
 **Examples**
 
 ```javascript
-const f = (x, y) => future(x + y);
-const fs = map(f, [...Array(5).keys()]);
-flow(fs, 0).then(console.log); // The sum of [0, 1, 2, 3, 4], returns 10
+const pred = userExists;
+const cons = updateUser;
+const alt = createUser;
+whenElse(userExists, updateUser, createUser, user);
 ```
 
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The result of applying `x` to the pipeline of
-`fs`.
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** A promise that resolves to a value, that is the
+result of either calling the `consequent` or the `alternative` with
+`value`.
 
 ### flatmap2
 
@@ -354,9 +385,24 @@ The same as `flatmap`, but run three promises concurrently.
 
 The same as `flatmap`, but run four promises concurrently.
 
+### unlessElse
+
+Like `whenElse`, only call the `consequent` if the predicate returns
+`false`, and the `alternative` if the predicate returns `true`;
+
 ### flatmap5
 
 The same as `flatmap`, but run five promises concurrently.
+
+### when
+
+Like `whenElse`, but have no alternative. If the predicate returns `false`,
+simply return the `value`.
+
+### unless
+
+Like `unlessElse`, but have no alternative. If the predicate returns `true`,
+simply return the `value`.
 
 ### map
 
