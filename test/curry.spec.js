@@ -1,86 +1,59 @@
-import {curry} from "lodash/fp";
+import {curry as loCurry, every, isEqual} from "lodash/fp";
 import {property} from "jsverify";
 
-import {curry2, curry3} from "../lib/curryN";
+import {curry2, curry3, curry4} from "../lib/curryN";
 
-describe("The custom curry2 functions", () => {
-  property("equivalency when fully saturated", "nat", "nat", (x, y) => {
-    const f = (a, b) => a + b;
-    const f1 = curry(f);
-    const f2 = curry2(f);
-    return f1(x, y) === f2(x, y);
-  });
-
-  property("equivalency when saturating one argument", "nat", "nat", (x, y) => {
-    const f = (a, b) => a + b;
-    const f1 = curry(f)(x);
-    const f2 = curry2(f)(x);
-    return f1(y) === f2(y);
-  });
-
+describe("The currying of functions", () => {
   property(
-    "equivalency when saturating all arguments",
+    "curry2 is equivalent to the original function and lodash's curry",
     "nat",
     "nat",
     (x, y) => {
       const f = (a, b) => a + b;
-      const f1 = curry(f)(x, y);
-      const f2 = curry2(f)(x, y);
-      return f1 === f2;
+      const f1 = loCurry(f);
+      const f2 = curry2(f);
+      return every(isEqual(f(x, y)), [f1(x, y), f2(x, y), f2(x)(y)]);
     }
   );
-});
 
-describe("The custom curry3 functions", () => {
   property(
-    "equivalency when fully saturated",
+    "curry3 is equivalent to the original function and lodash's curry",
     "nat",
     "nat",
     "nat",
     (x, y, z) => {
       const f = (a, b, c) => a + b + c;
-      const f1 = curry(f);
+      const f1 = loCurry(f);
       const f2 = curry3(f);
-      return f1(x, y, z) === f2(x, y, z);
+      return every(isEqual(f(x, y, z)), [
+        f1(x, y, z),
+        f2(x, y, z),
+        f2(x, y)(z),
+        f2(x)(y, z),
+        f2(x)(y)(z),
+      ]);
     }
   );
 
   property(
-    "equivalency when saturating one argument",
+    "curry4 is equivalent to the original function and lodash's curry",
     "nat",
     "nat",
     "nat",
-    (x, y, z) => {
-      const f = (a, b, c) => a + b + c;
-      const f1 = curry(f)(x);
-      const f2 = curry3(f)(x);
-      return f1(y, z) === f2(y, z);
-    }
-  );
-
-  property(
-    "equivalency when saturating two arguments",
     "nat",
-    "nat",
-    "nat",
-    (x, y, z) => {
-      const f = (a, b, c) => a + b + c;
-      const f1 = curry(f)(x, y);
-      const f2 = curry3(f)(x, y);
-      return f1(z) === f2(z);
-    }
-  );
-
-  property(
-    "equivalency when saturating all arguments",
-    "nat",
-    "nat",
-    "nat",
-    (x, y, z) => {
-      const f = (a, b, c) => a + b + c;
-      const f1 = curry(f)(x, y, z);
-      const f2 = curry3(f)(x, y, z);
-      return f1 === f2;
+    (w, x, y, z) => {
+      const f = (a, b, c, d) => a + b + c + d;
+      const f1 = loCurry(f);
+      const f2 = curry4(f);
+      return every(isEqual(f(w, x, y, z)), [
+        f1(w, x, y, z),
+        f2(w, x, y, z),
+        f2(w, x, y)(z),
+        f2(w, x)(y, z),
+        f2(w)(x, y, z),
+        f2(w)(x, y)(z),
+        f2(w)(x)(y)(z),
+      ]);
     }
   );
 });
