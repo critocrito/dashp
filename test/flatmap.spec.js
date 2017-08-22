@@ -2,7 +2,7 @@ import {flow, identity, flatMap, isEqual} from "lodash/fp";
 import Promise from "bluebird";
 import {property} from "jsverify";
 
-import {maybePromisify} from "./arbitraries";
+import {maybePromisify, isEqualAry} from "./arbitraries";
 import {map} from "../lib/combinators/map";
 import {
   flatmap,
@@ -37,8 +37,6 @@ describe("The flatmap operator", () => {
   );
 
   property("equivalency to map", "array nat", xs =>
-    Promise.all([map(identity, xs), flatmap(identity, xs)]).then(rs =>
-      isEqual(...rs)
-    )
+    Promise.all([map(identity, xs), flatmap(identity, xs)]).then(isEqualAry)
   );
 });

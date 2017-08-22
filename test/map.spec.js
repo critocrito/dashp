@@ -1,5 +1,5 @@
 import {map as loMap, every, isEqual} from "lodash/fp";
-import {property, assert, forall, unit, random} from "jsverify";
+import jsc, {property} from "jsverify";
 import Promise from "bluebird";
 
 import {maybePromisify, add, addP, addMaybeP} from "./arbitraries";
@@ -61,9 +61,9 @@ describe("The map operator", () => {
   });
 
   it("adheres to the order of inputs", () =>
-    assert(
-      forall(unit, () => {
-        const xs = Array(20).fill(0).map(() => random(0, 15));
+    jsc.assert(
+      jsc.forall(jsc.unit, () => {
+        const xs = Array(20).fill(0).map(() => jsc.random(0, 15));
         return map3(x => Promise.resolve(x).delay(x), xs).then(isEqual(xs));
       }),
       {tests: 25}

@@ -1,7 +1,7 @@
 import {map, reduce, identity, sum, isEqual} from "lodash/fp";
 import {property} from "jsverify";
 
-import {maybePromisify, addP, addMaybeP} from "./arbitraries";
+import {maybePromisify, addP, addMaybeP, isEqualAry} from "./arbitraries";
 import flow from "../lib/combinators/flow";
 import compose from "../lib/combinators/compose";
 
@@ -31,7 +31,7 @@ describe("The flow combinator", () => {
       const fs = map(addP, xs);
       const lhs = reduce((memo, x) => compose(memo, addP(x)), identity, xs);
       const rhs = flow(fs);
-      return Promise.all([lhs(y), rhs(y)]).then(([a, b]) => isEqual(a, b));
+      return Promise.all([lhs(y), rhs(y)]).then(isEqualAry);
     }
   );
 });

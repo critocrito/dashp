@@ -2,7 +2,7 @@ import {sum, isEqual} from "lodash/fp";
 import {property} from "jsverify";
 import Promise from "bluebird";
 
-import {maybePromisify, add, addP, addMaybeP} from "./arbitraries";
+import {maybePromisify, add, addP, addMaybeP, isEqualAry} from "./arbitraries";
 import fold from "../lib/combinators/fold";
 
 describe("The fold combinator", () => {
@@ -30,9 +30,8 @@ describe("The fold combinator", () => {
     "array nat",
     "nat",
     (xs, y) =>
-      Promise.all([
-        Promise.reduce(xs, addP, y),
-        fold(addP, y, xs),
-      ]).then(([a, b]) => isEqual(a, b))
+      Promise.all([Promise.reduce(xs, addP, y), fold(addP, y, xs)]).then(
+        isEqualAry
+      )
   );
 });

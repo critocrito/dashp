@@ -1,7 +1,7 @@
 import {sum, isEqual} from "lodash/fp";
 import {property} from "jsverify";
 
-import {maybePromisify, addP, addMaybeP} from "./arbitraries";
+import {maybePromisify, addP, addMaybeP, isEqualAry} from "./arbitraries";
 import compose from "../lib/combinators/compose";
 
 describe("The compose combinator", () => {
@@ -22,6 +22,6 @@ describe("The compose combinator", () => {
     Promise.all([
       compose(addP(w), compose(addP(x), addP(y)), z),
       compose(compose(addP(w), addP(x)), addP(y), z),
-    ]).then(([a, b]) => isEqual(a, b))
+    ]).then(isEqualAry)
   );
 });
