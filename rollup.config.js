@@ -21,7 +21,7 @@ export default [
       format: "umd",
       sourcemap: true,  
     },
-    name: "cobinatorsP",
+    name: "combinatorsP",
     plugins,
   },
   {
@@ -31,7 +31,7 @@ export default [
       format: "umd",
       sourcemap: true,
     },
-    name: "cobinatorsP",
+    name: "combinatorsP",
     minify,
   },
   {
