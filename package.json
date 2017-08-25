@@ -9,7 +9,7 @@
     "srcDir": "lib",
     "testDir": "test",
     "distDir": "_dist",
-    "reporter": "spec"
+    "reporter": "progress"
   },
   "scripts": {
     "commitmsg": "validate-commit-msg",
