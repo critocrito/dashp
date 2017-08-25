@@ -56,4 +56,9 @@ describe("The currying of functions", () => {
       ]);
     }
   );
+
+  property("curry/variadic function pattern", "nat", "nat", "nat", (...xs) => {
+    const f = curry3((...args) => args.reduce((memo, a) => memo + a, 0));
+    return isEqual(xs.reduce((memo, a) => memo + a, 0), f(...xs));
+  });
 });
