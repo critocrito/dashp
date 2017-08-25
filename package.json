@@ -2,9 +2,9 @@
   "name": "combinators-p",
   "version": "0.3.0",
   "description": "A collection of combinators for promisified JavaScript code.",
-  "main": "_dist/index.js",
+  "main": "_dist/combinators-p.js",
+  "browser": "_dist/combinators-p.js",
   "module": "lib/index.js",
-  "browser": "combinatorsP.js",
   "config": {
     "srcDir": "lib",
     "testDir": "test",

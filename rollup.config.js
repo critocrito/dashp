@@ -1,5 +1,5 @@
 import babel from "rollup-plugin-babel";
-import uglify from 'rollup-plugin-uglify';
+import uglify from "rollup-plugin-uglify";
 import pkg from "./package.json";
 
 const plugins = [
@@ -17,29 +17,21 @@ export default [
   {
     input: "lib/index.js",
     output: {
-      file: pkg.browser,
+      file: pkg.main,
       format: "umd",
       sourcemap: true,  
     },
-    name: "combinatorsP",
+    name: "combinators-p",
     plugins,
   },
   {
     input: "lib/index.js",
     output: {
-      file: `${pkg.browser.split('.')[0]}.min.js`,
+      file: `${pkg.browser.split(".")[0]}.min.js`,
       format: "umd",
       sourcemap: true,
     },
-    name: "combinatorsP",
-    minify,
-  },
-  {
-    input: "lib/index.js",
-    output: {
-      file: pkg.main,
-      format: "cjs",
-    },
-    plugins,
+    name: "combinators-p",
+    plugins: minify,
   },
 ];
