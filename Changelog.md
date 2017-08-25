@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://gitlab.com/critocrito/combinators-p/compare/v0.2.0...v0.3.0) (2017-08-25)
+
+
+### Bug Fixes
+
+* Corrected the package name. ([040230d](https://gitlab.com/critocrito/combinators-p/commit/040230d))
+
+
+### Features
+
+* **caught:** Added caught combinator. ([e8a4e87](https://gitlab.com/critocrito/combinators-p/commit/e8a4e87))
+* **conditional:** Added branching operators when, whenElse, unless and unlessElse. ([15807c5](https://gitlab.com/critocrito/combinators-p/commit/15807c5))
+* **delay:** Added a delay combinator. ([544175a](https://gitlab.com/critocrito/combinators-p/commit/544175a))
+* **flatmap:** Added the flatmap combinator. ([2fcf4c0](https://gitlab.com/critocrito/combinators-p/commit/2fcf4c0))
+* **map:** Added more concurrent versions of the map combinator. ([1543fd9](https://gitlab.com/critocrito/combinators-p/commit/1543fd9))
+* **retry:** Added various retry combinators. ([713a728](https://gitlab.com/critocrito/combinators-p/commit/713a728))
+* **spread:** Added the spread combinator. ([a97fcc8](https://gitlab.com/critocrito/combinators-p/commit/a97fcc8))
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://gitlab.com/critocrito/combinators-p/compare/v0.1.0...v0.2.0) (2017-08-17)
 
