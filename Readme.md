@@ -30,10 +30,11 @@ Program with promises in a functional style.
   - [delay](#delay)
   - [fmap](#fmap)
   - [apply](#apply)
+  - [caught](#caught)
   - [all](#all)
   - [tap](#tap)
-  - [flatmap](#flatmap)
   - [lift2](#lift2)
+  - [flatmap](#flatmap)
   - [spread](#spread)
   - [flow](#flow)
   - [fold](#fold)
@@ -165,6 +166,27 @@ apply(pf, f).then(console.log); // Returns 2.
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;Any>** A promise resolving to x applied to the function
 that f resolves to.
 
+### caught
+
+Catch an exception on a promise and call a exception handler. This is
+equivalent to `Promise.catch`.
+
+**Parameters**
+
+-   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** The handler to call when the promise `p` get's
+    rejected.
+-   `p` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any> | any)** A value or a promise that get's resolved.
+
+**Examples**
+
+```javascript
+const f = () => new Error("Boom");
+caught(console.error, f()); // Prints the exception.
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** A promise that resolves either to the value of `p`
+or to the return value of `f`.
+
 ### all
 
 Create a function that evaluates all promises in an array when called. This
@@ -209,29 +231,6 @@ flow([f, tap(console.log)])(23); // Print "23" to the console.
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** Returns `x`.
 
-### flatmap
-
-Map a function over every element of a list and concatenate the results
-into a single list. Only one promise at a time get's resolved.
-
-**Parameters**
-
--   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>** The function that is applied to every element. This
-    function can either return a value or the promise for a value.
--   `xs` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)> | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>)** The list to map `f` over. This can
-    either be an array, or the promise for an array.
-
-**Examples**
-
-```javascript
-const f = x => [x, x];
-const xs = [1, 2];
-flatmap(f, xs).then(console.log); // Prints [1, 1, 2, 2];
-```
-
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)>** The concatenation of applying every element of
-`xs` to `f`.
-
 ### lift2
 
 Lift a binary function over two promises.
@@ -257,6 +256,29 @@ lift2(f, a, b).then(console.log); // Returns 3.
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value that f returns when applied to `x` and
 `y`.
+
+### flatmap
+
+Map a function over every element of a list and concatenate the results
+into a single list. Only one promise at a time get's resolved.
+
+**Parameters**
+
+-   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>** The function that is applied to every element. This
+    function can either return a value or the promise for a value.
+-   `xs` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)> | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>)** The list to map `f` over. This can
+    either be an array, or the promise for an array.
+
+**Examples**
+
+```javascript
+const f = x => [x, x];
+const xs = [1, 2];
+flatmap(f, xs).then(console.log); // Prints [1, 1, 2, 2];
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)>** The concatenation of applying every element of
+`xs` to `f`.
 
 ### spread
 
