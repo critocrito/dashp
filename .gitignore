@@ -3,4 +3,3 @@ npm-*.log
 _dist
 .npmrc
 .eslintcache
-combinatorsP.*js*

@@ -1,5 +1,6 @@
 test/
-lib/
 npm-*.log
 .npmrc
-.eslintcache
+.babelrc
+.eslint*
+.gitlab*
