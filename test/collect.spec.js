@@ -1,40 +1,47 @@
-import {map as loMap, every, isEqual} from "lodash/fp";
+import {map, every, isEqual} from "lodash/fp";
 import jsc, {property} from "jsverify";
 import Promise from "bluebird";
 
 import {maybePromisify, add, addP, addMaybeP} from "./arbitraries";
-import {map, map2, map3, map4, map5} from "../lib/combinators/map";
+import {
+  collect,
+  collect2,
+  collect3,
+  collect4,
+  collect5,
+} from "../lib/combinators/collect";
 
 const isTrue = isEqual(true);
 
-describe("The map operator", () => {
+describe("The collect operator", () => {
   property(
     "non promisified and promisified arguments",
     "array nat",
     "nat",
     (xs, y) =>
-      map(addMaybeP(y), maybePromisify(xs)).then(zs =>
+      collect(addMaybeP(y), maybePromisify(xs)).then(zs =>
         isEqual(xs.length, zs.length)
       )
   );
 
   property("equivalency to synchronous map", "array nat", "nat", (xs, y) =>
-    map(add(y), xs).then(isEqual(loMap(add(y), xs)))
+    collect(add(y), xs).then(isEqual(map(add(y), xs)))
   );
 
   property("equivalency to Bluebird's map", "array nat", "nat", (xs, y) =>
-    Promise.all([Promise.map(xs, addP(y)), map(addP(y), xs)]).then(([a, b]) =>
-      isEqual(a, b)
-    )
+    Promise.all([
+      Promise.map(xs, addP(y)),
+      collect(addP(y), xs),
+    ]).then(([a, b]) => isEqual(a, b))
   );
 
   property("equivalency of concurrent maps", "array nat", "nat", (xs, y) =>
     Promise.all([
-      map(add(y), xs),
-      map2(add(y), xs),
-      map3(add(y), xs),
-      map4(add(y), xs),
-      map5(add(y), xs),
+      collect(add(y), xs),
+      collect2(add(y), xs),
+      collect3(add(y), xs),
+      collect4(add(y), xs),
+      collect5(add(y), xs),
     ]).then(rs => rs.every(isEqual(rs[0])))
   );
 
@@ -52,11 +59,11 @@ describe("The map operator", () => {
     };
 
     return Promise.all([
-      test(map, 1),
-      test(map2, 2),
-      test(map3, 3),
-      test(map4, 4),
-      test(map5, 5),
+      test(collect, 1),
+      test(collect2, 2),
+      test(collect3, 3),
+      test(collect4, 4),
+      test(collect5, 5),
     ]).then(every(isTrue));
   });
 
@@ -64,7 +71,7 @@ describe("The map operator", () => {
     jsc.assert(
       jsc.forall(jsc.unit, () => {
         const xs = Array(20).fill(0).map(() => jsc.random(0, 15));
-        return map3(x => Promise.resolve(x).delay(x), xs).then(isEqual(xs));
+        return collect3(x => Promise.resolve(x).delay(x), xs).then(isEqual(xs));
       }),
       {tests: 25}
     ));

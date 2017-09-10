@@ -3,7 +3,7 @@ import Promise from "bluebird";
 import {property} from "jsverify";
 
 import {maybePromisify, isEqualAry} from "./arbitraries";
-import {map} from "../lib/combinators/map";
+import {collect} from "../lib/combinators/collect";
 import {
   flatmap,
   flatmap2,
@@ -36,7 +36,7 @@ describe("The flatmap operator", () => {
     ]).then(rs => rs.every(isEqual(rs[0])))
   );
 
-  property("equivalency to map", "array nat", xs =>
-    Promise.all([map(identity, xs), flatmap(identity, xs)]).then(isEqualAry)
+  property("equivalency to collect", "array nat", xs =>
+    Promise.all([collect(identity, xs), flatmap(identity, xs)]).then(isEqualAry)
   );
 });

@@ -3,12 +3,11 @@ import {property} from "jsverify";
 
 import {maybePromisify, add, addMaybeP} from "./arbitraries";
 
-import future from "../lib/combinators/future";
-import spread from "../lib/combinators/spread";
+import {Future as F, spread} from "../lib";
 
 describe("The spread operator", () => {
   property("applying variadic arguments", "nat", "nat", (x, y) =>
-    spread(add, future([x, y])).then(isEqual(add(x, y)))
+    spread(add, F.of([x, y])).then(isEqual(add(x, y)))
   );
 
   property("non promisified and promisified arguments", "nat", "nat", (x, y) =>
@@ -16,6 +15,6 @@ describe("The spread operator", () => {
   );
 
   property("calls a function with a single argument", "nat", "nat", (x, y) =>
-    spread(add(x), future(y)).then(isEqual(add(x, y)))
+    spread(add(x), F.of(y)).then(isEqual(add(x, y)))
   );
 });
