@@ -21,7 +21,7 @@
     "lint": "eslint --cache $npm_package_config_testDir $npm_package_config_srcDir",
     "fix": "npm run lint -- --fix",
     "compile": "npm run clean -s && rollup -c",
-    "docs": "documentation lint $npm_package_config_srcDir/**/*.js && documentation readme --shallow --readme-file Readme.md -s \"API\" lib/Future.js lib/**/*.js && doctoc --maxlevel 3 --notitle Readme.md",
+    "docs": "documentation lint $npm_package_config_srcDir/**/*.js && documentation readme --shallow --readme-file Readme.md -s \"API\" lib/*.js && doctoc --maxlevel 3 --notitle Readme.md",
     "clean": "rimraf $npm_package_config_distDir",
     "build": "npm run lint -s && npm run test -s && npm run docs -s && npm run compile -s",
     "release": "npm run build -s && standard-version -i Changelog.md -m \"chore(release): Bumped to version %s.\" --sign",

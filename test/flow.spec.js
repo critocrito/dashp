@@ -2,8 +2,7 @@ import {map, reduce, identity, sum, isEqual} from "lodash/fp";
 import {property} from "jsverify";
 
 import {maybePromisify, addP, addMaybeP, isEqualAry} from "./arbitraries";
-import flow from "../lib/combinators/flow";
-import compose from "../lib/combinators/compose";
+import {flow, compose} from "../lib";
 
 describe("The flow combinator", () => {
   property("composes a list of functions", "array nat", "nat", (xs, y) => {

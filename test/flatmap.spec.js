@@ -3,14 +3,7 @@ import Promise from "bluebird";
 import {property} from "jsverify";
 
 import {maybePromisify, isEqualAry} from "./arbitraries";
-import {collect} from "../lib/combinators/collect";
-import {
-  flatmap,
-  flatmap2,
-  flatmap3,
-  flatmap4,
-  flatmap5,
-} from "../lib/combinators/flatmap";
+import {flatmap, flatmap2, flatmap3, flatmap4, flatmap5, collect} from "../lib";
 
 const duplicate = n => [n, n];
 const duplicateMaybeP = flow([duplicate, maybePromisify]);

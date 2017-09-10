@@ -2,7 +2,7 @@ import {isEqual} from "lodash/fp";
 import {property} from "jsverify";
 
 import {maybePromisify, addP} from "./arbitraries";
-import lift2 from "../lib/combinators/lift2";
+import {lift2} from "../lib";
 
 describe("The lift2 operator", () => {
   property("lifts two arguments", "nat", "nat", (x, y) =>

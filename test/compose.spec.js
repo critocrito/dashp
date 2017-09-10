@@ -2,7 +2,7 @@ import {sum, isEqual} from "lodash/fp";
 import {property} from "jsverify";
 
 import {maybePromisify, addP, addMaybeP, isEqualAry} from "./arbitraries";
-import compose from "../lib/combinators/compose";
+import {compose} from "../lib";
 
 describe("The compose combinator", () => {
   property(

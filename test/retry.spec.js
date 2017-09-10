@@ -2,7 +2,7 @@ import timeSpan from "time-span";
 import inRange from "in-range";
 import sinon from "sinon";
 
-import {retry, retry2, retry3, retry4} from "../lib/combinators/retry";
+import {retry, retry2, retry3, retry4} from "../lib";
 
 const fixture = Symbol("fixture");
 

@@ -3,13 +3,7 @@ import jsc, {property} from "jsverify";
 import Promise from "bluebird";
 
 import {maybePromisify, add, addP, addMaybeP} from "./arbitraries";
-import {
-  collect,
-  collect2,
-  collect3,
-  collect4,
-  collect5,
-} from "../lib/combinators/collect";
+import {collect, collect2, collect3, collect4, collect5} from "../lib";
 
 const isTrue = isEqual(true);
 

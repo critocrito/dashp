@@ -35,8 +35,8 @@ It also implements [Static Land](https://github.com/rpominov/static-land)
 - [API](#api)
   - [isPromise](#ispromise)
   - [constant](#constant)
-  - [delay](#delay)
   - [of](#of)
+  - [delay](#delay)
   - [caught](#caught)
   - [all](#all)
   - [tap](#tap)
@@ -52,8 +52,8 @@ It also implements [Static Land](https://github.com/rpominov/static-land)
   - [flatmap3](#flatmap3)
   - [flatmap4](#flatmap4)
   - [unlessElse](#unlesselse)
-  - [ap](#ap)
   - [retry](#retry)
+  - [ap](#ap)
   - [flatmap5](#flatmap5)
   - [when](#when)
   - [unless](#unless)
@@ -108,6 +108,24 @@ f().then(console.log); // Returns "Hello"
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** A promise that resolves to `x`.
 
+### of
+
+Lift a value into a promise. This is equivalent to `Promise.resolve`.
+
+**Parameters**
+
+-   `x` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any> | any)** The value to lift into a promise. This can
+    either be a value, or a promise that resolves to a value.
+
+**Examples**
+
+```javascript
+const x = F.of(23);
+const f = a => F.of(a + 1);
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value inside a promise.
+
 ### delay
 
 Delay the resolution of a promise chain.
@@ -126,24 +144,6 @@ delay(100).then(console.log) // Waits 100 ms.
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** A promise that resolved to value, or whatever value
 resolves to.
-
-### of
-
-Lift a value into a promise. This is equivalent to `Promise.resolve`.
-
-**Parameters**
-
--   `x` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any> | any)** The value to lift into a promise. This can
-    either be a value, or a promise that resolves to a value.
-
-**Examples**
-
-```javascript
-const x = F.of(23);
-const f = a => F.of(a + 1);
-```
-
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value inside a promise.
 
 ### caught
 
@@ -425,26 +425,6 @@ The same as `flatmap`, but run four promises concurrently.
 Like `whenElse`, only call the `consequent` if the predicate returns
 `false`, and the `alternative` if the predicate returns `true`;
 
-### ap
-
-Apply a function wrapped in a promise to a promisified value.
-
-**Parameters**
-
--   `pf` **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)>** A promise that resolves to a function.
--   `p` **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;Any>** A promise that resolves to a value.
-
-**Examples**
-
-```javascript
-const pf = F.of(v => v + 1);
-const p = F.of(1);
-apply(pf, f).then(console.log); // Returns 2.
-```
-
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;Any>** A promise resolving to x applied to the function
-that f resolves to.
-
 ### retry
 
 Call an action, and retry it in case it fails. An action is retried up to
@@ -465,6 +445,26 @@ retry(fetchUser).then(console.log).catch(console.error);
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** A promise that resolves to the return value of
 `action`, or that is rejected with the last exception that `action` failed
 with.
+
+### ap
+
+Apply a function wrapped in a promise to a promisified value.
+
+**Parameters**
+
+-   `pf` **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)>** A promise that resolves to a function.
+-   `p` **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;Any>** A promise that resolves to a value.
+
+**Examples**
+
+```javascript
+const pf = F.of(v => v + 1);
+const p = F.of(1);
+apply(pf, f).then(console.log); // Returns 2.
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;Any>** A promise resolving to x applied to the function
+that f resolves to.
 
 ### flatmap5
 

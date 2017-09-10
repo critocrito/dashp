@@ -1,7 +1,7 @@
 import {isEqual} from "lodash/fp";
 import sinon from "sinon";
 
-import caught from "../lib/combinators/caught";
+import {caught} from "../lib";
 
 const fixture = Symbol("fixture");
 

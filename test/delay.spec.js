@@ -2,7 +2,7 @@ import {isEqual} from "lodash/fp";
 import timeSpan from "time-span";
 import inRange from "in-range";
 
-import delay from "../lib/combinators/delay";
+import {delay} from "../lib";
 
 const isTrue = isEqual(true);
 const fixture = Symbol("fixture");

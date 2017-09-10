@@ -3,7 +3,7 @@ import {property} from "jsverify";
 import Promise from "bluebird";
 
 import {maybePromisify, add, addP, addMaybeP, isEqualAry} from "./arbitraries";
-import fold from "../lib/combinators/fold";
+import {fold} from "../lib";
 
 describe("The fold combinator", () => {
   property(

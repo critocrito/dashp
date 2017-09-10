@@ -3,7 +3,7 @@ import jsc, {property} from "jsverify";
 import sinon from "sinon";
 
 import {maybePromisify} from "./arbitraries";
-import {when, whenElse, unless, unlessElse} from "../lib/combinators/when";
+import {when, whenElse, unless, unlessElse} from "../lib";
 
 const pred = bool => () => identity(bool);
 const predMaybeP = bool => () => maybePromisify(identity(bool));

@@ -1,7 +1,7 @@
 import {curry as loCurry, every, isEqual} from "lodash/fp";
 import {property} from "jsverify";
 
-import {curry2, curry3, curry4} from "../lib/curryN";
+import {curry2, curry3, curry4} from "../lib/internal/curryN";
 
 describe("The currying of functions", () => {
   property(
