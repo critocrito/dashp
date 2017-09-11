@@ -31,7 +31,14 @@
     "type": "git",
     "url": "https://gitlab.com/critocrito/combinators-p.git"
   },
-  "keywords": [],
+  "keywords": [
+    "async",
+    "promise",
+    "promises",
+    "promises-aplus",
+    "functional",
+    "static-land"
+  ],
   "author": "Christo <christo@cryptodrunks.net>",
   "license": "GPL-3.0",
   "bugs": {
