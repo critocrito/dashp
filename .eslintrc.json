@@ -1,28 +1,6 @@
 {
   "parser": "babel-eslint",
   "extends": [
-    "airbnb-base",
-    "plugin:lodash-fp/recommended",
-    "plugin:promise/recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
-    "prettier"
-  ],
-  "env": {
-    "es6": true,
-    "node": true
-  },
-  "rules": {
-    "no-underscore-dangle": "off",
-    "arrow-parens": "off",
-    "object-curly-spacing": "off",
-    "no-console": "warn",
-    "prettier/prettier": ["error", {"trailingComma": "es5", "bracketSpacing": false}]
-  },
-  "plugins": [
-    "import",
-    "promise",
-    "lodash-fp",
-    "prettier"
+    "@sugarcube/eslint-config-sugarcube"
   ]
 }

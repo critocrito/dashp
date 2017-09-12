@@ -64,7 +64,9 @@ describe("The collect operator", () => {
   it("adheres to the order of inputs", () =>
     jsc.assert(
       jsc.forall(jsc.unit, () => {
-        const xs = Array(20).fill(0).map(() => jsc.random(0, 15));
+        const xs = Array(20)
+          .fill(0)
+          .map(() => jsc.random(0, 15));
         return collect3(x => Promise.resolve(x).delay(x), xs).then(isEqual(xs));
       }),
       {tests: 25}

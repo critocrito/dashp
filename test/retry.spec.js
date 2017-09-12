@@ -8,13 +8,20 @@ const fixture = Symbol("fixture");
 
 describe("The retry operator for Promises", () => {
   it("retries a promise returning function", () => {
-    const mock = sinon.mock().once().returns();
+    const mock = sinon
+      .mock()
+      .once()
+      .returns();
     return retry(mock).then(() => mock.verify().should.equal(true));
   });
 
+  // eslint-disable-next-line func-names
   it("retries a promise 5 times", function() {
     this.timeout(3000);
-    const mock = sinon.mock().exactly(5).rejects("Type Error");
+    const mock = sinon
+      .mock()
+      .exactly(5)
+      .rejects("Type Error");
     return retry(mock).catch(() => mock.verify().should.equal(true));
   });
 
@@ -33,8 +40,16 @@ describe("The retry operator for Promises", () => {
   });
 
   it("can retry functions with arguments", () => {
-    const mock2 = sinon.mock().once().withArgs(fixture).resolves();
-    const mock3 = sinon.mock().once().withArgs(fixture, fixture).resolves();
+    const mock2 = sinon
+      .mock()
+      .once()
+      .withArgs(fixture)
+      .resolves();
+    const mock3 = sinon
+      .mock()
+      .once()
+      .withArgs(fixture, fixture)
+      .resolves();
     const mock4 = sinon
       .mock()
       .once()

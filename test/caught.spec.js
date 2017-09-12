@@ -7,7 +7,10 @@ const fixture = Symbol("fixture");
 
 describe("The caught operator", () => {
   it("calls exception handlers when throwing an error", () => {
-    const mock = sinon.mock().once().resolves(fixture);
+    const mock = sinon
+      .mock()
+      .once()
+      .resolves(fixture);
     const stub = sinon.stub().rejects();
 
     return caught(mock, stub()).then(
