@@ -87,6 +87,19 @@ describe("The type Future", () => {
       f.verify().should.equal(true);
       g.verify().should.equal(true);
     });
+    it("doesn't call the left function if the right one throws", async () => {
+      const a = sinon.stub().resolves();
+      const f = sinon.mock().never();
+      const g = sinon
+        .mock()
+        .once()
+        .rejects();
+      try {
+        await F.bimap(f, g, a());
+      } catch (e) {} // eslint-disable-line no-empty
+      f.verify().should.equal(true);
+      g.verify().should.equal(true);
+    });
   });
 
   describe("is an instance of Applicative", () => {
