@@ -1,5 +1,6 @@
 import {flatten as loFlatten, isEqual} from "lodash/fp";
 import jsc, {property} from "jsverify";
+
 import flatten from "../lib/internal/flatten";
 
 const nest = xs => {

@@ -2,7 +2,7 @@ import {isEqual, startsWith} from "lodash/fp";
 import {property} from "jsverify";
 import Promise from "bluebird";
 
-import {anyArb, add, addP, isEqualAry} from "./arbitraries";
+import {anyArb, plus, plusP, isEqualAry} from "./arbitraries";
 import {fold} from "../lib";
 
 const fixture = Symbol("fixture");
@@ -12,7 +12,7 @@ describe("The fold combinator", () => {
     "produces the same result as a synchronous reduce",
     "array nat",
     "nat",
-    (xs, y) => fold(add, y, xs).then(isEqual(xs.reduce(add, y)))
+    (xs, y) => fold(plus, y, xs).then(isEqual(xs.reduce(plus, y)))
   );
 
   property(
@@ -20,7 +20,7 @@ describe("The fold combinator", () => {
     "array nat",
     "nat",
     (xs, y) =>
-      Promise.all([Promise.reduce(xs, addP, y), fold(addP, y, xs)]).then(
+      Promise.all([Promise.reduce(xs, plusP, y), fold(plusP, y, xs)]).then(
         isEqualAry
       )
   );

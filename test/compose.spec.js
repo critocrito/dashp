@@ -1,14 +1,14 @@
 import {isEqual} from "lodash/fp";
 import {property} from "jsverify";
 
-import {addP, isEqualAry} from "./arbitraries";
+import {plusP, isEqualAry} from "./arbitraries";
 import {Future as F, compose} from "../lib";
 
 describe("The compose combinator", () => {
   property("is always associative", "nat", "nat", "nat", "nat", (w, x, y, z) =>
     Promise.all([
-      compose(addP(w), compose(addP(x), addP(y)), F.of(z)),
-      compose(compose(addP(w), addP(x)), addP(y), F.of(z)),
+      compose(plusP(w), compose(plusP(x), plusP(y)), F.of(z)),
+      compose(compose(plusP(w), plusP(x)), plusP(y), F.of(z)),
     ]).then(isEqualAry)
   );
 
@@ -19,8 +19,8 @@ describe("The compose combinator", () => {
     "nat",
     async (a, b, c) =>
       isEqual(
-        await compose(addP(a), addP(b), c),
-        await compose(addP(a), addP(b), F.of(c))
+        await compose(plusP(a), plusP(b), c),
+        await compose(plusP(a), plusP(b), F.of(c))
       )
   );
 });

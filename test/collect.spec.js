@@ -2,7 +2,7 @@ import {map, every, isEqual, startsWith} from "lodash/fp";
 import jsc, {property} from "jsverify";
 import Promise from "bluebird";
 
-import {anyArb, add, addP} from "./arbitraries";
+import {anyArb, plus, plusP} from "./arbitraries";
 import {collect, collect2, collect3, collect4, collect5} from "../lib";
 
 const isTrue = isEqual(true);
@@ -10,23 +10,23 @@ const fixture = Symbol("fixture");
 
 describe("The collect operator", () => {
   property("equivalency to synchronous map", "array nat", "nat", (xs, y) =>
-    collect(add(y), xs).then(isEqual(map(add(y), xs)))
+    collect(plus(y), xs).then(isEqual(map(plus(y), xs)))
   );
 
   property("equivalency to Bluebird's map", "array nat", "nat", (xs, y) =>
     Promise.all([
-      Promise.map(xs, addP(y)),
-      collect(addP(y), xs),
+      Promise.map(xs, plusP(y)),
+      collect(plusP(y), xs),
     ]).then(([a, b]) => isEqual(a, b))
   );
 
   property("equivalency of concurrent maps", "array nat", "nat", (xs, y) =>
     Promise.all([
-      collect(add(y), xs),
-      collect2(add(y), xs),
-      collect3(add(y), xs),
-      collect4(add(y), xs),
-      collect5(add(y), xs),
+      collect(plus(y), xs),
+      collect2(plus(y), xs),
+      collect3(plus(y), xs),
+      collect4(plus(y), xs),
+      collect5(plus(y), xs),
     ]).then(rs => rs.every(isEqual(rs[0])))
   );
 

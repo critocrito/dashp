@@ -12,11 +12,12 @@ export const maybePromisify = val => {
   }
 };
 
-export const add = curry((x, y) => x + y);
-export const addP = curry((x, y) => Promise.resolve(add(x, y)));
-export const addMaybeP = curry((x, y) => maybePromisify(add(x, y)));
-
+export const plus = curry((x, y) => x + y);
+export const plusP = curry((x, y) => Promise.resolve(plus(x, y)));
+export const plusMaybeP = curry((x, y) => maybePromisify(plus(x, y)));
 export const minus = curry((x, y) => x - y);
+export const minusP = curry((x, y) => Promise.resolve(minus(x, y)));
+export const minusMaybeP = curry((x, y) => maybePromisify(minus(x, y)));
 
 export const anyArb = jsc.oneof([
   jsc.number,
@@ -34,9 +35,11 @@ export const anyArb = jsc.oneof([
 export default {
   isEqualAry,
   maybePromisify,
-  add,
-  addP,
-  addMaybeP,
+  plus,
+  plusP,
+  plusMaybeP,
   minus,
+  minusP,
+  minusMaybeP,
   anyArb,
 };
