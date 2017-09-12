@@ -1,21 +1,14 @@
-import {flow, identity, flatMap, isEqual, startsWith} from "lodash/fp";
+import {identity, flatMap, isEqual, startsWith} from "lodash/fp";
 import Promise from "bluebird";
 import jsc, {property} from "jsverify";
 
-import {anyArb, maybePromisify, isEqualAry} from "./arbitraries";
+import {anyArb, isEqualAry} from "./arbitraries";
 import {flatmap, flatmap2, flatmap3, flatmap4, flatmap5, collect} from "../lib";
 
 const fixture = Symbol("fixture");
 const duplicate = n => [n, n];
-const duplicateMaybeP = flow([duplicate, maybePromisify]);
 
 describe("The flatmap operator", () => {
-  property("non promisified and promisified arguments", "array nat", xs =>
-    flatmap(duplicateMaybeP, maybePromisify(xs)).then(ys =>
-      isEqual(ys.length, xs.length * 2)
-    )
-  );
-
   property("equivalency to synchronous flatmap", "array nat", xs =>
     flatmap(duplicate, xs).then(isEqual(flatMap(duplicate, xs)))
   );

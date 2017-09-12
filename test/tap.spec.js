@@ -1,7 +1,7 @@
 import {isEqual, startsWith} from "lodash/fp";
 import {assertForall, property} from "jsverify";
 
-import {anyArb, maybePromisify} from "./arbitraries";
+import {anyArb} from "./arbitraries";
 import {tap} from "../lib";
 
 const fixture = Symbol("fixture");
@@ -12,11 +12,6 @@ describe("The tap combinator", () => {
 
   it("returns the original value", () =>
     assertForall(anyArb, x => tap(f, x).then(isEqual(x))));
-
-  it("accepts non promisified and promisified values", () =>
-    assertForall(anyArb, x =>
-      tap(maybePromisify(f), maybePromisify(x)).then(isEqual(x))
-    ));
 
   property("validates that the mapper is a function", anyArb, async g => {
     try {

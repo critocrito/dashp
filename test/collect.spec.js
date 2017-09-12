@@ -2,23 +2,13 @@ import {map, every, isEqual, startsWith} from "lodash/fp";
 import jsc, {property} from "jsverify";
 import Promise from "bluebird";
 
-import {anyArb, maybePromisify, add, addP, addMaybeP} from "./arbitraries";
+import {anyArb, add, addP} from "./arbitraries";
 import {collect, collect2, collect3, collect4, collect5} from "../lib";
 
 const isTrue = isEqual(true);
 const fixture = Symbol("fixture");
 
 describe("The collect operator", () => {
-  property(
-    "non promisified and promisified arguments",
-    "array nat",
-    "nat",
-    (xs, y) =>
-      collect(addMaybeP(y), maybePromisify(xs)).then(zs =>
-        isEqual(xs.length, zs.length)
-      )
-  );
-
   property("equivalency to synchronous map", "array nat", "nat", (xs, y) =>
     collect(add(y), xs).then(isEqual(map(add(y), xs)))
   );

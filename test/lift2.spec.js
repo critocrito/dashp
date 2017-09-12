@@ -1,21 +1,11 @@
 import {isEqual} from "lodash/fp";
 import {property} from "jsverify";
 
-import {maybePromisify, addP} from "./arbitraries";
-import {lift2} from "../lib";
+import {add} from "./arbitraries";
+import {Future as F, lift2} from "../lib";
 
 describe("The lift2 operator", () => {
   property("lifts two arguments", "nat", "nat", (x, y) =>
-    lift2(addP, x, y).then(isEqual(x + y))
-  );
-
-  property(
-    "accepts non promisified and promisified arguments",
-    "nat",
-    "nat",
-    (x, y) =>
-      lift2(maybePromisify(addP), maybePromisify(x), maybePromisify(y)).then(
-        isEqual(x + y)
-      )
+    lift2(add, F.of(x), F.of(y)).then(isEqual(x + y))
   );
 });

@@ -39,14 +39,14 @@ It also implements [Static Land](https://github.com/rpominov/static-land)
   - [of](#of)
   - [all](#all)
   - [caught](#caught)
+  - [lift2](#lift2)
   - [tap](#tap)
   - [spread](#spread)
-  - [lift2](#lift2)
+  - [fold](#fold)
   - [flow](#flow)
   - [flatmap](#flatmap)
-  - [fold](#fold)
-  - [whenElse](#whenelse)
   - [compose](#compose)
+  - [whenElse](#whenelse)
   - [map](#map)
   - [flatmap2](#flatmap2)
   - [flatmap3](#flatmap3)
@@ -55,12 +55,12 @@ It also implements [Static Land](https://github.com/rpominov/static-land)
   - [flatmap4](#flatmap4)
   - [ap](#ap)
   - [flatmap5](#flatmap5)
-  - [retry2](#retry2)
   - [when](#when)
+  - [retry2](#retry2)
   - [retry3](#retry3)
+  - [unless](#unless)
   - [chain](#chain)
   - [retry4](#retry4)
-  - [unless](#unless)
   - [collect](#collect)
   - [collect2](#collect2)
   - [collect3](#collect3)
@@ -132,6 +132,8 @@ resolves to.
 
 Lift a value into a promise. This is equivalent to `Promise.resolve`.
 
+`of :: b -> Future a b`
+
 **Parameters**
 
 -   `x` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any> | any)** The value to lift into a promise. This can
@@ -190,6 +192,31 @@ caught(console.error, f()); // Prints the exception.
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** A promise that resolves either to the value of `p`
 or to the return value of `f`.
 
+### lift2
+
+Lift a binary function over two promises.
+
+`lift2 :: Functor f => (a -> b -> c) -> f a -> f b -> f c`
+
+**Parameters**
+
+-   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any, any>** A binary function that can either return a value
+    or a promise for a value.
+-   `x` **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** A value that gets lifted as the first argument
+    of `f`. This is a promise that resolves to a value.
+-   `y` **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** A value that gets lifted as the first argument
+    of `f`. This is a promise that resolves to a value.
+
+**Examples**
+
+```javascript
+const f = (x, y) => x + y;
+lift2(f, of(a), of(b)).then(console.log); // Returns 3.
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value that f returns when applied to `x` and
+`y`.
+
 ### tap
 
 Run a function for side effect and return the original value. The original
@@ -197,9 +224,9 @@ value gets cloned and therefore can be modified in the tap handler.
 
 **Parameters**
 
--   `f` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)> | [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function))** The function for side effect. The
-    return value of this function will be ignored.
--   `x` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any> | any)** The value to use for side effect. This can
+-   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>** The function to call on `p`. This function is for
+    meant for side effects, if it returns a value, it will be ignored.
+-   `p` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any> | any)** The value to use for side effect. This can
     either be a value or a promise that resolves to a value.
 
 **Examples**
@@ -209,7 +236,7 @@ const f = a => of(a);
 flow([f, tap(console.log)])(23); // Print "23" to the console.
 ```
 
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** Returns `x`.
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** Returns `p`.
 
 ### spread
 
@@ -219,12 +246,11 @@ fulfillment handler.
 
 **Parameters**
 
--   `f` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)> | [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>)** The function to apply to the
-    value of p. This function can either return a value or the promise for a
-    value. This function can also be a promise that resolves to a function.
--   `p` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any> | any)** The promise that resolves to the arguments for
-    the function. This can either be a single value, an Array or a promise
-    resolving to any of those.
+-   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>** The function to apply to the value of p. This
+    function can either return a value or the promise for a value.
+-   `p` **any** The promise that resolves to the arguments for the
+    function. The promise can either resolve to a single value or an array of
+    values.
 
 **Examples**
 
@@ -236,31 +262,27 @@ spread(add, p).then(console.log); // Prints 3
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The result of applying the value of `p` to `f`.
 
-### lift2
+### fold
 
-Lift a binary function over two promises.
+Reduce a list of values to a single value, using a reduction function. This
+is equivalent to `Array.reduce`.
 
 **Parameters**
 
--   `f` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)> | [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any, any>)** A binary function. This
-    can either be a function, or a promise that resolves to a function. The
-    function can either return a value, or a promise that resolves to a value.
--   `x` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any> | any)** A value that gets lifted as the first argument
-    of `f`. This can either be a value, or a promise that resolves to a value.
--   `y` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any> | any)** A value that gets lifted as the first argument
-    of `f`. This can either be a value, or a promise that resolves to a value.
+-   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>** The function to reduce over the list. This function
+    takes an accumulator, a value and returns a promise for a value.
+-   `acc` **any** The initial value to apply to the first call of `f`.
+-   `xs` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** The list to reduce to a single value.
 
 **Examples**
 
 ```javascript
-const f = (x, y) => F.of(x = y);
-const a = of(1);
-const b = of(2);
-lift2(f, a, b).then(console.log); // Returns 3.
+const f = (acc, x) => of(acc + x);
+const xs = [...Array(5).keys()];
+fold(f, 0, xs).then(console.log); // The sum of [0, 1, 2, 3, 4], returns 10;
 ```
 
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value that f returns when applied to `x` and
-`y`.
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value of `xs` reduced over `f`.
 
 ### flow
 
@@ -311,31 +333,35 @@ flatmap(f, xs).then(console.log); // Prints [1, 1, 2, 2];
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)>** The concatenation of applying every element of
 `xs` to `f`.
 
-### fold
+### compose
 
-Reduce a list of values to a single value, using a reduction function. This
-is equivalent to `Array.reduce`.
+Compose two function that return promises to yield a third function that
+returns a promise. The resulting composite function is denoted
+`g∘f : X → Z`, defined by `(g∘f)(x) = g(f(x))` for all `x` in `X`.
+
+`compose :: Functor f => (a -> f b) -> (b -> f c) -> f a -> f c`
 
 **Parameters**
 
--   `f` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)> | [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>)** The reduce function to map
-    over the list. `f` can either be a function, or a promise that resolves to
-    a promise. This function can either return a value or the promise for a
-    value.
--   `acc` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any> | any)** The initial value to apply to the first call
-    of `f`. It can either be any value or the promise for any value.
--   `xs` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)> | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>)** The list to reduce to a single
-    value. This can either be an array, or the promise for an array.
+-   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** The function that get's called first when composing. It
+    takes a value as an argument and returns a promise for a value.
+-   `g` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** The function that get's called second when composing.
+    It takes a value as an argument and returns a promise for a value.
+-   `x` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any> | any)** The argument to call `(g∘f)` with. It can either be
+    any value, or the promise for any value.
 
 **Examples**
 
 ```javascript
-const f = (acc, x) => of(acc + x);
-const xs = [...Array(5).keys()];
-fold(f, 0, xs).then(console.log); // The sum of [0, 1, 2, 3, 4], returns 10;
+const f = x => of(x + 1);
+const g = x => of(x + 5);
+const h = compose(f, g);
+h(10).then(console.log); // 10 + 1 + 5, returns 16.
+h(of(10)).then(console.log); // 10 + 1 + 5, returns 16.
 ```
 
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value of `xs` reduced over `f`.
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The result of calling `g` with the result of
+`f(x)`.
 
 ### whenElse
 
@@ -343,12 +369,14 @@ Make a conditional test and either call the left or the right branch.
 
 **Parameters**
 
--   `predicate` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** Test if a condition is `true` or `false`.
--   `consequent` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** Apply `value` to this function if the
-    predicate return `true`;
--   `alternative` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** Apply `value` to this function if the
-    predicate return `false`;
--   `value` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) | any)** Test this value to decide whether to call the
+-   `predicate` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** Test if a condition is `true` or `false`. This
+    predicate can either return a boolean value, or a promise that resolves to
+    a boolean value.
+-   `consequent` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** Apply `p` to this function if the
+    predicate returns `true`;
+-   `alternative` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** Apply `p` to this function if the
+    predicate returns `false`;
+-   `p` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) | any)** Test this value to decide whether to call the
     consequent or the alternative.
 
 **Examples**
@@ -362,50 +390,18 @@ whenElse(userExists, updateUser, createUser, user);
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** A promise that resolves to a value, that is the
 result of either calling the `consequent` or the `alternative` with
-`value`.
-
-### compose
-
-Compose two function that return promises to yield a third function that
-returns a promise. The resulting composite function is denoted
-`g∘f : X → Z`, defined by `(g∘f)(x) = g(f(x))` for all `x` in `X`.
-
-**Parameters**
-
--   `f` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)> | [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function))** The first function to
-    compose. This argument can either be a function, or a promise that resolves
-    to a function. The function can either return a value or a promise for a
-    value.
--   `g` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)> | [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function))** The second function to
-    compose. This argument can either be a function, or a promise that resolves
-    to a function. The function can either return a value or a promise for a
-    value.
--   `x` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) | any)** The argument to call `(g∘f)` with. It can either be
-    any value, or the promise for any value.
-
-**Examples**
-
-```javascript
-const f = x => of(x + 1);
-const g = x => of(x + 5);
-const h = compose(f, g);
-h(10).then(console.log); // 10 + 1 + 5, returns 16.
-```
-
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The result of calling `g` with the result of
-`f(x)`.
+`p`.
 
 ### map
 
 Map a function over a promise.
 
-`map :: Functor m => (a -> b) -> m a -> m b`
+`map :: Functor f => (a -> b) -> f a -> f b`
 
 **Parameters**
 
--   `f` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)> | [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>)** The function to apply. `f` can
-    either be a function, or a promise that resolves to a promise. The function
-    can either return a value, or a promise that resolves to a promise.
+-   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>** The function to apply. `f` is a function that
+    takes a single argument and returns a value.
 -   `x` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any> | any)** The value to apply to `f`. This can either be a
     value, or a promise that resolves to a value.
 
@@ -453,6 +449,8 @@ The same as `flatmap`, but run four promises concurrently.
 
 Apply a function wrapped in a promise to a promisified value.
 
+`ap :: Applicative f => f (a -> b) -> f a -> f b`
+
 **Parameters**
 
 -   `pf` **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)>** A promise that resolves to a function.
@@ -472,6 +470,11 @@ that f resolves to.
 ### flatmap5
 
 The same as `flatmap`, but run five promises concurrently.
+
+### when
+
+Like `whenElse`, but have no alternative. If the predicate returns `false`,
+simply return the `p`.
 
 ### retry2
 
@@ -495,14 +498,14 @@ Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 `action`, or that is rejected with the last exception that `action` failed
 with.
 
-### when
-
-Like `whenElse`, but have no alternative. If the predicate returns `false`,
-simply return the `value`.
-
 ### retry3
 
 Like `retry2`, but accept two arguments to apply to `action`.
+
+### unless
+
+Like `unlessElse`, but have no alternative. If the predicate returns `true`,
+simply return the `p`.
 
 ### chain
 
@@ -530,11 +533,6 @@ to `f`.
 ### retry4
 
 Like `retry2`, but accept three arguments to apply to `action`.
-
-### unless
-
-Like `unlessElse`, but have no alternative. If the predicate returns `true`,
-simply return the `value`.
 
 ### collect
 

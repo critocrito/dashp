@@ -1,32 +1,13 @@
-import {sum, isEqual, startsWith} from "lodash/fp";
+import {isEqual, startsWith} from "lodash/fp";
 import {property} from "jsverify";
 import Promise from "bluebird";
 
-import {
-  anyArb,
-  maybePromisify,
-  add,
-  addP,
-  addMaybeP,
-  isEqualAry,
-} from "./arbitraries";
+import {anyArb, add, addP, isEqualAry} from "./arbitraries";
 import {fold} from "../lib";
 
 const fixture = Symbol("fixture");
 
 describe("The fold combinator", () => {
-  property(
-    "accepts non promisified and promisified arguments",
-    "array nat",
-    "nat",
-    (xs, y) =>
-      fold(
-        maybePromisify(addMaybeP),
-        maybePromisify(y),
-        maybePromisify(xs)
-      ).then(isEqual(sum(xs) + y))
-  );
-
   property(
     "produces the same result as a synchronous reduce",
     "array nat",

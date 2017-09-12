@@ -1,7 +1,7 @@
 import {map, reduce, identity, sum, isEqual} from "lodash/fp";
 import {property} from "jsverify";
 
-import {maybePromisify, addP, addMaybeP, isEqualAry} from "./arbitraries";
+import {addP, isEqualAry} from "./arbitraries";
 import {flow, compose} from "../lib";
 
 describe("The flow combinator", () => {
@@ -9,18 +9,6 @@ describe("The flow combinator", () => {
     const fs = map(addP, xs);
     return flow(fs, y).then(isEqual(sum(xs) + y));
   });
-
-  property(
-    "it accepts non promisified and promisified arguments",
-    "array nat",
-    "nat",
-    (xs, y) => {
-      const fs = map(addMaybeP, xs);
-      return flow(maybePromisify(fs), maybePromisify(y)).then(
-        isEqual(sum(xs) + y)
-      );
-    }
-  );
 
   property(
     "is equivalent to composing compositions of functions",
