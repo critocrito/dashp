@@ -1,8 +1,8 @@
-import {identity, isEqual} from "lodash/fp";
+import {identity, isEqual, startsWith} from "lodash/fp";
 import jsc, {property} from "jsverify";
 import sinon from "sinon";
 
-import {maybePromisify} from "./arbitraries";
+import {anyArb, maybePromisify} from "./arbitraries";
 import {when, whenElse, unless, unlessElse} from "../lib";
 
 const pred = bool => () => identity(bool);
@@ -112,6 +112,72 @@ describe("The conditional operators", () => {
         maybePromisify(stubA),
         maybePromisify(fixture)
       ).then(isEqual(unlessElseTable[x]));
+    }
+  );
+
+  property(
+    "validates that the arguments of whenElse are functions",
+    anyArb,
+    async f => {
+      const args = [sinon.stub(), sinon.stub(), sinon.stub()];
+      args[jsc.random(0, 2)] = f;
+      try {
+        await whenElse(...args.concat(fixture));
+      } catch (e) {
+        return (
+          e instanceof TypeError && startsWith("Future#whenElse ", e.message)
+        );
+      }
+      return false;
+    }
+  );
+
+  property(
+    "validates that the arguments of unlessElse are functions",
+    anyArb,
+    async f => {
+      const args = [sinon.stub(), sinon.stub(), sinon.stub()];
+      args[jsc.random(0, 2)] = f;
+      try {
+        await unlessElse(...args.concat(fixture));
+      } catch (e) {
+        return (
+          e instanceof TypeError && startsWith("Future#unlessElse ", e.message)
+        );
+      }
+      return false;
+    }
+  );
+
+  property(
+    "validates that the arguments of when are functions",
+    anyArb,
+    async f => {
+      const args = [sinon.stub(), sinon.stub()];
+      args[jsc.random(0, 1)] = f;
+      try {
+        await when(...args.concat(fixture));
+      } catch (e) {
+        return e instanceof TypeError && startsWith("Future#when ", e.message);
+      }
+      return false;
+    }
+  );
+
+  property(
+    "validates that the arguments of unless are functions",
+    anyArb,
+    async f => {
+      const args = [sinon.stub(), sinon.stub()];
+      args[jsc.random(0, 1)] = f;
+      try {
+        await unless(...args.concat(fixture));
+      } catch (e) {
+        return (
+          e instanceof TypeError && startsWith("Future#unless ", e.message)
+        );
+      }
+      return false;
     }
   );
 });

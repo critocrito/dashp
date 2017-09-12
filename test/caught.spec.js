@@ -1,7 +1,9 @@
-import {isEqual} from "lodash/fp";
+import {isEqual, startsWith} from "lodash/fp";
+import {property} from "jsverify";
 import sinon from "sinon";
 
 import {caught} from "../lib";
+import {anyArb} from "./arbitraries";
 
 const fixture = Symbol("fixture");
 
@@ -25,5 +27,14 @@ describe("The caught operator", () => {
     return caught(mock, stub()).then(
       x => isEqual(x, fixture) && mock.verify().should.equal(true)
     );
+  });
+
+  property("validates that the mapper is a function", anyArb, f => {
+    try {
+      caught(f, fixture);
+    } catch (e) {
+      return e instanceof TypeError && startsWith("Future#caught", e.message);
+    }
+    return false;
   });
 });

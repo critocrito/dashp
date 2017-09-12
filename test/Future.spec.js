@@ -1,8 +1,10 @@
-import {isEqual} from "lodash/fp";
+import {isEqual, startsWith} from "lodash/fp";
 import {property} from "jsverify";
 
 import {addP, anyArb} from "./arbitraries";
 import {Future as F, compose as comp} from "../lib";
+
+const fixture = Symbol("fixture");
 
 describe("The type Future", () => {
   // https://github.com/rpominov/static-land/blob/master/docs/spec.md#functor
@@ -13,6 +15,14 @@ describe("The type Future", () => {
       const g = addP(c);
 
       return isEqual(await F.map(comp(f, g), a), await F.map(f, F.map(g, a)));
+    });
+    property("validates that the mapper is a function", anyArb, async f => {
+      try {
+        await F.map(f, fixture);
+      } catch (e) {
+        return e instanceof TypeError && startsWith("Future#map", e.message);
+      }
+      return false;
     });
   });
 

@@ -1,9 +1,18 @@
-import {sum, isEqual} from "lodash/fp";
+import {sum, isEqual, startsWith} from "lodash/fp";
 import {property} from "jsverify";
 import Promise from "bluebird";
 
-import {maybePromisify, add, addP, addMaybeP, isEqualAry} from "./arbitraries";
+import {
+  anyArb,
+  maybePromisify,
+  add,
+  addP,
+  addMaybeP,
+  isEqualAry,
+} from "./arbitraries";
 import {fold} from "../lib";
+
+const fixture = Symbol("fixture");
 
 describe("The fold combinator", () => {
   property(
@@ -34,4 +43,13 @@ describe("The fold combinator", () => {
         isEqualAry
       )
   );
+
+  property("validates that the mapper is a function", anyArb, async f => {
+    try {
+      await fold(f, fixture, [fixture]);
+    } catch (e) {
+      return e instanceof TypeError && startsWith("Future#fold", e.message);
+    }
+    return false;
+  });
 });

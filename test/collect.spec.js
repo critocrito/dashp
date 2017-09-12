@@ -1,11 +1,12 @@
-import {map, every, isEqual} from "lodash/fp";
+import {map, every, isEqual, startsWith} from "lodash/fp";
 import jsc, {property} from "jsverify";
 import Promise from "bluebird";
 
-import {maybePromisify, add, addP, addMaybeP} from "./arbitraries";
+import {anyArb, maybePromisify, add, addP, addMaybeP} from "./arbitraries";
 import {collect, collect2, collect3, collect4, collect5} from "../lib";
 
 const isTrue = isEqual(true);
+const fixture = Symbol("fixture");
 
 describe("The collect operator", () => {
   property(
@@ -71,4 +72,48 @@ describe("The collect operator", () => {
       }),
       {tests: 25}
     ));
+
+  property("validates that the mapper is a function", anyArb, async f => {
+    try {
+      await collect(f, [fixture]);
+    } catch (e) {
+      return e instanceof TypeError && startsWith("Future#collect", e.message);
+    }
+    return false;
+  });
+
+  property(
+    "contains the correct function name when mapper is not a function",
+    "unit",
+    async () => {
+      let funcName;
+      try {
+        switch (jsc.random(1, 5)) {
+          case 2:
+            funcName = "collect2";
+            await collect2(fixture, [fixture]);
+            break;
+          case 3:
+            funcName = "collect3";
+            await collect3(fixture, [fixture]);
+            break;
+          case 4:
+            funcName = "collect4";
+            await collect4(fixture, [fixture]);
+            break;
+          case 5:
+            funcName = "collect5";
+            await collect5(fixture, [fixture]);
+            break;
+          default:
+            funcName = "collect";
+            await collect(fixture, [fixture]);
+            break;
+        }
+      } catch (e) {
+        return startsWith(`Future#${funcName} `, e.message);
+      }
+      return false;
+    }
+  );
 });

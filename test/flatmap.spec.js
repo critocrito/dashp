@@ -1,10 +1,11 @@
-import {flow, identity, flatMap, isEqual} from "lodash/fp";
+import {flow, identity, flatMap, isEqual, startsWith} from "lodash/fp";
 import Promise from "bluebird";
-import {property} from "jsverify";
+import jsc, {property} from "jsverify";
 
-import {maybePromisify, isEqualAry} from "./arbitraries";
+import {anyArb, maybePromisify, isEqualAry} from "./arbitraries";
 import {flatmap, flatmap2, flatmap3, flatmap4, flatmap5, collect} from "../lib";
 
+const fixture = Symbol("fixture");
 const duplicate = n => [n, n];
 const duplicateMaybeP = flow([duplicate, maybePromisify]);
 
@@ -31,5 +32,49 @@ describe("The flatmap operator", () => {
 
   property("equivalency to collect", "array nat", xs =>
     Promise.all([collect(identity, xs), flatmap(identity, xs)]).then(isEqualAry)
+  );
+
+  property("validates that the mapper is a function", anyArb, async f => {
+    try {
+      await flatmap(f, [fixture]);
+    } catch (e) {
+      return e instanceof TypeError && startsWith("Future#flatmap", e.message);
+    }
+    return false;
+  });
+
+  property(
+    "contains the correct function name when mapper is not a function",
+    "unit",
+    async () => {
+      let funcName;
+      try {
+        switch (jsc.random(1, 5)) {
+          case 2:
+            funcName = "flatmap2";
+            await flatmap2(fixture, [fixture]);
+            break;
+          case 3:
+            funcName = "flatmap3";
+            await flatmap3(fixture, [fixture]);
+            break;
+          case 4:
+            funcName = "flatmap4";
+            await flatmap4(fixture, [fixture]);
+            break;
+          case 5:
+            funcName = "flatmap5";
+            await flatmap5(fixture, [fixture]);
+            break;
+          default:
+            funcName = "flatmap";
+            await flatmap(fixture, [fixture]);
+            break;
+        }
+      } catch (e) {
+        return startsWith(`Future#${funcName} `, e.message);
+      }
+      return false;
+    }
   );
 });

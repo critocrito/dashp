@@ -1,8 +1,10 @@
-import {isEqual} from "lodash/fp";
-import {assertForall} from "jsverify";
+import {isEqual, startsWith} from "lodash/fp";
+import {assertForall, property} from "jsverify";
 
 import {anyArb, maybePromisify} from "./arbitraries";
 import {tap} from "../lib";
+
+const fixture = Symbol("fixture");
 
 describe("The tap combinator", () => {
   // eslint-disable-next-line no-return-assign, no-unused-vars, no-param-reassign
@@ -15,4 +17,13 @@ describe("The tap combinator", () => {
     assertForall(anyArb, x =>
       tap(maybePromisify(f), maybePromisify(x)).then(isEqual(x))
     ));
+
+  property("validates that the mapper is a function", anyArb, async g => {
+    try {
+      await tap(g, fixture);
+    } catch (e) {
+      return e instanceof TypeError && startsWith("Future#tap", e.message);
+    }
+    return false;
+  });
 });
