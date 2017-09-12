@@ -1,7 +1,8 @@
 import {isEqual, startsWith} from "lodash/fp";
 import {property} from "jsverify";
+import sinon from "sinon";
 
-import {addP, anyArb} from "./arbitraries";
+import {minus, add, addP, anyArb} from "./arbitraries";
 import {Future as F, compose as comp} from "../lib";
 
 const fixture = Symbol("fixture");
@@ -23,6 +24,68 @@ describe("The type Future", () => {
         return e instanceof TypeError && startsWith("Future#map", e.message);
       }
       return false;
+    });
+  });
+
+  // https://github.com/rpominov/static-land/blob/master/docs/spec.md#bifunctor
+  describe("is an instance of Bifunctor", () => {
+    property("identity", anyArb, async a =>
+      isEqual(await F.bimap(x => x, x => x, F.of(a)), await F.of(a))
+    );
+    property(
+      "composition",
+      "nat",
+      "nat",
+      "nat",
+      "nat",
+      "nat",
+      async (a, b, c, d, e) => {
+        const f = add(b);
+        const g = minus(c);
+        const h = add(d);
+        const i = minus(e);
+
+        return isEqual(
+          await F.bimap(x => f(g(x)), x => h(i(x)), F.of(a)),
+          await F.bimap(f, h, F.bimap(g, i, F.of(a)))
+        );
+      }
+    );
+    property("deriving Functors map", "nat", "nat", async (a, b) => {
+      const f = add(b);
+      return isEqual(
+        await F.bimap(x => x, f, F.of(a)),
+        await F.map(f, F.of(a))
+      );
+    });
+    it("maps the left function over the rejection value", async () => {
+      const a = sinon.stub().rejects();
+      const f = sinon.mock().once();
+      const g = sinon.mock().never();
+      await F.bimap(f, g, a());
+      f.verify().should.equal(true);
+      g.verify().should.equal(true);
+    });
+    it("maps the right function over the resolution value", async () => {
+      const a = sinon.stub().resolves(fixture);
+      const f = sinon.mock().never();
+      const g = sinon.mock().once();
+      await F.bimap(f, g, a());
+      f.verify().should.equal(true);
+      g.verify().should.equal(true);
+    });
+    it("doesn't call the right function if the left one throws", async () => {
+      const a = sinon.stub().rejects();
+      const f = sinon
+        .mock()
+        .once()
+        .rejects();
+      const g = sinon.mock().never();
+      try {
+        await F.bimap(f, g, a());
+      } catch (e) {} // eslint-disable-line no-empty
+      f.verify().should.equal(true);
+      g.verify().should.equal(true);
     });
   });
 

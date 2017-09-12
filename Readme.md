@@ -24,7 +24,13 @@ Program with promises in a functional style.
 
 `combinators-p` is [compatible with Promises/A+ and ES6 Promises](promises).
 It also implements [Static Land](https://github.com/rpominov/static-land)
-`Functor`, `Apply` and `Applicative`.
+[`Functor`](https://github.com/rpominov/static-land/blob/master/docs/spec.md#functor),
+[`Bifunctor`](https://github.com/rpominov/static-land/blob/master/docs/spec.md#bifunctor),
+[`Apply`](https://github.com/rpominov/static-land/blob/master/docs/spec.md#apply),
+[`Applicative`](https://github.com/rpominov/static-land/blob/master/docs/spec.md#applicative),
+[`Chain`](https://github.com/rpominov/static-land/blob/master/docs/spec.md#chain)
+and
+[`Monad`](https://github.com/rpominov/static-land/blob/master/docs/spec.md#monad).
 
 ## Contents
 
@@ -40,9 +46,9 @@ It also implements [Static Land](https://github.com/rpominov/static-land)
   - [all](#all)
   - [caught](#caught)
   - [lift2](#lift2)
+  - [fold](#fold)
   - [tap](#tap)
   - [spread](#spread)
-  - [fold](#fold)
   - [flow](#flow)
   - [flatmap](#flatmap)
   - [compose](#compose)
@@ -53,19 +59,20 @@ It also implements [Static Land](https://github.com/rpominov/static-land)
   - [retry](#retry)
   - [unlessElse](#unlesselse)
   - [flatmap4](#flatmap4)
-  - [ap](#ap)
-  - [flatmap5](#flatmap5)
+  - [bimap](#bimap)
   - [when](#when)
+  - [flatmap5](#flatmap5)
   - [retry2](#retry2)
   - [retry3](#retry3)
   - [unless](#unless)
-  - [chain](#chain)
-  - [retry4](#retry4)
   - [collect](#collect)
+  - [retry4](#retry4)
   - [collect2](#collect2)
+  - [ap](#ap)
   - [collect3](#collect3)
   - [collect4](#collect4)
   - [collect5](#collect5)
+  - [chain](#chain)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -217,6 +224,28 @@ lift2(f, of(a), of(b)).then(console.log); // Returns 3.
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value that f returns when applied to `x` and
 `y`.
 
+### fold
+
+Reduce a list of values to a single value, using a reduction function. This
+is equivalent to `Array.reduce`.
+
+**Parameters**
+
+-   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>** The function to reduce over the list. This function
+    takes an accumulator, a value and returns a promise for a value.
+-   `acc` **any** The initial value to apply to the first call of `f`.
+-   `xs` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** The list to reduce to a single value.
+
+**Examples**
+
+```javascript
+const f = (acc, x) => of(acc + x);
+const xs = [...Array(5).keys()];
+fold(f, 0, xs).then(console.log); // The sum of [0, 1, 2, 3, 4], returns 10;
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value of `xs` reduced over `f`.
+
 ### tap
 
 Run a function for side effect and return the original value. The original
@@ -261,28 +290,6 @@ spread(add, p).then(console.log); // Prints 3
 ```
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The result of applying the value of `p` to `f`.
-
-### fold
-
-Reduce a list of values to a single value, using a reduction function. This
-is equivalent to `Array.reduce`.
-
-**Parameters**
-
--   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>** The function to reduce over the list. This function
-    takes an accumulator, a value and returns a promise for a value.
--   `acc` **any** The initial value to apply to the first call of `f`.
--   `xs` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** The list to reduce to a single value.
-
-**Examples**
-
-```javascript
-const f = (acc, x) => of(acc + x);
-const xs = [...Array(5).keys()];
-fold(f, 0, xs).then(console.log); // The sum of [0, 1, 2, 3, 4], returns 10;
-```
-
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value of `xs` reduced over `f`.
 
 ### flow
 
@@ -445,36 +452,34 @@ Like `whenElse`, only call the `consequent` if the predicate returns
 
 The same as `flatmap`, but run four promises concurrently.
 
-### ap
+### bimap
 
-Apply a function wrapped in a promise to a promisified value.
+Map the left function over the rejection value, and the right function over
+the success value of a promise.
 
-`ap :: Applicative f => f (a -> b) -> f a -> f b`
+`bimap :: Bifunctor f => (a -> c) -> (b -> d) -> f a b -> f c d`
 
 **Parameters**
 
--   `pf` **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)>** A promise that resolves to a function.
--   `p` **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;Any>** A promise that resolves to a value.
+-   `left` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>** The function to map over the rejection value of
+    `p`.
+-   `right` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>** The function to map over the success value of
+    `p`.
+-   `p` **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The promise to evaluate. If it throws, call the
+    `left` function with the reason, otherwise call the `right` function with
+    it's evaluation value.
 
-**Examples**
-
-```javascript
-const pf = F.of(v => v + 1);
-const p = F.of(1);
-apply(pf, f).then(console.log); // Returns 2.
-```
-
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;Any>** A promise resolving to x applied to the function
-that f resolves to.
-
-### flatmap5
-
-The same as `flatmap`, but run five promises concurrently.
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** A promise that evaluates either to the result of
+calling left or calling right.
 
 ### when
 
 Like `whenElse`, but have no alternative. If the predicate returns `false`,
 simply return the `p`.
+
+### flatmap5
+
+The same as `flatmap`, but run five promises concurrently.
 
 ### retry2
 
@@ -507,33 +512,6 @@ Like `retry2`, but accept two arguments to apply to `action`.
 Like `unlessElse`, but have no alternative. If the predicate returns `true`,
 simply return the `p`.
 
-### chain
-
-Create a new promise based on the resolution value. This is equivalent to
-`promise.then(f)`.
-
-`chain :: Chain m => (a -> m b) -> m a -> m b`
-
-**Parameters**
-
--   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)>** The function to chain. It returns a promise that
-    resolves to a value.
--   `x` **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value to apply to `f`.
-
-**Examples**
-
-```javascript
-const f = x => of(x + 1);
-chain(f, of(0)); // Resolves to 1
-```
-
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** A promise that resolves to the result of `x` applied
-to `f`.
-
-### retry4
-
-Like `retry2`, but accept three arguments to apply to `action`.
-
 ### collect
 
 Map a function over every element of a list. This is equivalent to
@@ -557,9 +535,35 @@ collect(f, xs).then(console.log); // Prints [1, 2, 3, 4, 5]
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)>** A list of the same length as `xs`, but with `f`
 applied to each of its elements.
 
+### retry4
+
+Like `retry2`, but accept three arguments to apply to `action`.
+
 ### collect2
 
 The same as `collect`, but run two promises concurrently.
+
+### ap
+
+Apply a function wrapped in a promise to a promisified value.
+
+`ap :: Applicative f => f (a -> b) -> f a -> f b`
+
+**Parameters**
+
+-   `pf` **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)>** A promise that resolves to a function.
+-   `p` **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;Any>** A promise that resolves to a value.
+
+**Examples**
+
+```javascript
+const pf = F.of(v => v + 1);
+const p = F.of(1);
+apply(pf, f).then(console.log); // Returns 2.
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;Any>** A promise resolving to x applied to the function
+that f resolves to.
 
 ### collect3
 
@@ -572,3 +576,26 @@ The same as `collect`, but run four promises concurrently.
 ### collect5
 
 The same as `collect`, but run five promises concurrently.
+
+### chain
+
+Create a new promise based on the resolution value. This is equivalent to
+`promise.then(f)`.
+
+`chain :: Chain m => (a -> m b) -> m a -> m b`
+
+**Parameters**
+
+-   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)>** The function to chain. It returns a promise that
+    resolves to a value.
+-   `x` **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value to apply to `f`.
+
+**Examples**
+
+```javascript
+const f = x => of(x + 1);
+chain(f, of(0)); // Resolves to 1
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** A promise that resolves to the result of `x` applied
+to `f`.

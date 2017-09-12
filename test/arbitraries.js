@@ -16,6 +16,8 @@ export const add = curry((x, y) => x + y);
 export const addP = curry((x, y) => Promise.resolve(add(x, y)));
 export const addMaybeP = curry((x, y) => maybePromisify(add(x, y)));
 
+export const minus = curry((x, y) => x - y);
+
 export const anyArb = jsc.oneof([
   jsc.number,
   jsc.char,
@@ -35,5 +37,6 @@ export default {
   add,
   addP,
   addMaybeP,
+  minus,
   anyArb,
 };
