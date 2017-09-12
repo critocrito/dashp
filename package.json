@@ -1,7 +1,7 @@
 {
   "name": "combinators-p",
   "version": "0.3.0",
-  "description": "A collection of combinators for promisified JavaScript code.",
+  "description": "Functions for monadic promises.",
   "main": "_dist/combinators-p.js",
   "browser": "_dist/combinators-p.js",
   "module": "lib/index.js",
@@ -39,7 +39,10 @@
     "promises",
     "promises-aplus",
     "functional",
-    "static-land"
+    "static-land",
+    "monad",
+    "monads",
+    "monadic"
   ],
   "author": "Christo <christo@cryptodrunks.net>",
   "license": "GPL-3.0",

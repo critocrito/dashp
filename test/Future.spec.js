@@ -27,7 +27,7 @@ describe("The type Future", () => {
   });
 
   describe("is an instance of Applicative", () => {
-    // https://github.com/rpominov/static-land/blob/master/docs/spec.md#apply
+    // https://github.com/rpominov/static-land/blob/master/docs/spec.md#applicative
     property("identity", "nat", async a => {
       const v = F.of(a);
       return isEqual(await F.ap(F.of(x => x), v), a);
@@ -60,5 +60,27 @@ describe("The type Future", () => {
 
       return isEqual(await F.map(f, F.of(a)), await map(f, F.of(a)));
     });
+  });
+
+  describe("is an instance of Monad", () => {
+    // https://github.com/rpominov/static-land/blob/master/docs/spec.md#monad
+    property("associativity", "nat", "nat", "nat", async (a, b, c) => {
+      const f = addP(b);
+      const g = addP(c);
+
+      return isEqual(
+        await F.chain(f, F.chain(g, F.of(a))),
+        await F.chain(x => F.chain(g, f(x)), F.of(a))
+      );
+    });
+
+    property("left identity", "nat", "nat", async (a, b) => {
+      const f = addP(b);
+      return isEqual(await F.chain(f, F.of(a)), await f(a));
+    });
+
+    property("right identity", "nat", async a =>
+      isEqual(await F.chain(F.of, F.of(a)), await F.of(a))
+    );
   });
 });
