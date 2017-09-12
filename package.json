@@ -5,6 +5,9 @@
   "main": "_dist/combinators-p.js",
   "browser": "_dist/combinators-p.js",
   "module": "lib/index.js",
+  "engines": {
+    "node": ">=7.6"
+  },
   "config": {
     "srcDir": "lib",
     "testDir": "test",
@@ -16,7 +19,7 @@
     "prepublishOnly": "npm run build",
     "publish": "git push --follow-tags origin master",
     "watch": "npm run test -- -w",
-    "test": "mocha -c --reporter $npm_package_config_reporter --compilers js:babel-register --require babel-polyfill --require test/helpers.js $npm_package_config_testDir/**/*.spec.js",
+    "test": "mocha -c --reporter $npm_package_config_reporter --compilers js:babel-register --require test/helpers.js $npm_package_config_testDir/**/*.spec.js",
     "lint": "eslint --cache $npm_package_config_testDir $npm_package_config_srcDir",
     "fix": "npm run lint -- --fix",
     "compile": "npm run clean -s && rollup -c",
@@ -49,9 +52,6 @@
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-plugin-external-helpers": "^6.22.0",
-    "babel-plugin-transform-async-functions": "^6.22.0",
-    "babel-plugin-transform-regenerator": "^6.24.1",
-    "babel-polyfill": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-register": "^6.24.1",
     "bluebird": "^3.5.0",
