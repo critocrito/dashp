@@ -2,8 +2,8 @@ before_script:
   - npm install
   - npm run build
 
-test:lts:
-  image: node:6.11
+test:7:
+  image: node:7.6
   script:
     - npm run test
 
