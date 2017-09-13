@@ -1,13 +1,17 @@
 import {isEqual} from "lodash/fp";
-import {assertForall} from "jsverify";
+import {property} from "jsverify";
 
 import {anyArb, maybePromisify} from "./arbitraries";
 import {constant} from "../lib";
 
 describe("The constant operator", () => {
-  it("always returns the same value", () =>
-    assertForall(anyArb, x => constant(x)().then(isEqual(x))));
+  property("always returns the same value", anyArb, async x =>
+    isEqual(await constant(x)(), x)
+  );
 
-  it("accepts non promisified and promisified arguments", () =>
-    assertForall(anyArb, x => constant(maybePromisify(x))().then(isEqual(x))));
+  property(
+    "accepts non promisified and promisified arguments",
+    anyArb,
+    async x => isEqual(await constant(maybePromisify(x))(), x)
+  );
 });

@@ -7,25 +7,29 @@ import {retry, retry2, retry3, retry4} from "../lib";
 const fixture = Symbol("fixture");
 
 describe("The retry operator for Promises", () => {
-  it("retries a promise returning function", () => {
+  it("retries a promise returning function", async () => {
     const mock = sinon
       .mock()
       .once()
       .returns();
-    return retry(mock).then(() => mock.verify().should.equal(true));
+    await retry(mock);
+    mock.verify().should.equal(true);
   });
 
   // eslint-disable-next-line func-names
-  it("retries a promise 5 times", function() {
+  it("retries a promise 5 times", async function() {
     this.timeout(3000);
     const mock = sinon
       .mock()
       .exactly(5)
       .rejects("Type Error");
-    return retry(mock).catch(() => mock.verify().should.equal(true));
+    try {
+      await retry(mock);
+    } catch (e) {} // eslint-disable-line no-empty
+    mock.verify().should.equal(true);
   });
 
-  it("retries with a delay", () => {
+  it("retries with a delay", async () => {
     const mock = sinon
       .mock()
       .twice()
@@ -34,12 +38,11 @@ describe("The retry operator for Promises", () => {
       .onSecondCall()
       .resolves();
     const end = timeSpan();
-    return retry(mock).then(() =>
-      (inRange(end(), 250, 300) && mock.verify()).should.equal(true)
-    );
+    await retry(mock);
+    (inRange(end(), 250, 300) && mock.verify()).should.equal(true);
   });
 
-  it("can retry functions with arguments", () => {
+  it("can retry functions with arguments", async () => {
     const mock2 = sinon
       .mock()
       .once()
@@ -56,20 +59,17 @@ describe("The retry operator for Promises", () => {
       .withArgs(fixture, fixture, fixture)
       .resolves();
 
-    return Promise.all([
+    await Promise.all([
       retry2(mock2, fixture),
       retry3(mock3, fixture, fixture),
       retry4(mock4, fixture, fixture, fixture),
-    ]).then(
-      () =>
-        mock2.verify().should.equal(true) &&
-        mock3.verify().should.equal(true) &&
-        mock4.verify().should.equal(true)
-    );
+    ]);
+    (mock2.verify() && mock3.verify() && mock4.verify()).should.equal(true);
   });
 
-  it("accepts promises and functions and actions", () => {
+  it("accepts promises and functions and actions", async () => {
     const stub = sinon.stub().resolves(fixture);
-    return retry(stub()).then(result => result.should.equal(fixture));
+    const result = await retry(stub());
+    result.should.equal(fixture);
   });
 });

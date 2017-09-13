@@ -1,4 +1,4 @@
-import {map, every, isEqual, startsWith} from "lodash/fp";
+import {map, flatten, every, isEqual, startsWith} from "lodash/fp";
 import jsc, {property} from "jsverify";
 import Promise from "bluebird";
 
@@ -9,47 +9,56 @@ const isTrue = isEqual(true);
 const fixture = Symbol("fixture");
 
 describe("The collect operator", () => {
-  property("equivalency to synchronous map", "array nat", "nat", (xs, y) =>
-    collect(plus(y), xs).then(isEqual(map(plus(y), xs)))
+  property(
+    "equivalency to synchronous map",
+    "array nat",
+    "nat",
+    async (xs, y) => isEqual(await collect(plus(y), xs), map(plus(y), xs))
   );
 
-  property("equivalency to Bluebird's map", "array nat", "nat", (xs, y) =>
-    Promise.all([
-      Promise.map(xs, plusP(y)),
-      collect(plusP(y), xs),
-    ]).then(([a, b]) => isEqual(a, b))
+  property("equivalency to Bluebird's map", "array nat", "nat", async (xs, y) =>
+    isEqual(await Promise.map(xs, plusP(y)), await collect(plusP(y), xs))
   );
 
-  property("equivalency of concurrent maps", "array nat", "nat", (xs, y) =>
-    Promise.all([
-      collect(plus(y), xs),
-      collect2(plus(y), xs),
-      collect3(plus(y), xs),
-      collect4(plus(y), xs),
-      collect5(plus(y), xs),
-    ]).then(rs => rs.every(isEqual(rs[0])))
+  property(
+    "equivalency of concurrent maps",
+    "array nat",
+    "nat",
+    async (xs, y) => {
+      const rs = await Promise.all([
+        collect(plus(y), xs),
+        collect2(plus(y), xs),
+        collect3(plus(y), xs),
+        collect4(plus(y), xs),
+        collect5(plus(y), xs),
+      ]);
+      return rs.every(isEqual(rs[0]));
+    }
   );
 
-  property("adheres to the concurrency limit", "unit", () => {
+  it("adheres to the concurrency limit", async () => {
     const xs = Array(100).fill(0);
     const test = (mapper, concurrency) => {
       let running = 0;
-      return mapper(() => {
+      return mapper(async () => {
         running += 1;
-        if (running <= concurrency)
-          // eslint-disable-next-line no-return-assign
-          return Promise.resolve(true).tap(() => (running -= 1));
-        return Promise.resolve(false);
-      }, xs).then(every(isTrue));
+        if (running <= concurrency) {
+          await Promise.resolve();
+          running -= 1;
+          return true;
+        }
+        await Promise.resolve();
+        return false;
+      }, xs);
     };
-
-    return Promise.all([
+    const rs = await Promise.all([
       test(collect, 1),
       test(collect2, 2),
       test(collect3, 3),
       test(collect4, 4),
       test(collect5, 5),
-    ]).then(every(isTrue));
+    ]);
+    every(isTrue, flatten(rs)).should.equal(true);
   });
 
   it("adheres to the order of inputs", () =>
