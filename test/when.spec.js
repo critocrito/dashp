@@ -1,8 +1,8 @@
-import {identity, isEqual, startsWith} from "lodash/fp";
+import {identity, constant, isEqual, startsWith} from "lodash/fp";
 import jsc, {property} from "jsverify";
 import sinon from "sinon";
 
-import {anyArb} from "./arbitraries";
+import {plus, anyArb, isEqualAry} from "./arbitraries";
 import {when, whenElse, unless, unlessElse} from "../lib";
 
 const pred = bool => () => identity(bool);
@@ -122,5 +122,20 @@ describe("The conditional operators", () => {
       }
       return false;
     }
+  );
+
+  property(
+    "permits different action types for whenElse",
+    "nat",
+    "nat",
+    "bool",
+    async (a, b, c) =>
+      isEqualAry(
+        await Promise.all([
+          whenElse(constant(c), plus(b), plus(b), a),
+          whenElse(constant(c), plus(b), plus(b), Promise.resolve(a)),
+          whenElse(constant(c), plus(b), plus(b), () => Promise.resolve(a)),
+        ])
+      )
   );
 });
