@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://gitlab.com/critocrito/combinators-p/compare/v0.3.0...v0.4.0) (2017-09-15)
+
+
+### Bug Fixes
+
+* Use the right mapper functions for flatmap. ([27665ff](https://gitlab.com/critocrito/combinators-p/commit/27665ff))
+
+
+### Features
+
+* Added a bi-functorial type interface. ([c439608](https://gitlab.com/critocrito/combinators-p/commit/c439608))
+* Added a monadic type interface. ([d25b9ee](https://gitlab.com/critocrito/combinators-p/commit/d25b9ee))
+* Allow values, functions and promises as action. ([13f8aad](https://gitlab.com/critocrito/combinators-p/commit/13f8aad))
+* Specify the types more precisely. ([43e83c8](https://gitlab.com/critocrito/combinators-p/commit/43e83c8))
+* The conditional operators allow values, functions and promises as action. ([4f9376b](https://gitlab.com/critocrito/combinators-p/commit/4f9376b))
+* Validate arguments that should be functions. ([04d88fb](https://gitlab.com/critocrito/combinators-p/commit/04d88fb))
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://gitlab.com/critocrito/combinators-p/compare/v0.2.0...v0.3.0) (2017-08-25)
 
