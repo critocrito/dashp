@@ -16,6 +16,7 @@
   },
   "scripts": {
     "commitmsg": "validate-commit-msg",
+    "precommit": "lint-staged",
     "prepublishOnly": "npm run build",
     "publish": "git push --follow-tags origin master",
     "watch": "npm run test -- -w",
@@ -71,6 +72,7 @@
     "husky": "^0.14.3",
     "in-range": "^1.0.0",
     "jsverify": "^0.8.2",
+    "lint-staged": "^4.2.3",
     "lodash": "^4.17.4",
     "mocha": "^3.4.2",
     "prettier": "^1.7.0",
