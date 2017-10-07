@@ -1,0 +1,8 @@
+{
+  "require": [
+    "babel-register"
+  ],
+  "sourceMap": false,
+  "instrument": false,
+  "exclude": ["_dist", "test"]
+}
