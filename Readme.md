@@ -44,21 +44,22 @@ and
   - [delay](#delay)
   - [of](#of)
   - [all](#all)
-  - [caught](#caught)
   - [lift2](#lift2)
-  - [fold](#fold)
   - [tap](#tap)
+  - [caught](#caught)
   - [spread](#spread)
+  - [fold](#fold)
   - [flow](#flow)
   - [flatmap](#flatmap)
   - [compose](#compose)
+  - [tapClone](#tapclone)
   - [whenElse](#whenelse)
   - [flatmap2](#flatmap2)
   - [map](#map)
   - [flatmap3](#flatmap3)
   - [retry](#retry)
-  - [flatmap4](#flatmap4)
   - [unlessElse](#unlesselse)
+  - [flatmap4](#flatmap4)
   - [flatmap5](#flatmap5)
   - [retry2](#retry2)
   - [bimap](#bimap)
@@ -176,27 +177,6 @@ f().then(console.log); // Returns [a, b, c];
 Returns **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;Promise.Array&lt;any>>** A function, that when called, resolves all
 promises and returns an Array of values.
 
-### caught
-
-Catch an exception on a promise and call a exception handler. This is
-equivalent to `Promise.catch`.
-
-**Parameters**
-
--   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** The handler to call when the promise `p` get's
-    rejected.
--   `p` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any> | any)** A value or a promise that get's resolved.
-
-**Examples**
-
-```javascript
-const f = () => new Error("Boom");
-caught(console.error, f()); // Prints the exception.
-```
-
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** A promise that resolves either to the value of `p`
-or to the return value of `f`.
-
 ### lift2
 
 Lift a binary function over two promises.
@@ -222,32 +202,9 @@ lift2(f, of(a), of(b)).then(console.log); // Returns 3.
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value that f returns when applied to `x` and
 `y`.
 
-### fold
-
-Reduce a list of values to a single value, using a reduction function. This
-is equivalent to `Array.reduce`.
-
-**Parameters**
-
--   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>** The function to reduce over the list. This function
-    takes an accumulator, a value and returns a promise for a value.
--   `acc` **any** The initial value to apply to the first call of `f`.
--   `xs` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** The list to reduce to a single value.
-
-**Examples**
-
-```javascript
-const f = (acc, x) => of(acc + x);
-const xs = [...Array(5).keys()];
-fold(f, 0, xs).then(console.log); // The sum of [0, 1, 2, 3, 4], returns 10;
-```
-
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value of `xs` reduced over `f`.
-
 ### tap
 
-Run a function for side effect and return the original value. The original
-value gets cloned and therefore can be modified in the tap handler.
+Run a function for side effect and return the original value.
 
 **Parameters**
 
@@ -264,6 +221,27 @@ flow([f, tap(console.log)])(23); // Print "23" to the console.
 ```
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** Returns `p`.
+
+### caught
+
+Catch an exception on a promise and call a exception handler. This is
+equivalent to `Promise.catch`.
+
+**Parameters**
+
+-   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** The handler to call when the promise `p` get's
+    rejected.
+-   `p` **([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any> | any)** A value or a promise that get's resolved.
+
+**Examples**
+
+```javascript
+const f = () => new Error("Boom");
+caught(console.error, f()); // Prints the exception.
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** A promise that resolves either to the value of `p`
+or to the return value of `f`.
 
 ### spread
 
@@ -288,6 +266,28 @@ spread(plus, p).then(console.log); // Prints 3
 ```
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The result of applying the value of `p` to `f`.
+
+### fold
+
+Reduce a list of values to a single value, using a reduction function. This
+is equivalent to `Array.reduce`.
+
+**Parameters**
+
+-   `f` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)&lt;any>** The function to reduce over the list. This function
+    takes an accumulator, a value and returns a promise for a value.
+-   `acc` **any** The initial value to apply to the first call of `f`.
+-   `xs` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** The list to reduce to a single value.
+
+**Examples**
+
+```javascript
+const f = (acc, x) => of(acc + x);
+const xs = [...Array(5).keys()];
+fold(f, 0, xs).then(console.log); // The sum of [0, 1, 2, 3, 4], returns 10;
+```
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The value of `xs` reduced over `f`.
 
 ### flow
 
@@ -367,6 +367,10 @@ h(of(10)).then(console.log); // 10 + 1 + 5, returns 16.
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;any>** The result of calling `g` with the result of
 `f(x)`.
+
+### tapClone
+
+Like `tap`, but make a deep clone of `p` before applying it to `f`.
 
 ### whenElse
 
@@ -448,14 +452,14 @@ Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 `action`, or that is rejected with the last exception that `action` failed
 with.
 
-### flatmap4
-
-The same as `flatmap`, but run four promises concurrently.
-
 ### unlessElse
 
 Like `whenElse`, only call the `consequent` if the predicate returns
 `false`, and the `alternative` if the predicate returns `true`;
+
+### flatmap4
+
+The same as `flatmap`, but run four promises concurrently.
 
 ### flatmap5
 
