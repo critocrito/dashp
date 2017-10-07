@@ -11,8 +11,7 @@
   "config": {
     "srcDir": "lib",
     "testDir": "test",
-    "distDir": "_dist",
-    "reporter": "progress"
+    "distDir": "_dist"
   },
   "scripts": {
     "commitmsg": "! git rev-parse --abbrev-ref HEAD | grep -q master || validate-commit-msg",
@@ -20,7 +19,7 @@
     "prepublishOnly": "npm run build",
     "publish": "git push --follow-tags origin master",
     "watch": "npm run test -- -w",
-    "test": "mocha -c --reporter $npm_package_config_reporter --compilers js:babel-register --require test/helpers.js $npm_package_config_testDir/**/*.spec.js",
+    "test": "mocha -c -R progress --compilers js:babel-register -r test/helpers.js $npm_package_config_testDir/**/*.spec.js",
     "lint": "eslint --cache $npm_package_config_testDir $npm_package_config_srcDir",
     "fix": "npm run lint -- --fix",
     "compile": "npm run clean -s && rollup -c",
