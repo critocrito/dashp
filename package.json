@@ -15,7 +15,7 @@
     "reporter": "progress"
   },
   "scripts": {
-    "commitmsg": "validate-commit-msg",
+    "commitmsg": "! git rev-parse --abbrev-ref HEAD | grep -q master || validate-commit-msg",
     "precommit": "lint-staged",
     "prepublishOnly": "npm run build",
     "publish": "git push --follow-tags origin master",
