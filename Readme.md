@@ -5,17 +5,13 @@ Program with promises in a functional style.
 ## Synopsis
 
     import {getJson, storeDb} from './async-utils';
-    import {flow as flowP} from 'combinators-p';
+    import {flowP, tapP} from 'combinators-p';
 
     const url = "https://url.horse/api";
 
-    const apiCall = flow([getJson, storeDb]);
+    const apiCall = flowP([getJson, tapP(console.log), storeDb]);
 
     await apiCall(url);
-
-## Get started
-
-    npm install --save combinators-p
 
 ## Interoperability
 
@@ -38,6 +34,7 @@ and
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
+- [Usage](#usage)
 - [API](#api)
   - [isPromise](#ispromise)
   - [constant](#constant)
@@ -76,6 +73,21 @@ and
   - [chain](#chain)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+## Usage
+
+    npm install --save combinators-p
+
+Every function has an alias that appends _P_ to the function name,
+e.g. `flowP` is an alias for `flow` and `collectP3` is an alias for
+`collect3`. This allows for cleaner imports in situations where function names
+can clash.
+
+    import {map, sum} from "lodash/fp";
+    import {mapP} from "combinators-p";
+
+    map(sum, [1, 2, 3]); // Lodash version.
+    mapP(sum, [1, 2, 3]); // combinators-p version.
 
 ## API
 
