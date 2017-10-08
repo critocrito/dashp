@@ -1,5 +1,6 @@
 test/
 npm-*.log
+rollup.config.js
 .npmrc
 .babelrc
 .eslint*
