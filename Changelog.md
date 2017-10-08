@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/critocrito/combinators-p/compare/v0.4.0...v0.5.0) (2017-10-08)
+
+
+### Features
+
+* Added tapClone and make tap non cloning. ([54faa91](https://github.com/critocrito/combinators-p/commit/54faa91))
+* Export a second version of the API with P appended to every function name. ([109228f](https://github.com/critocrito/combinators-p/commit/109228f))
+* Export API as default and export Future type methods. ([ba453e2](https://github.com/critocrito/combinators-p/commit/ba453e2))
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://gitlab.com/critocrito/combinators-p/compare/v0.3.0...v0.4.0) (2017-09-15)
 
