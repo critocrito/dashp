@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.1"></a>
+## [0.5.1](https://github.com/critocrito/combinators-p/compare/v0.5.0...v0.5.1) (2017-10-09)
+
+
+### Bug Fixes
+
+* **collect:** Use the correct amount of arguments when currying. ([4e575f8](https://github.com/critocrito/combinators-p/commit/4e575f8))
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/critocrito/combinators-p/compare/v0.4.0...v0.5.0) (2017-10-08)
 
