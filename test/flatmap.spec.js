@@ -2,7 +2,7 @@ import {flatMap, flatten, every, isEqual} from "lodash/fp";
 import jsc, {property} from "jsverify";
 import sinon from "sinon";
 
-import {anyArb, arrayArb} from "./arbitraries";
+import {anyArb, arrayArb, singleValueArb} from "./arbitraries";
 import {flatmap, flatmap2, flatmap3, flatmap4, flatmap5, collect} from "../lib";
 
 const isTrue = isEqual(true);
@@ -68,6 +68,19 @@ describe("flatmap over a list", () => {
           block,
           TypeError,
           new RegExp(`^Future#${f.name} (.+)to be a function`)
+        );
+      }
+    );
+
+    property(
+      "throws if the second argument is not an array",
+      singleValueArb,
+      a => {
+        const block = () => f(x => x, a);
+        return jsc.throws(
+          block,
+          TypeError,
+          new RegExp(`^Future#${f.name} (.+)to be an array`)
         );
       }
     );
