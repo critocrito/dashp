@@ -12,6 +12,24 @@ export const maybePromisify = val => {
   }
 };
 
+export const throws = async (f, error, message) => {
+  try {
+    await f();
+    return false;
+  } catch (e) {
+    if (error !== undefined) {
+      if (e instanceof error) {
+        if (message instanceof RegExp) {
+          return message.test(e.message);
+        }
+        return message === undefined || e.message === message;
+      }
+      return false;
+    }
+    return true;
+  }
+};
+
 export const plus = curry((x, y) => x + y);
 export const plusP = curry((x, y) => Promise.resolve(plus(x, y)));
 export const plusMaybeP = curry((x, y) => maybePromisify(plus(x, y)));
@@ -46,6 +64,7 @@ export const mapArb = jsc
 export default {
   isEqualAry,
   maybePromisify,
+  throws,
   plus,
   plusP,
   plusMaybeP,

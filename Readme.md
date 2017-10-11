@@ -73,6 +73,7 @@ to polyfill it if your JavaScript environment doesn't provide it.
 <details><summary>Creating new Promises</summary>
 
 - [`of`: Lift a value into a promise.](#of)
+- [`reject`: Create a rejected promise.](#reject)
 
 </details>
 
@@ -135,6 +136,28 @@ const p = of(23);
 
 p.then(x => console.log(`${x} things.`));
 // Prints '23 things.'
+```
+
+### `reject`
+
+Create a rejected promise.
+
+```hs
+reject :: Promise p => a -> p a b
+```
+
+This function can either take an `Error` object or an string. If a string is
+provided, it is converted to an `Error`.
+
+```javascript
+import {reject} from "Combinators-p";
+
+const msg = "Boom!";
+
+reject(msg).catch(console.log);
+// Prints `Error`
+reject(new TypeError(msg)).catch(console.log);
+// Prints `TypeError`
 ```
 
 ### `map`
