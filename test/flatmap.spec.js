@@ -1,14 +1,14 @@
-import {identity, flatMap, isEqual, startsWith} from "lodash/fp";
-import Promise from "bluebird";
+import {flatMap, flatten, every, isEqual} from "lodash/fp";
 import jsc, {property} from "jsverify";
+import sinon from "sinon";
 
-import {anyArb} from "./arbitraries";
+import {anyArb, arrayArb} from "./arbitraries";
 import {flatmap, flatmap2, flatmap3, flatmap4, flatmap5, collect} from "../lib";
 
-const fixture = Symbol("fixture");
+const isTrue = isEqual(true);
 const duplicate = n => [n, n];
 
-describe("The flatmap operator", () => {
+describe("flatmap over a list", () => {
   property("equivalency to synchronous flatmap", "array nat", async xs =>
     isEqual(await flatmap(duplicate, xs), flatMap(duplicate, xs))
   );
@@ -23,52 +23,53 @@ describe("The flatmap operator", () => {
     ]);
     return rs.every(isEqual(rs[0]));
   });
-
-  property("equivalency to collect", "array nat", async xs =>
-    isEqual(await collect(identity, xs), await flatmap(identity, xs))
-  );
-
-  property("validates that the mapper is a function", anyArb, async f => {
-    try {
-      await flatmap(f, [fixture]);
-    } catch (e) {
-      return e instanceof TypeError && startsWith("Future#flatmap", e.message);
-    }
-    return false;
-  });
-
-  property(
-    "contains the correct function name when mapper is not a function",
-    "unit",
-    async () => {
-      let funcName;
-      try {
-        switch (jsc.random(1, 5)) {
-          case 2:
-            funcName = "flatmap2";
-            await flatmap2(fixture, [fixture]);
-            break;
-          case 3:
-            funcName = "flatmap3";
-            await flatmap3(fixture, [fixture]);
-            break;
-          case 4:
-            funcName = "flatmap4";
-            await flatmap4(fixture, [fixture]);
-            break;
-          case 5:
-            funcName = "flatmap5";
-            await flatmap5(fixture, [fixture]);
-            break;
-          default:
-            funcName = "flatmap";
-            await flatmap(fixture, [fixture]);
-            break;
-        }
-      } catch (e) {
-        return startsWith(`Future#${funcName} `, e.message);
-      }
-      return false;
-    }
-  );
 });
+
+[flatmap, flatmap2, flatmap3, flatmap4, flatmap5].forEach((f, i) =>
+  describe(`the ${f.name} operator`, () => {
+    property("equivalency to collect", jsc.array(anyArb), async xs =>
+      isEqual(
+        await collect(duplicate, xs).then(flatten),
+        await f(duplicate, xs)
+      )
+    );
+
+    it("adheres to the concurrency limit", async () => {
+      const xs = Array(100).fill(0);
+      const test = (mapper, concurrency) => {
+        let running = 0;
+        return mapper(async () => {
+          running += 1;
+          if (running <= concurrency) {
+            await Promise.resolve();
+            running -= 1;
+            return true;
+          }
+          await Promise.resolve();
+          return false;
+        }, xs);
+      };
+      return test(f, i + 1).then(rs => every(isTrue, rs).should.equal(true));
+    });
+
+    property("adheres to the order of inputs", arrayArb, async xs => {
+      const stub = sinon.stub();
+      xs.forEach((x, j) => stub.onCall(j).resolves(x));
+      return f(stub, xs).then(isEqual(xs));
+    });
+
+    property(
+      "throws if the first argument is not a function",
+      anyArb,
+      arrayArb,
+      (g, xs) => {
+        const block = () => f(g, xs);
+        return jsc.throws(
+          block,
+          TypeError,
+          new RegExp(`^Future#${f.name} (.+)to be a function`)
+        );
+      }
+    );
+  })
+);
