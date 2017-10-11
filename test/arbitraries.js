@@ -12,17 +12,6 @@ export const maybePromisify = val => {
   }
 };
 
-export const actionize = val => {
-  switch (jsc.random(0, 2)) {
-    case 0:
-      return Promise.resolve(val);
-    case 1:
-      return () => Promise.resolve(val);
-    default:
-      return val;
-  }
-};
-
 export const plus = curry((x, y) => x + y);
 export const plusP = curry((x, y) => Promise.resolve(plus(x, y)));
 export const plusMaybeP = curry((x, y) => maybePromisify(plus(x, y)));
@@ -57,7 +46,6 @@ export const mapArb = jsc
 export default {
   isEqualAry,
   maybePromisify,
-  actionize,
   plus,
   plusP,
   plusMaybeP,
