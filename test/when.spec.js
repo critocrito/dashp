@@ -1,4 +1,4 @@
-import {identity, isEqual, startsWith} from "lodash/fp";
+import {identity, isEqual} from "lodash/fp";
 import jsc, {property} from "jsverify";
 import sinon from "sinon";
 
@@ -58,113 +58,66 @@ describe("The conditional operators", () => {
     return unlessElse(pred(x), stubC, stubA, of(fixture)).then(isEqual(result));
   });
 
-  property(
-    "validates that the arguments of whenElse are functions",
-    anyArb,
-    async f => {
-      const args = [sinon.stub(), sinon.stub(), sinon.stub()];
-      args[jsc.random(0, 2)] = f;
-      try {
-        await whenElse(...args.concat(fixture));
-      } catch (e) {
-        return (
-          e instanceof TypeError && startsWith("Future#whenElse ", e.message)
+  [whenElse, unlessElse].forEach(f => {
+    property(
+      `validates that the arguments of ${f.name} are functions`,
+      anyArb,
+      g => {
+        const args = [sinon.stub(), sinon.stub(), sinon.stub()];
+        args[jsc.random(0, 2)] = g;
+        const block = () => f(...args.concat(fixture));
+
+        return jsc.throws(
+          block,
+          TypeError,
+          new RegExp(`Future#${f.name} (.+)to be a function`)
         );
       }
-      return false;
-    }
-  );
+    );
 
-  property(
-    "validates that the arguments of unlessElse are functions",
-    anyArb,
-    async f => {
-      const args = [sinon.stub(), sinon.stub(), sinon.stub()];
-      args[jsc.random(0, 2)] = f;
-      try {
-        await unlessElse(...args.concat(fixture));
-      } catch (e) {
-        return (
-          e instanceof TypeError && startsWith("Future#unlessElse ", e.message)
+    property(
+      `throws if the fourth argument of ${f.name} is not a promise`,
+      anyArb,
+      a => {
+        const args = [sinon.stub(), sinon.stub(), sinon.stub(), a];
+        const block = () => f(...args);
+        return jsc.throws(
+          block,
+          TypeError,
+          new RegExp(`^Future#${f.name} (.+)to be a promise`)
         );
       }
-      return false;
-    }
-  );
+    );
+  });
 
-  property(
-    "validates that the arguments of when are functions",
-    anyArb,
-    async f => {
-      const args = [sinon.stub(), sinon.stub()];
-      args[jsc.random(0, 1)] = f;
-      try {
-        await when(...args.concat(fixture));
-      } catch (e) {
-        return e instanceof TypeError && startsWith("Future#when ", e.message);
-      }
-      return false;
-    }
-  );
-
-  property(
-    "validates that the arguments of unless are functions",
-    anyArb,
-    async f => {
-      const args = [sinon.stub(), sinon.stub()];
-      args[jsc.random(0, 1)] = f;
-      try {
-        await unless(...args.concat(fixture));
-      } catch (e) {
-        return (
-          e instanceof TypeError && startsWith("Future#unless ", e.message)
+  [when, unless].forEach(f => {
+    property(
+      `validates that the arguments of ${f.name} are functions`,
+      anyArb,
+      g => {
+        const args = [sinon.stub(), sinon.stub()];
+        args[jsc.random(0, 1)] = g;
+        const block = () => f(...args.concat(fixture));
+        return jsc.throws(
+          block,
+          TypeError,
+          new RegExp(`^Future#${f.name} (.+)to be a function`)
         );
       }
-      return false;
-    }
-  );
+    );
 
-  property(
-    "throws if the fourth argument of whenElse is not a promise",
-    anyArb,
-    a => {
-      const block = () => whenElse(() => true, x => x, x => x, a);
-      return jsc.throws(
-        block,
-        TypeError,
-        /^Future#whenElse (.+)to be a promise/
-      );
-    }
-  );
-
-  property(
-    "throws if the fourth argument of unlessElse is not a promise",
-    anyArb,
-    a => {
-      const block = () => unlessElse(() => true, x => x, x => x, a);
-      return jsc.throws(
-        block,
-        TypeError,
-        /^Future#unlessElse (.+)to be a promise/
-      );
-    }
-  );
-
-  property(
-    "throws if the third argument of when is not a promise",
-    anyArb,
-    a => {
-      const block = () => when(() => true, x => x, a);
-      return jsc.throws(block, TypeError, /^Future#when (.+)to be a promise/);
-    }
-  );
-
-  property(
-    "throws if the third argument of unless is not a promise",
-    anyArb,
-    a => {
-      const block = () => unless(() => true, x => x, a);
-      return jsc.throws(block, TypeError, /^Future#unless (.+)to be a promise/);
-    }
-  );
+    property(
+      `throws if the third argument of ${f.name} is not a promise`,
+      anyArb,
+      a => {
+        const args = [sinon.stub(), sinon.stub(), a];
+        const block = () => f(...args);
+        return jsc.throws(
+          block,
+          TypeError,
+          new RegExp(`^Future#${f.name} (.+)to be a promise`)
+        );
+      }
+    );
+  });
 });
