@@ -44,6 +44,8 @@ export const arrayArb = jsc.oneof([
   jsc.array(dictArb),
 ]);
 
+export const singleValueArb = jsc.oneof([primitiveArb, dictArb]);
+
 export const collectionArb = jsc.oneof([arrayArb, dictArb]);
 
 export const anyArb = jsc.oneof([primitiveArb, collectionArb]);
@@ -60,6 +62,7 @@ export default {
   minusMaybeP,
   primitiveArb,
   arrayArb,
+  singleValueArb,
   dictArb,
   anyArb,
 };

@@ -65,7 +65,7 @@
     "eslint-plugin-promise": "^3.5.0",
     "husky": "^0.14.3",
     "in-range": "^1.0.0",
-    "jsverify": "^0.8.2",
+    "jsverify": "critocrito/jsverify#throws-regex",
     "lint-staged": "^4.2.3",
     "lodash": "^4.17.4",
     "mocha": "^3.4.2",

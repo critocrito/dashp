@@ -67,6 +67,9 @@ map(sum, [1, 2, 3]); // Lodash version.
 mapP(sum, [1, 2, 3]); // combinators-p version.
 ```
 
+`combinators-p` depends on [`Array.isArray`][JS:Array.isArray]. You may need
+to polyfill it if your JavaScript environment doesn't provide it.
+
 <details><summary>Creating new Promises</summary>
 
 - [`of`: Lift a value into a promise.](#of)

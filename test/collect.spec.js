@@ -2,7 +2,7 @@ import {map, flatten, every, isEqual, startsWith} from "lodash/fp";
 import jsc, {property} from "jsverify";
 import Promise from "bluebird";
 
-import {anyArb, plus, plusP} from "./arbitraries";
+import {anyArb, singleValueArb, plus, plusP} from "./arbitraries";
 import {collect, collect2, collect3, collect4, collect5} from "../lib";
 
 const isTrue = isEqual(true);
@@ -114,5 +114,20 @@ describe("The collect operator", () => {
       }
       return false;
     }
+  );
+
+  [collect, collect2, collect3, collect4, collect5].forEach(f =>
+    property(
+      `throws if the second argument of ${f.name} is not an array`,
+      singleValueArb,
+      async a => {
+        const block = () => f(x => x, a);
+        return jsc.throws(
+          block,
+          TypeError,
+          /^Future#collect(.+)to be an array/
+        );
+      }
+    )
   );
 });
