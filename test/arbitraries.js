@@ -30,18 +30,23 @@ export const minus = curry((x, y) => x - y);
 export const minusP = curry((x, y) => Promise.resolve(minus(x, y)));
 export const minusMaybeP = curry((x, y) => maybePromisify(minus(x, y)));
 
-export const anyArb = jsc.oneof([
+export const primitiveArb = jsc.oneof([
   jsc.number,
   jsc.char,
   jsc.string,
-  jsc.json,
   jsc.bool,
-  jsc.array(jsc.number),
-  jsc.array(jsc.char),
-  jsc.array(jsc.string),
-  jsc.array(jsc.json),
-  jsc.array(jsc.bool),
 ]);
+
+export const dictArb = jsc.dict(primitiveArb);
+
+export const arrayArb = jsc.oneof([
+  jsc.array(primitiveArb),
+  jsc.array(dictArb),
+]);
+
+export const collectionArb = jsc.oneof([arrayArb, dictArb]);
+
+export const anyArb = jsc.oneof([primitiveArb, collectionArb]);
 
 export default {
   isEqualAry,
@@ -53,5 +58,8 @@ export default {
   minus,
   minusP,
   minusMaybeP,
+  primitiveArb,
+  arrayArb,
+  dictArb,
   anyArb,
 };
