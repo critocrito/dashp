@@ -1,9 +1,9 @@
-import {identity, constant, isEqual, startsWith} from "lodash/fp";
+import {identity, isEqual, startsWith} from "lodash/fp";
 import jsc, {property} from "jsverify";
 import sinon from "sinon";
 
-import {plus, anyArb, isEqualAry} from "./arbitraries";
-import {when, whenElse, unless, unlessElse} from "../lib";
+import {anyArb} from "./arbitraries";
+import {of, when, whenElse, unless, unlessElse} from "../lib";
 
 const pred = bool => () => identity(bool);
 
@@ -35,27 +35,27 @@ describe("The conditional operators", () => {
   property("when is equivalent to if", jsc.bool, x => {
     const stub = sinon.stub().returns(consequent);
     const result = pred(x)() ? whenTable.true : whenTable.false;
-    return when(pred(x), stub, fixture).then(isEqual(result));
+    return when(pred(x), stub, of(fixture)).then(isEqual(result));
   });
 
   property("whenElse is equivalent to if-else", jsc.bool, x => {
     const stubC = sinon.stub().returns(consequent);
     const stubA = sinon.stub().returns(alternative);
     const result = pred(x)() ? whenElseTable.true : whenElseTable.false;
-    return whenElse(pred(x), stubC, stubA, fixture).then(isEqual(result));
+    return whenElse(pred(x), stubC, stubA, of(fixture)).then(isEqual(result));
   });
 
   property("unless is equivalent to if-not", jsc.bool, x => {
     const stub = sinon.stub().returns(consequent);
     const result = pred(x)() ? unlessTable.true : unlessTable.false;
-    return unless(pred(x), stub, fixture).then(isEqual(result));
+    return unless(pred(x), stub, of(fixture)).then(isEqual(result));
   });
 
   property("unlessElse is equivalent to if-not-else", jsc.bool, x => {
     const stubC = sinon.stub().returns(consequent);
     const stubA = sinon.stub().returns(alternative);
     const result = pred(x)() ? unlessElseTable.true : unlessElseTable.false;
-    return unlessElse(pred(x), stubC, stubA, fixture).then(isEqual(result));
+    return unlessElse(pred(x), stubC, stubA, of(fixture)).then(isEqual(result));
   });
 
   property(
@@ -125,17 +125,46 @@ describe("The conditional operators", () => {
   );
 
   property(
-    "permits different action types for whenElse",
-    "nat",
-    "nat",
-    "bool",
-    async (a, b, c) =>
-      isEqualAry(
-        await Promise.all([
-          whenElse(constant(c), plus(b), plus(b), a),
-          whenElse(constant(c), plus(b), plus(b), Promise.resolve(a)),
-          whenElse(constant(c), plus(b), plus(b), () => Promise.resolve(a)),
-        ])
-      )
+    "throws if the fourth argument of whenElse is not a promise",
+    anyArb,
+    a => {
+      const block = () => whenElse(() => true, x => x, x => x, a);
+      return jsc.throws(
+        block,
+        TypeError,
+        /^Future#whenElse (.+)to be a promise/
+      );
+    }
+  );
+
+  property(
+    "throws if the fourth argument of unlessElse is not a promise",
+    anyArb,
+    a => {
+      const block = () => unlessElse(() => true, x => x, x => x, a);
+      return jsc.throws(
+        block,
+        TypeError,
+        /^Future#unlessElse (.+)to be a promise/
+      );
+    }
+  );
+
+  property(
+    "throws if the third argument of when is not a promise",
+    anyArb,
+    a => {
+      const block = () => when(() => true, x => x, a);
+      return jsc.throws(block, TypeError, /^Future#when (.+)to be a promise/);
+    }
+  );
+
+  property(
+    "throws if the third argument of unless is not a promise",
+    anyArb,
+    a => {
+      const block = () => unless(() => true, x => x, a);
+      return jsc.throws(block, TypeError, /^Future#unless (.+)to be a promise/);
+    }
   );
 });
