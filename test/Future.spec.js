@@ -1,44 +1,38 @@
 import {isEqual} from "lodash/fp";
-import {property} from "jsverify";
+import jsc, {property} from "jsverify";
 import sinon from "sinon";
 
 import {plus, plusP, actionize, anyArb} from "./arbitraries";
-import {Future as F, compose as comp} from "../lib";
+import {of, map, bimap, ap, chain, compose as comp} from "../lib";
 
 const fixture = Symbol("fixture");
 
 describe("The type Future", () => {
   // https://github.com/rpominov/static-land/blob/master/docs/spec.md#functor
   describe("is an instance of Functor", () => {
-    property("identity", anyArb, async a => isEqual(await F.map(x => x, a), a));
+    property("identity", anyArb, async a => isEqual(await map(x => x, a), a));
 
     property("composition", "nat", "nat", "nat", async (a, b, c) => {
       const f = plus(b);
       const g = plus(c);
 
-      return isEqual(await F.map(comp(f, g), a), await F.map(f, F.map(g, a)));
+      return isEqual(await map(comp(f, g), a), await map(f, map(g, a)));
     });
 
-    it("asserts that the mapper is a function", () => {
-      const f = anyArb.generator(10);
-      try {
-        F.map(f, fixture);
-      } catch (e) {
-        // eslint-disable-next-line no-unused-expressions
-        e.should.be.instanceof(TypeError) &&
-          e.message.should.match(/^Future#map/);
-      }
+    property("throws if the first argument is not a function", anyArb, f => {
+      const block = () => map(f, of(fixture));
+      return jsc.throws(block, TypeError, /^Future#map (.+)to be a function/);
     });
 
     property("permits different action types", "nat", "nat", async (a, b) =>
-      isEqual(await F.map(plus(b), actionize(a)), a + b)
+      isEqual(await map(plus(b), actionize(a)), a + b)
     );
   });
 
   // https://github.com/rpominov/static-land/blob/master/docs/spec.md#bifunctor
   describe("is an instance of Bifunctor", () => {
     property("identity", anyArb, async a =>
-      isEqual(await F.bimap(x => x, x => x, F.of(a)), await F.of(a))
+      isEqual(await bimap(x => x, x => x, of(a)), await of(a))
     );
 
     property(
@@ -55,25 +49,22 @@ describe("The type Future", () => {
         const i = plus(e);
 
         return isEqual(
-          await F.bimap(x => f(g(x)), x => h(i(x)), F.of(a)),
-          await F.bimap(f, h, F.bimap(g, i, F.of(a)))
+          await bimap(x => f(g(x)), x => h(i(x)), of(a)),
+          await bimap(f, h, bimap(g, i, of(a)))
         );
       }
     );
 
     property("deriving Functors map", "nat", "nat", async (a, b) => {
       const f = plus(b);
-      return isEqual(
-        await F.bimap(x => x, f, F.of(a)),
-        await F.map(f, F.of(a))
-      );
+      return isEqual(await bimap(x => x, f, of(a)), await map(f, of(a)));
     });
 
     it("maps the left function over the rejection value", async () => {
       const a = sinon.stub().rejects();
       const f = sinon.mock().once();
       const g = sinon.mock().never();
-      await F.bimap(f, g, a());
+      await bimap(f, g, a());
       f.verify().should.equal(true);
       g.verify().should.equal(true);
     });
@@ -82,7 +73,7 @@ describe("The type Future", () => {
       const a = sinon.stub().resolves(fixture);
       const f = sinon.mock().never();
       const g = sinon.mock().once();
-      await F.bimap(f, g, a());
+      await bimap(f, g, a());
       f.verify().should.equal(true);
       g.verify().should.equal(true);
     });
@@ -95,7 +86,7 @@ describe("The type Future", () => {
         .rejects();
       const g = sinon.mock().never();
       try {
-        await F.bimap(f, g, a());
+        await bimap(f, g, a());
       } catch (e) {} // eslint-disable-line no-empty
       f.verify().should.equal(true);
       g.verify().should.equal(true);
@@ -109,86 +100,65 @@ describe("The type Future", () => {
         .once()
         .rejects();
       try {
-        await F.bimap(f, g, a());
+        await bimap(f, g, a());
       } catch (e) {} // eslint-disable-line no-empty
       f.verify().should.equal(true);
       g.verify().should.equal(true);
     });
 
-    it("asserts that the left mapper is a function", () => {
-      const f = anyArb.generator(10);
-      try {
-        F.bimap(f, x => x, fixture);
-      } catch (e) {
-        // eslint-disable-next-line no-unused-expressions
-        e.should.be.instanceof(TypeError) &&
-          e.message.should.match(/^Future#bimap/);
-      }
+    property("throws if the first argument is not a function", anyArb, f => {
+      const block = () => bimap(f, x => x, of(fixture));
+      return jsc.throws(block, TypeError, /^Future#bimap (.+)to be a function/);
     });
 
-    it("asserts that the right mapper is a function", () => {
-      const f = anyArb.generator(10);
-      try {
-        F.bimap(x => x, f, fixture);
-      } catch (e) {
-        // eslint-disable-next-line no-unused-expressions
-        e.should.be.instanceof(TypeError) &&
-          e.message.should.match(/^Future#bimap/);
-      }
+    property("throws if the second argument is not a function", anyArb, f => {
+      const block = () => bimap(x => x, f, of(fixture));
+      return jsc.throws(block, TypeError, /^Future#bimap (.+)to be a function/);
     });
 
     property("permits different action types", "nat", "nat", async (a, b) =>
-      isEqual(await F.bimap(plus(b), plus(b), actionize(a)), a + b)
+      isEqual(await bimap(plus(b), plus(b), actionize(a)), a + b)
     );
   });
 
   describe("is an instance of Applicative", () => {
     // https://github.com/rpominov/static-land/blob/master/docs/spec.md#applicative
     property("identity", "nat", async a => {
-      const v = F.of(a);
-      return isEqual(await F.ap(F.of(x => x), v), a);
+      const v = of(a);
+      return isEqual(await ap(of(x => x), v), a);
     });
 
     property("homomorphism", "nat", "nat", async (a, b) => {
       const f = plus(a);
-      return isEqual(await F.ap(F.of(f), F.of(b)), await F.of(f(b)));
+      return isEqual(await ap(of(f), of(b)), await of(f(b)));
     });
 
     property("interchange", "nat", "nat", async (a, b) => {
-      const u = F.of(plus(b));
-      return isEqual(await F.ap(u, F.of(b)), await F.ap(F.of(f => f(b)), u));
+      const u = of(plus(b));
+      return isEqual(await ap(u, of(b)), await ap(of(f => f(b)), u));
     });
 
     property("composition", "nat", "nat", "nat", async (a, b, c) => {
-      const x = F.of(a);
-      const u = F.of(plus(b));
-      const v = F.of(plus(c));
+      const x = of(a);
+      const u = of(plus(b));
+      const v = of(plus(c));
 
-      return isEqual(
-        await F.ap(F.ap(F.map(comp, u), v), x),
-        await F.ap(u, F.ap(v, x))
-      );
+      return isEqual(await ap(ap(map(comp, u), v), x), await ap(u, ap(v, x)));
     });
 
     property("deriving Functors map", "nat", "nat", async (a, b) => {
       const f = plus(b);
 
-      return isEqual(await F.map(f, F.of(a)), await F.ap(F.of(f), F.of(a)));
+      return isEqual(await map(f, of(a)), await ap(of(f), of(a)));
     });
 
-    it("asserts that the mapper is a promise", () => {
-      const f = anyArb.generator(10);
-      try {
-        F.ap(f, fixture);
-      } catch (e) {
-        // eslint-disable-next-line no-unused-expressions
-        e.should.be.instanceof(TypeError) &&
-          e.message.should.match(/^Future#ap/);
-      }
+    property("throws if the first argument is not a promise", anyArb, f => {
+      const block = () => ap(f, of(fixture));
+      return jsc.throws(block, TypeError, /^Future#ap (.+)to be a promise/);
     });
 
     property("permits different action types", "nat", "nat", async (a, b) =>
-      isEqual(await F.ap(F.of(plus(b)), actionize(a)), a + b)
+      isEqual(await ap(of(plus(b)), actionize(a)), a + b)
     );
   });
 
@@ -199,33 +169,27 @@ describe("The type Future", () => {
       const g = plusP(c);
 
       return isEqual(
-        await F.chain(f, F.chain(g, F.of(a))),
-        await F.chain(x => F.chain(g, f(x)), F.of(a))
+        await chain(f, chain(g, of(a))),
+        await chain(x => chain(g, f(x)), of(a))
       );
     });
 
     property("left identity", "nat", "nat", async (a, b) => {
       const f = plusP(b);
-      return isEqual(await F.chain(f, F.of(a)), await f(a));
+      return isEqual(await chain(f, of(a)), await f(a));
     });
 
     property("right identity", "nat", async a =>
-      isEqual(await F.chain(F.of, F.of(a)), await F.of(a))
+      isEqual(await chain(of, of(a)), await of(a))
     );
 
-    it("asserts that the mapper is a function", () => {
-      const f = anyArb.generator(10);
-      try {
-        F.chain(f, fixture);
-      } catch (e) {
-        // eslint-disable-next-line no-unused-expressions
-        e.should.be.instanceof(TypeError) &&
-          e.message.should.match(/^Future#chain/);
-      }
+    property("throws if the first argument is not a function", anyArb, f => {
+      const block = () => chain(f, of(fixture));
+      return jsc.throws(block, TypeError, /^Future#chain (.+)to be a function/);
     });
 
     property("permits different action types", "nat", "nat", async (a, b) =>
-      isEqual(await F.chain(plusP(b), actionize(a)), a + b)
+      isEqual(await chain(plusP(b), actionize(a)), a + b)
     );
   });
 });
