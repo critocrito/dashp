@@ -7,6 +7,7 @@ import {anyArb, arrayArb, singleValueArb, plus, plusP} from "./arbitraries";
 import {collect, collect2, collect3, collect4, collect5} from "../lib";
 
 const isTrue = isEqual(true);
+const positiveIntegersArb = jsc.nat.smap(x => x + 1, x => x - 1);
 
 describe("mapping a function over an array", () => {
   property(
@@ -69,6 +70,25 @@ describe("mapping a function over an array", () => {
       xs.forEach((x, j) => stub.onCall(j).resolves(x));
       return f(stub, xs).then(isEqual(xs));
     });
+
+    property(
+      "rejects the collection if an element rejects",
+      positiveIntegersArb,
+      "string",
+      (l, msg) => {
+        const xs = [...Array(l).keys()]; // Make sure l is positive
+        const fail = jsc.random(0, xs.length - 1);
+
+        const g = x => {
+          if (x === fail) {
+            throw new Error(msg);
+          }
+          return x;
+        };
+
+        return f(g, xs).catch(e => e.message === msg);
+      }
+    );
 
     property(
       "throws if the first argument is not a function",

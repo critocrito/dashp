@@ -50,6 +50,10 @@ export const collectionArb = jsc.oneof([arrayArb, dictArb]);
 
 export const anyArb = jsc.oneof([primitiveArb, collectionArb]);
 
+export const mapArb = jsc
+  .array(jsc.tuple([anyArb, anyArb]))
+  .smap(xxs => new Map(xxs), m => Array.from(m.entries()));
+
 export default {
   isEqualAry,
   maybePromisify,
@@ -65,4 +69,5 @@ export default {
   singleValueArb,
   dictArb,
   anyArb,
+  mapArb,
 };
