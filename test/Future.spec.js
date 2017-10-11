@@ -2,7 +2,7 @@ import {isEqual} from "lodash/fp";
 import jsc, {property} from "jsverify";
 import sinon from "sinon";
 
-import {plus, plusP, actionize, anyArb} from "./arbitraries";
+import {plus, plusP, anyArb} from "./arbitraries";
 import {of, map, bimap, ap, chain, compose as comp} from "../lib";
 
 const fixture = Symbol("fixture");
@@ -10,13 +10,15 @@ const fixture = Symbol("fixture");
 describe("The type Future", () => {
   // https://github.com/rpominov/static-land/blob/master/docs/spec.md#functor
   describe("is an instance of Functor", () => {
-    property("identity", anyArb, async a => isEqual(await map(x => x, a), a));
+    property("identity", anyArb, async a =>
+      isEqual(await map(x => x, of(a)), a)
+    );
 
     property("composition", "nat", "nat", "nat", async (a, b, c) => {
       const f = plus(b);
       const g = plus(c);
 
-      return isEqual(await map(comp(f, g), a), await map(f, map(g, a)));
+      return isEqual(await map(comp(f, g), of(a)), await map(f, map(g, of(a))));
     });
 
     property("throws if the first argument is not a function", anyArb, f => {
@@ -24,9 +26,10 @@ describe("The type Future", () => {
       return jsc.throws(block, TypeError, /^Future#map (.+)to be a function/);
     });
 
-    property("permits different action types", "nat", "nat", async (a, b) =>
-      isEqual(await map(plus(b), actionize(a)), a + b)
-    );
+    property("throws if the second argument is not a promise", anyArb, a => {
+      const block = () => map(x => x, a);
+      return jsc.throws(block, TypeError, /^Future#map (.+)to be a promise/);
+    });
   });
 
   // https://github.com/rpominov/static-land/blob/master/docs/spec.md#bifunctor
@@ -116,9 +119,10 @@ describe("The type Future", () => {
       return jsc.throws(block, TypeError, /^Future#bimap (.+)to be a function/);
     });
 
-    property("permits different action types", "nat", "nat", async (a, b) =>
-      isEqual(await bimap(plus(b), plus(b), actionize(a)), a + b)
-    );
+    property("throws if the third argument is not a promise", anyArb, a => {
+      const block = () => bimap(x => x, x => x, a);
+      return jsc.throws(block, TypeError, /^Future#bimap (.+)to be a promise/);
+    });
   });
 
   describe("is an instance of Applicative", () => {
@@ -157,9 +161,10 @@ describe("The type Future", () => {
       return jsc.throws(block, TypeError, /^Future#ap (.+)to be a promise/);
     });
 
-    property("permits different action types", "nat", "nat", async (a, b) =>
-      isEqual(await ap(of(plus(b)), actionize(a)), a + b)
-    );
+    property("throws if the second argument is not a promise", anyArb, a => {
+      const block = () => ap(of(x => x), a);
+      return jsc.throws(block, TypeError, /^Future#ap (.+)to be a promise/);
+    });
   });
 
   describe("is an instance of Monad", () => {
@@ -188,8 +193,9 @@ describe("The type Future", () => {
       return jsc.throws(block, TypeError, /^Future#chain (.+)to be a function/);
     });
 
-    property("permits different action types", "nat", "nat", async (a, b) =>
-      isEqual(await chain(plusP(b), actionize(a)), a + b)
-    );
+    property("throws if the second argument is not a promise", anyArb, a => {
+      const block = () => chain(x => x, a);
+      return jsc.throws(block, TypeError, /^Future#chain (.+)to be a promise/);
+    });
   });
 });
