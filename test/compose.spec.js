@@ -1,8 +1,8 @@
 import {isEqual} from "lodash/fp";
-import {property} from "jsverify";
+import jsc, {property} from "jsverify";
 
-import {plusP} from "./arbitraries";
-import {Future as F, compose} from "../lib";
+import {anyArb, plusP} from "./arbitraries";
+import {of, compose} from "../lib";
 
 describe("The compose combinator", () => {
   property(
@@ -13,8 +13,8 @@ describe("The compose combinator", () => {
     "nat",
     async (w, x, y, z) =>
       isEqual(
-        await compose(plusP(w), compose(plusP(x), plusP(y)), F.of(z)),
-        await compose(compose(plusP(w), plusP(x)), plusP(y), F.of(z))
+        await compose(plusP(w), compose(plusP(x), plusP(y)), of(z)),
+        await compose(compose(plusP(w), plusP(x)), plusP(y), of(z))
       )
   );
 
@@ -26,7 +26,26 @@ describe("The compose combinator", () => {
     async (a, b, c) =>
       isEqual(
         await compose(plusP(a), plusP(b), c),
-        await compose(plusP(a), plusP(b), F.of(c))
+        await compose(plusP(a), plusP(b), of(c))
       )
+  );
+
+  property(
+    "throws if the first two arguments are not functions",
+    anyArb,
+    "nat",
+    (f, a) => {
+      const block = () => {
+        if (jsc.random(0, 1) === 0) {
+          return compose(f, x => x, a);
+        }
+        return compose(x => x, f, a);
+      };
+      return jsc.throws(
+        block,
+        TypeError,
+        /^Future#compose (.+)to be a function/
+      );
+    }
   );
 });
