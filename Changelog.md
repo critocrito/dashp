@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/critocrito/combinators-p/compare/v0.5.1...v0.6.0) (2017-10-16)
+
+
+### Features
+
+* **collect:** Assert that the type of the second argument is an array at runtime. ([6fd0270](https://github.com/critocrito/combinators-p/commit/6fd0270))
+* **flatmap:** Assert that the type of the second argument is an array at runtime. ([5a351be](https://github.com/critocrito/combinators-p/commit/5a351be))
+* **fold:** Check the type of the collection at runtime. ([2584a23](https://github.com/critocrito/combinators-p/commit/2584a23))
+* **future:** Ensure the last argument to be of type promise at runtime. ([c2a3a49](https://github.com/critocrito/combinators-p/commit/c2a3a49))
+* **reject:** Added the reject constructor. ([0e5f322](https://github.com/critocrito/combinators-p/commit/0e5f322))
+* **when:** Ensure the last argument to be of type promise at runtime. ([51ec8b1](https://github.com/critocrito/combinators-p/commit/51ec8b1))
+* Runtime check some arguments of caugh and compose. ([9b589c9](https://github.com/critocrito/combinators-p/commit/9b589c9))
+* Set the name attribute for every function. ([7a04c59](https://github.com/critocrito/combinators-p/commit/7a04c59))
+
+
+
 <a name="0.5.1"></a>
 ## [0.5.1](https://github.com/critocrito/combinators-p/compare/v0.5.0...v0.5.1) (2017-10-09)
 
