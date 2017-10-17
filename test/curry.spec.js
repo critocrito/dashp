@@ -1,8 +1,9 @@
 import {curry as loCurry, every, isEqual} from "lodash/fp";
 import {property} from "jsverify";
 
-import {curry2, curry3, curry4} from "../lib/internal/curryN";
+import {curry2, curry3, curry4, curry5} from "../lib/internal/curryN";
 
+// TODO: Those properties don't look right. Find better ones.
 describe("The currying of functions", () => {
   property(
     "curry2 is equivalent to the original function and lodash's curry",
@@ -53,6 +54,32 @@ describe("The currying of functions", () => {
         f2(w)(x, y, z),
         f2(w)(x, y)(z),
         f2(w)(x)(y)(z),
+      ]);
+    }
+  );
+
+  property(
+    "curry5 is equivalent to the original function and lodash's curry",
+    "nat",
+    "nat",
+    "nat",
+    "nat",
+    "nat",
+    (v, w, x, y, z) => {
+      const f = (a, b, c, d, e) => a + b + c + d + e;
+      const f1 = loCurry(f);
+      const f2 = curry5("f", f);
+      return every(isEqual(f(v, w, x, y, z)), [
+        f1(v, w, x, y, z),
+        f2(v, w, x, y, z),
+        f2(v, w, x, y)(z),
+        f2(v, w, x)(y, z),
+        f2(v, w)(x, y, z),
+        f2(v)(w, x, y, z),
+        f2(v, w)(x, y)(z),
+        f2(v)(w, x, y)(z),
+        f2(v)(w, x, y)(z),
+        f2(v, w)(x)(y)(z),
       ]);
     }
   );
