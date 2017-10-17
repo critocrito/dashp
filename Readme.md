@@ -110,6 +110,8 @@ to polyfill it if your JavaScript environment doesn't provide it.
 - [`flow`: Compose functions into a chain.](#flow)
 - [`constant`: Create a function that always returns the same value.](#constant)
 - [`lift2`: Lift a binary function over two promises.](#lift2)
+- [`lift3`: Lift a ternary function over three promises.](#lift3)
+- [`lift4`: Lift a quatary function over four promises.](#lift4)
 - [`delay`: Delay the resolution of a promise chain.](#delay)
 - [`retry`: Call an action, and retry it in case it fails.](#retry)
 
@@ -602,8 +604,42 @@ import {of, lift2} from "combinators-p";
 
 const f = (x, y) => x + y;
 
-lift2(f, of(a), of(b)).then(console.log);
+lift2(f, of(1), of(2)).then(console.log);
 // Prints 3
+```
+
+### `lift3`
+
+Lift a ternary function over three promises.
+
+```hs
+lift3 :: Promise p => (a -> a -> a -> a) -> p b a -> p b a -> p b a -> p b a
+```
+
+```javascript
+import {of, lift3} from "combinators-p";
+
+const f = (x, y, z) => x + y + z;
+
+lift3(f, of(1), of(2), of(3)).then(console.log);
+// Prints 6
+```
+
+### `lift4`
+
+Lift a quartary function over four promises.
+
+```hs
+lift4 :: Promise p => (a -> a -> a -> a -> a) -> p b a -> p b a -> p b a -> p b a -> p b a
+```
+
+```javascript
+import {of, lift4} from "combinators-p";
+
+const f = (w, x, y, z) => w + x + y + z;
+
+lift4(f, of(1), of(2), of(3), of(4)).then(console.log);
+// Prints 10
 ```
 
 ### `delay`
