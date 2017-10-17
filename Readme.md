@@ -108,6 +108,8 @@ to polyfill it if your JavaScript environment doesn't provide it.
 - [`caught`: Catch an exception on a promise and call a handler.](#caught)
 - [`spread`: Call a variadic function with the value of a promise as it's arguments.](#spread)
 - [`flow`: Compose functions into a chain.](#flow)
+- [`flow2`: Lift a composed function chain over two arguments.](#flow2)
+- [`flow3`: Lift a composed function chain over three arguments.](#flow3)
 - [`constant`: Create a function that always returns the same value.](#constant)
 - [`lift2`: Lift a binary function over two promises.](#lift2)
 - [`lift3`: Lift a ternary function over three promises.](#lift3)
@@ -571,6 +573,49 @@ const f = (x, y) => of(x + y);
 const fs = [...Array(5).keys()].map(f);
 
 flow(fs, 0).then(console.log);
+// Prints 10
+```
+
+### `flow2`
+
+Lift a composed function chain over two arguments.
+
+```hs
+flow :: Promise p => [(a -> a -> a) (a -> a)] -> p b a -> p b a -> p b a
+```
+
+This function works like `flow`, but it accepts two arguments, that are lifted
+into the first function of the chain.
+
+```javascript
+import {of, flow2} from "combinators-p";
+
+const f = (x, y) => of(x + y);
+const fs = [...Array(5).keys()].map(f);
+
+flow([f, ...fs], 0, 0).then(console.log);
+// Prints 10
+```
+
+### `flow3`
+
+Lift a composed function chain over three arguments.
+
+```hs
+flow :: Promise p => [(a -> a -> a -> a) (a -> a)] -> p b a -> p b a -> p b a -> p b a
+```
+
+This function works like `flow`, but it accepts three arguments, that are lifted
+into the first function of the chain.
+
+```javascript
+import {of, flow3} from "combinators-p";
+
+const f = (x, y) => of(x + y);
+const g = (x, y, z) => of(x + y + z);
+const fs = [...Array(5).keys()].map(f);
+
+flow([g, ...fs], 0, 0, 0).then(console.log);
 // Prints 10
 ```
 
