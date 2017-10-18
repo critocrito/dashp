@@ -1,6 +1,6 @@
 {
   "name": "combinators-p",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Functions for monadic promises.",
   "main": "_dist/combinators-p.js",
   "browser": "_dist/combinators-p.js",

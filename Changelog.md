@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/critocrito/combinators-p/compare/v0.7.0...v0.8.0) (2017-10-18)
+
+
+### Features
+
+* **flow:** Added the flow4 combinator. ([1c20f80](https://github.com/critocrito/combinators-p/commit/1c20f80))
+
+
+
 <a name="0.7.0"></a>
 # [0.7.0](https://github.com/critocrito/combinators-p/compare/v0.6.0...v0.7.0) (2017-10-18)
 
