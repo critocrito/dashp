@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/critocrito/combinators-p/compare/v0.6.0...v0.7.0) (2017-10-18)
+
+
+### Features
+
+* **flow:** Added flow2 and flow3. ([1073edc](https://github.com/critocrito/combinators-p/commit/1073edc))
+* **flow:** Check the array type of the first argument at runtime. ([62a4a59](https://github.com/critocrito/combinators-p/commit/62a4a59))
+* **lift:** Added the lift3 and lift4 combinators. ([3b42601](https://github.com/critocrito/combinators-p/commit/3b42601))
+
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/critocrito/combinators-p/compare/v0.5.1...v0.6.0) (2017-10-16)
 
