@@ -2,7 +2,7 @@ import {map, reduce, identity, sum, isEqual} from "lodash/fp";
 import jsc, {property} from "jsverify";
 
 import {singleValueArb, plusP} from "./arbitraries";
-import {of, flow, flow2, flow3, compose} from "../lib";
+import {of, flow, flow2, flow3, flow4, compose} from "../lib";
 
 const sumP = (...args) => of(sum(args));
 const fixture = Symbol("fixture");
@@ -37,13 +37,24 @@ describe("The flow combinator", () => {
     async (x, y, z) => isEqual(await flow3([sumP], x, y, z), x + y + z)
   );
 
-  [flow, flow2, flow3].forEach(f =>
+  property(
+    "lifts four arguments into the pipe",
+    "nat",
+    "nat",
+    "nat",
+    "nat",
+    async (w, x, y, z) =>
+      isEqual(await flow4([sumP], w, x, y, z), w + x + y + z)
+  );
+
+  [flow, flow2, flow3, flow4].forEach(f =>
     describe("has argument type checks", () => {
       property(
         `${f.name} throws if the first argument is not an array`,
         singleValueArb,
         a => {
-          const block = () => f(a, ...[of(fixture), of(fixture), of(fixture)]);
+          const block = () =>
+            f(a, ...[of(fixture), of(fixture), of(fixture), of(fixture)]);
           return jsc.throws(
             block,
             TypeError,
