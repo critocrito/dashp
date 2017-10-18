@@ -1,24 +1,20 @@
 import {map, reduce, identity, sum, isEqual} from "lodash/fp";
-import {property} from "jsverify";
+import jsc, {property} from "jsverify";
 
-import {plusP} from "./arbitraries";
+import {singleValueArb, plusP} from "./arbitraries";
 import {of, flow, flow2, flow3, compose} from "../lib";
 
 const sumP = (...args) => of(sum(args));
+const fixture = Symbol("fixture");
 
 describe("The flow combinator", () => {
-  property(
-    "composes a list of functions",
-    "array nat",
-    "nat",
-    async (xs, y) => {
-      const fs = map(plusP, xs);
-      return isEqual(await flow(fs, y), sum(xs) + y);
-    }
-  );
+  property("chains a list of functions", "array nat", "nat", async (xs, y) => {
+    const fs = map(plusP, xs);
+    return isEqual(await flow(fs, y), sum(xs) + y);
+  });
 
   property(
-    "is equivalent to composing compositions of functions",
+    "is equivalent to composing functions",
     "array nat",
     "nat",
     async (xs, y) => {
@@ -39,5 +35,22 @@ describe("The flow combinator", () => {
     "nat",
     "nat",
     async (x, y, z) => isEqual(await flow3([sumP], x, y, z), x + y + z)
+  );
+
+  [flow, flow2, flow3].forEach(f =>
+    describe("has argument type checks", () => {
+      property(
+        `${f.name} throws if the first argument is not an array`,
+        singleValueArb,
+        a => {
+          const block = () => f(a, ...[of(fixture), of(fixture), of(fixture)]);
+          return jsc.throws(
+            block,
+            TypeError,
+            new RegExp(`^Future#${f.name} (.+)to be an array`)
+          );
+        }
+      );
+    })
   );
 });
