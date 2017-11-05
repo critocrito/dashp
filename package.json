@@ -1,6 +1,6 @@
 {
   "name": "dashp",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Utilities for monadic promises.",
   "main": "_dist/dashp.js",
   "browser": "_dist/dashp.js",
