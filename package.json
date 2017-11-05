@@ -6,7 +6,7 @@
   "browser": "_dist/dashp.js",
   "module": "lib/index.js",
   "engines": {
-    "node": ">=7.6"
+    "node": ">=4"
   },
   "config": {
     "srcDir": "lib",
