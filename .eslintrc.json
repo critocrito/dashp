@@ -24,7 +24,7 @@
     ],
     "import/no-extraneous-dependencies": [
       "error",
-      {"devDependencies": ["**/test/**/*.js"]}
+      {"devDependencies": ["rollup.config.js", "**/test/**/*.js"]}
     ]
   },
   "plugins": ["import", "promise", "lodash-fp", "prettier"]

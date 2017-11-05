@@ -1,9 +1,9 @@
 {
-  "name": "combinators-p",
+  "name": "dashp",
   "version": "0.8.0",
-  "description": "Functions for monadic promises.",
-  "main": "_dist/combinators-p.js",
-  "browser": "_dist/combinators-p.js",
+  "description": "Utilities for monadic promises.",
+  "main": "_dist/dashp.js",
+  "browser": "_dist/dashp.js",
   "module": "lib/index.js",
   "engines": {
     "node": ">=7.6"
@@ -15,7 +15,7 @@
   },
   "scripts": {
     "commitmsg": "! git rev-parse --abbrev-ref HEAD | grep -q master || validate-commit-msg",
-    "precommit": "lint-staged",
+    "precommit": "! git rev-parse --abbrev-ref HEAD | grep -q master || (lint-staged && npm run test)",
     "prepublishOnly": "npm run build",
     "publish": "git push --follow-tags origin master",
     "watch": "npm run test -- -w",
@@ -29,7 +29,7 @@
     "release": "npm run build -s && standard-version -i Changelog.md -m \"chore(release): Bumped to version %s.\" --sign",
     "release-candidate": "npm run release -- --prerelease \"rc\""
   },
-  "repository": "https://github.com/critocrito/combinators-p.git",
+  "repository": "https://github.com/critocrito/dashp.git",
   "keywords": [
     "async",
     "promise",
@@ -43,8 +43,8 @@
   ],
   "author": "Christo <christo@cryptodrunks.net>",
   "license": "GPL-3.0",
-  "bugs": "https://github.com/critocrito/combinators-p/issues",
-  "homepage": "https://github.com/critocrito/combinators-p#Readme.md",
+  "bugs": "https://github.com/critocrito/dashp/issues",
+  "homepage": "https://github.com/critocrito/dashp#Readme.md",
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",

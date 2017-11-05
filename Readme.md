@@ -1,8 +1,12 @@
-# `combinators-p`
+# DashP
 
-[![Build Status](https://travis-ci.org/critocrito/combinators-p.svg?branch=master)](https://travis-ci.org/critocrito/combinators-p)
+Utilities for monadic promises.
 
-`combinators-p` allows to program with
+## Synopsis
+
+[![Build Status](https://travis-ci.org/critocrito/dashp.svg?branch=master)](https://travis-ci.org/critocrito/dashp)
+
+DashP allows to program with
 [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 in a functional style. It offers a collection of higher-order and utility
 functions that operate on Promises.
@@ -17,11 +21,10 @@ structure.
 This library intends to be very lightweight. It has no external dependencies
 and has a size of less than 3K when minified and gzipped.
 
-## Synopsis
 
 ```javascript
 import {getJson, storeDb} from './async-utils';
-import {flowP, tapP} from 'combinators-p';
+import {flowP, tapP} from 'dashp';
 
 const url = "https://url.horse/api";
 
@@ -35,7 +38,7 @@ await apiCall(url);
 <a href="http://promises-aplus.github.com/promises-spec"><img width="82" height="82" alt="Promises/A+" src="https://promisesaplus.com/assets/logo-small.png"></a>
 <a href="https://github.com/rpominov/static-land"><img width="131" height="82" src="https://raw.githubusercontent.com/rpominov/static-land/master/logo/logo.png" /></a>
 
-`combinators-p` is [compatible with Promises/A+ and ES6 Promises](promises).
+DashP is [compatible with Promises/A+ and ES6 Promises](promises).
 It also implements [Static Land](https://github.com/rpominov/static-land)
 [`Functor`](https://github.com/rpominov/static-land/blob/master/docs/spec.md#functor),
 [`Bifunctor`](https://github.com/rpominov/static-land/blob/master/docs/spec.md#bifunctor),
@@ -52,7 +55,7 @@ and
 
 ## Usage
 
-    npm install --save combinators-p
+    npm install --save dashp
 
 Every function has an alias that appends _P_ to the function name,
 e.g. `flowP` is an alias for `flow` and `collectP3` is an alias for
@@ -61,13 +64,13 @@ can clash.
 
 ```javascript
 import {map, sum} from "lodash/fp";
-import {mapP} from "combinators-p";
+import {mapP} from "dashp";
 
 map(sum, [1, 2, 3]); // Lodash version.
-mapP(sum, [1, 2, 3]); // combinators-p version.
+mapP(sum, [1, 2, 3]); // dashp version.
 ```
 
-`combinators-p` depends on [`Array.isArray`][JS:Array.isArray]. You may need
+DashP depends on [`Array.isArray`][JS:Array.isArray]. You may need
 to polyfill it if your JavaScript environment doesn't provide it.
 
 <details><summary>Creating new Promises</summary>
@@ -135,7 +138,7 @@ the applied value. This function is compliant with the [Static Land
 Applicative specification][SL:applicative].
 
 ```javascript
-import {of} from "combinators-p";
+import {of} from "dashp";
 
 const p = of(23);
 
@@ -155,7 +158,7 @@ This function can either take an `Error` object or an string. If a string is
 provided, it is converted to an `Error`.
 
 ```javascript
-import {reject} from "Combinators-p";
+import {reject} from "dashp";
 
 const msg = "Boom!";
 
@@ -180,7 +183,7 @@ promise gets rejected. This function is compliant with the [Static Land
 Functor specification](SL:functor).
 
 ```javascript
-import {of, map} from "combinators-p";
+import {of, map} from "dashp";
 
 const p = of(1);
 const f = x => x + 1;
@@ -202,7 +205,7 @@ the success value of a promise. This function is compliant with the [Static
 Land Bifunctor specification](SL:bifunctor).
 
 ```javascript
-import {of, bimap} from "combinators-p";
+import {of, bimap} from "dashp";
 
 const f = () => console.log('Boom!');
 const g = x => x + 1;
@@ -225,7 +228,7 @@ This function is compliant with the [Static Land Apply
 specification](SL:apply).
 
 ```javascript
-import {of, ap} from "combinators-p";
+import {of, ap} from "dashp";
 
 const pf = of(v => v + 1);
 const p = of(1);
@@ -247,7 +250,7 @@ This is equivalent to `promise.then(f)`. In practice `chain` works the same as
 [Static Land Chain specification](SL:chain).
 
 ```javascript
-import {of, chain} from "combinators-p";
+import {of, chain} from "dashp";
 
 const f = x => of(x + 1);
 
@@ -268,7 +271,7 @@ composite function is denoted `g∘f : X → Z`, defined by `(g∘f)(x) = g(f(x)
 for all `x` in `X`.
 
 ```javascript
-import {of, compose} from "combinators-p";
+import {of, compose} from "dashp";
 
 const f = x => of(x + 1);
 const g = x => of(x + 5);
@@ -289,7 +292,7 @@ whenElse :: Promise p => (p a -> Boolean) -> (p a -> p b) -> (p a -> p b) -> p c
 This is a conditional branch like the builtin `if ... else` construct.
 
 ```javascript
-import {whenElse} from "combinators-p";
+import {whenElse} from "dashp";
 
 const predicate = userExists;
 const consequent = updateUser;
@@ -312,7 +315,7 @@ returns true, it will return the result of the consequent, otherwise it
 returns the original value.
 
 ```javascript
-import {when} from "combinators-p";
+import {when} from "dashp";
 
 const pred = userExists;
 const consequent = updateUser;
@@ -333,7 +336,7 @@ This is a conditional branch like the builtin `if (! ... ) ... else`
 construct.
 
 ```javascript
-import {unlessElse} from "combinators-p";
+import {unlessElse} from "dashp";
 
 const predicate = userExists;
 const consequent = createUser;
@@ -356,7 +359,7 @@ predicate returns false, it will return the result of the consequent,
 otherwise it returns the original value.
 
 ```javascript
-import {unless} from "combinators-p";
+import {unless} from "dashp";
 
 const pred = userExists;
 const consequent = createUser;
@@ -377,7 +380,7 @@ This is equivalent to `Promise.all`, with the difference that it creates a
 callable function.
 
 ```javascript
-import {all} from "combinators-p";
+import {all} from "dashp";
 
 const f = all([openFile1(), opeFile2(), openFile3()]);
 
@@ -396,7 +399,7 @@ fold :: Promise p => (p b c -> p b a -> p b c) -> p b c -> [p b a] -> p b c
 This is equivalent to `Array.reduce`.
 
 ```javascript
-import {of, fold} from "combinators-p";
+import {of, fold} from "dashp";
 
 const f = (acc, x) => of(acc + x);
 const xs = [...Array(5).keys()];
@@ -423,7 +426,7 @@ promises at the same time.
 - `collect5`: Resolve five promises at the same time.
 
 ```javascript
-import {of, collect} from "combinators-p";
+import {of, collect} from "dashp";
 
 const f = x => of(x + 1);
 const xs = [...Array(5).keys()];
@@ -451,7 +454,7 @@ at the same time.
 - `collect5`: Resolve five promises at the same time.
 
 ```javascript
-import {flatmap} from "combinators-p";
+import {flatmap} from "dashp";
 
 const f = x => [x, x];
 const xs = [1, 2];
@@ -469,7 +472,7 @@ isPromise :: a -> Boolean
 ```
 
 ```javascript
-import {of, isPromise} from "combinators-p";
+import {of, isPromise} from "dashp";
 
 const p = of(23);
 
@@ -486,7 +489,7 @@ tap :: Promise p => (p b a -> ()) -> p b a -> p b a
 ```
 
 ```javascript
-import {of, flow, tap} from "combinators-p";
+import {of, flow, tap} from "dashp";
 
 const f = a => of(a);
 
@@ -506,7 +509,7 @@ This function is like `tap`, but makes a deep clone of the value before
 applying it to the function.
 
 ```javascript
-import {of, flow, tapClone} from "combinators-p";
+import {of, flow, tapClone} from "dashp";
 
 const f = a => of(a);
 
@@ -525,7 +528,7 @@ caught :: Promise p => (p b -> p b a) -> p b -> p b a
 This is equivalent to `Promise.catch`.
 
 ```javascript
-import {caught, flow} from "combinators-p";
+import {caught, flow} from "dashp";
 
 const f = () => new Error("Boom");
 
@@ -545,7 +548,7 @@ If the value is an array, flatten it to the formal parameters of the
 fulfillment handler.
 
 ```javascript
-import {of, flow, spread} from "combinators-p";
+import {of, flow, spread} from "dashp";
 
 const plus = (x, y) => x + y;
 const p = of([1, 2]);
@@ -568,7 +571,7 @@ forms a pipe where the results flow from left to right so to speak. It's a
 shortcut for composing more than two functions.
 
 ```javascript
-import {of, flow} from "combinators-p";
+import {of, flow} from "dashp";
 
 const f = (x, y) => of(x + y);
 const fs = [...Array(5).keys()].map(f);
@@ -589,7 +592,7 @@ This function works like `flow`, but it accepts two arguments, that are lifted
 into the first function of the chain.
 
 ```javascript
-import {of, flow2} from "combinators-p";
+import {of, flow2} from "dashp";
 
 const f = (x, y) => of(x + y);
 const fs = [...Array(5).keys()].map(f);
@@ -610,7 +613,7 @@ This function works like `flow`, but it accepts three arguments, that are lifted
 into the first function of the chain.
 
 ```javascript
-import {of, flow3} from "combinators-p";
+import {of, flow3} from "dashp";
 
 const f = (x, y) => of(x + y);
 const g = (x, y, z) => of(x + y + z);
@@ -632,7 +635,7 @@ This function works like `flow`, but it accepts four arguments, that are lifted
 into the first function of the chain.
 
 ```javascript
-import {of, flow4} from "combinators-p";
+import {of, flow4} from "dashp";
 
 const f = (x, y) => of(x + y);
 const g = (w, x, y, z) => of(w + x + y + z);
@@ -651,7 +654,7 @@ constant :: a -> (b -> Promise a)
 ```
 
 ```javascript
-import {constant} from "combinators-p";
+import {constant} from "dashp";
 
 const f = constant("Hello");
 
@@ -668,7 +671,7 @@ lift2 :: Promise p => (a -> a -> a) -> p b a -> p b a -> p b a
 ```
 
 ```javascript
-import {of, lift2} from "combinators-p";
+import {of, lift2} from "dashp";
 
 const f = (x, y) => x + y;
 
@@ -685,7 +688,7 @@ lift3 :: Promise p => (a -> a -> a -> a) -> p b a -> p b a -> p b a -> p b a
 ```
 
 ```javascript
-import {of, lift3} from "combinators-p";
+import {of, lift3} from "dashp";
 
 const f = (x, y, z) => x + y + z;
 
@@ -702,7 +705,7 @@ lift4 :: Promise p => (a -> a -> a -> a -> a) -> p b a -> p b a -> p b a -> p b 
 ```
 
 ```javascript
-import {of, lift4} from "combinators-p";
+import {of, lift4} from "dashp";
 
 const f = (w, x, y, z) => w + x + y + z;
 
@@ -721,7 +724,7 @@ delay :: Promise p => x -> p b a -> p b a
 The first arguments is the delay in milliseconds.
 
 ```javascript
-import {of, delay} from "combinators-p";
+import {of, delay} from "dashp";
 
 delay(100, of(23)).then(console.log);
 // Waits 100 ms and print 23.
@@ -740,7 +743,7 @@ can be a function as well. In it's standard version, the action function
 doesn't receive any arguments.
 
 ```javascript
-import {retry} from "combinators-p";
+import {retry} from "dashp";
 
 // Retries `fetchUser` in case of failure.
 retry(fetchUser).then(console.log).catch(console.error);

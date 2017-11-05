@@ -19,9 +19,9 @@ export default [
     output: {
       file: pkg.main,
       format: "umd",
-      sourcemap: true,  
+      sourcemap: true,
     },
-    name: "combinators-p",
+    name: "dashp",
     plugins,
   },
   {
@@ -31,7 +31,7 @@ export default [
       format: "umd",
       sourcemap: true,
     },
-    name: "combinators-p",
+    name: "dashp",
     plugins: minify,
   },
 ];
