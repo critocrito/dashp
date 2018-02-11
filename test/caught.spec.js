@@ -18,7 +18,7 @@ describe("The caught operator", () => {
     (isEqual(x, fixture) && mock.verify()).should.equal(true);
   });
 
-  it("calls exception handlers when throwing an error", async () => {
+  it("doesn't call the exception handlers unless it throws", async () => {
     const mock = sinon.mock().never();
     const stub = sinon.stub().resolves(fixture);
     const x = await caught(mock, stub());
