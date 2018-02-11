@@ -6,6 +6,7 @@ import {of, caught} from "../lib";
 import {anyArb} from "./arbitraries";
 
 const fixture = Symbol("fixture");
+const isFixture = isEqual(fixture);
 
 describe("The caught operator", () => {
   it("calls exception handlers when throwing an error", async () => {
@@ -15,14 +16,14 @@ describe("The caught operator", () => {
       .resolves(fixture);
     const stub = sinon.stub().rejects();
     const x = await caught(mock, stub());
-    (isEqual(x, fixture) && mock.verify()).should.equal(true);
+    (isFixture(x) && mock.verify()).should.equal(true);
   });
 
   it("doesn't call the exception handlers unless it throws", async () => {
     const mock = sinon.mock().never();
     const stub = sinon.stub().resolves(fixture);
     const x = await caught(mock, stub());
-    (isEqual(x, fixture) && mock.verify()).should.equal(true);
+    (isFixture(x) && mock.verify()).should.equal(true);
   });
 
   property("throws if the first argument is not a function", anyArb, f => {
