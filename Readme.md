@@ -9,17 +9,20 @@ Utilities for monadic promises.
 DashP allows to program with
 [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 in a functional style. It offers a collection of higher-order and utility
-functions that operate on Promises.
+functions that operate on Promises. It feels similar to
+[`lodash/fp`](https://github.com/lodash/lodash/wiki/FP-Guide), but then for
+promises.
 
-It implements [a *monadic* interface](#interoperability) for Promises, but
-unlike other [great libraries](https://github.com/fluture-js/Fluture) it
-doesn't introduce new semantics. It just forms a small wrapper around the
-native Promise API. This is great for integrating it into any codebase that
-already uses Promises, without having to relearn new semantics or changing the
-structure.
+It implements [a (almost) *monadic* interface](#interoperability) for
+Promises, but unlike other [great](https://github.com/briancavalier/creed)
+[libraries](https://github.com/fluture-js/Fluture) it doesn't introduce new
+semantics. It just forms a small wrapper around the native Promise API. This
+is great for integrating it into any codebase that already uses Promises,
+without having to relearn new semantics or changing the structure. It retains
+as well the eager execution semantics of native Promises.
 
 This library intends to be very lightweight. It has no external dependencies
-and has a size of less than 3K when minified and gzipped.
+and has a size of 3-4K when minified and gzipped.
 
 
 ```javascript
@@ -47,6 +50,11 @@ It also implements [Static Land](https://github.com/rpominov/static-land)
 [`Chain`](https://github.com/rpominov/static-land/blob/master/docs/spec.md#chain)
 and
 [`Monad`](https://github.com/rpominov/static-land/blob/master/docs/spec.md#monad).
+
+As @Avaq points out in #1, Promises in their current implementation can't be
+real Applicative Functors, since if a Promise holds another Promise, it
+automatically assimilates it's value. Therefore `dashp` is actually cheating
+on the precise semantics of Applicatives.
 
 ## Contents
 
@@ -246,8 +254,9 @@ chain :: Promise p => (a -> p b) -> p a -> p b
 ```
 
 This is equivalent to `promise.then(f)`. In practice `chain` works the same as
-`map`. The difference is only in the type. This function is compliant with the
-[Static Land Chain specification](SL:chain).
+`map` since Promises [can't be real Applicative
+Functors](https://github.com/critocrito/dashp/issues/1). This function is
+compliant with the [Static Land Chain specification](SL:chain).
 
 ```javascript
 import {of, chain} from "dashp";
