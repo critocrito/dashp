@@ -58,7 +58,9 @@ describe("The flow combinator", () => {
           return jsc.throws(
             block,
             TypeError,
-            new RegExp(`^Future#${f.name} (.+)to be an array`)
+            new RegExp(
+              `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be an array`
+            )
           );
         }
       );

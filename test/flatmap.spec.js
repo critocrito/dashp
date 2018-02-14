@@ -67,7 +67,9 @@ describe("flatmap over a list", () => {
         return jsc.throws(
           block,
           TypeError,
-          new RegExp(`^Future#${f.name} (.+)to be a function`)
+          new RegExp(
+            `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a function`
+          )
         );
       }
     );
@@ -80,7 +82,9 @@ describe("flatmap over a list", () => {
         return jsc.throws(
           block,
           TypeError,
-          new RegExp(`^Future#${f.name} (.+)to be an array`)
+          new RegExp(
+            `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be an array`
+          )
         );
       }
     );

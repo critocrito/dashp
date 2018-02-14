@@ -70,7 +70,9 @@ describe("The conditional operators", () => {
         return jsc.throws(
           block,
           TypeError,
-          new RegExp(`Future#${f.name} (.+)to be a function`)
+          new RegExp(
+            `Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a function`
+          )
         );
       }
     );
@@ -84,7 +86,9 @@ describe("The conditional operators", () => {
         return jsc.throws(
           block,
           TypeError,
-          new RegExp(`^Future#${f.name} (.+)to be a promise`)
+          new RegExp(
+            `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a promise`
+          )
         );
       }
     );
@@ -101,7 +105,9 @@ describe("The conditional operators", () => {
         return jsc.throws(
           block,
           TypeError,
-          new RegExp(`^Future#${f.name} (.+)to be a function`)
+          new RegExp(
+            `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a function`
+          )
         );
       }
     );
@@ -115,7 +121,9 @@ describe("The conditional operators", () => {
         return jsc.throws(
           block,
           TypeError,
-          new RegExp(`^Future#${f.name} (.+)to be a promise`)
+          new RegExp(
+            `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a promise`
+          )
         );
       }
     );

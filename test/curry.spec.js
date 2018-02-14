@@ -91,6 +91,6 @@ describe("The currying of functions", () => {
 
   property("set the function name", "string", s => {
     const f = curry2(s, x => x);
-    return isEqual(f.name, s);
+    return isEqual(f.name.replace(/-[\d]$/, ""), s);
   });
 });
