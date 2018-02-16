@@ -589,6 +589,37 @@ flow(fs, 0).then(console.log);
 // Prints 10
 ```
 
+`flow` treats any occurrence of `caught` as a special case by rewriting the
+function chains to wrap relevant parts in an exception handler. In order to
+support a syntax like:
+
+```
+import {flow, caught} from "dashp";
+
+const boom = () => { throw new Error; };
+const notBoom = () => 23;
+
+flow([
+  boom,
+  notBoom,
+  caught(console.error),
+  notBoom,
+]);
+```
+
+`flow` will parse the function chain for any occurrence of `caught` and
+rewrite the function chain accordingly to look like this:
+
+```
+flow([
+  x => caught(console.error, flow([boom, notBoom], x)),
+  notBoom,
+]);
+```
+
+The `name` attribute of every function is checked to satisfy the following
+condition: `/^caught-/.test(f.name)`.
+
 ### `flow2`
 
 Lift a composed function chain over two arguments.

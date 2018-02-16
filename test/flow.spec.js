@@ -1,4 +1,4 @@
-import {map, reduce, identity, sum, isEqual} from "lodash/fp";
+import {map, reduce, range, identity, sum, isEqual} from "lodash/fp";
 import jsc, {property} from "jsverify";
 
 import {singleValueArb, plusP} from "./arbitraries";
@@ -47,23 +47,22 @@ describe("The flow combinator", () => {
       isEqual(await flow4([sumP], w, x, y, z), w + x + y + z)
   );
 
-  [flow, flow2, flow3, flow4].forEach(f =>
+  [flow, flow2, flow3, flow4].forEach((f, i) => {
+    const name = f.name.replace(/-\d$/, "");
+
     describe("has argument type checks", () => {
       property(
-        `${f.name} throws if the first argument is not an array`,
+        `${name} throws if the first argument is not an array`,
         singleValueArb,
         a => {
-          const block = () =>
-            f(a, ...[of(fixture), of(fixture), of(fixture), of(fixture)]);
+          const block = () => f(a, ...range(() => of(fixture), i + 1));
           return jsc.throws(
             block,
             TypeError,
-            new RegExp(
-              `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be an array`
-            )
+            new RegExp(`^Future#${name} (.+)to be an array`)
           );
         }
       );
-    })
-  );
+    });
+  });
 });
