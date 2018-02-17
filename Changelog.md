@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.9.0"></a>
+# [0.9.0](https://github.com/critocrito/dashp/compare/v0.8.1...v0.9.0) (2018-02-17)
+
+
+### Bug Fixes
+
+* **flow:** Rewrite function chains to handle caught correctly. ([d347644](https://github.com/critocrito/dashp/commit/d347644)), closes [#2](https://github.com/critocrito/dashp/issues/2)
+
+
+### Features
+
+* **namefn:** Set names for non curried functions as well. ([5607dd2](https://github.com/critocrito/dashp/commit/5607dd2))
+
+
+
 <a name="0.8.1"></a>
 ## [0.8.1](https://github.com/critocrito/dashp/compare/v0.8.0...v0.8.1) (2017-11-05)
 
