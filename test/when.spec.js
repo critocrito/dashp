@@ -33,26 +33,26 @@ const unlessElseTable = {
 };
 
 describe("The conditional operators", () => {
-  property("when is equivalent to if", jsc.bool, x => {
+  property("when is equivalent to if", "bool", x => {
     const stub = sinon.stub().returns(consequent);
     const result = pred(x)() ? whenTable.true : whenTable.false;
     return when(pred(x), stub, of(fixture)).then(isEqual(result));
   });
 
-  property("whenElse is equivalent to if-else", jsc.bool, x => {
+  property("whenElse is equivalent to if-else", "bool", x => {
     const stubC = sinon.stub().returns(consequent);
     const stubA = sinon.stub().returns(alternative);
     const result = pred(x)() ? whenElseTable.true : whenElseTable.false;
     return whenElse(pred(x), stubC, stubA, of(fixture)).then(isEqual(result));
   });
 
-  property("unless is equivalent to if-not", jsc.bool, x => {
+  property("unless is equivalent to if-not", "bool", x => {
     const stub = sinon.stub().returns(consequent);
     const result = pred(x)() ? unlessTable.true : unlessTable.false;
     return unless(pred(x), stub, of(fixture)).then(isEqual(result));
   });
 
-  property("unlessElse is equivalent to if-not-else", jsc.bool, x => {
+  property("unlessElse is equivalent to if-not-else", "bool", x => {
     const stubC = sinon.stub().returns(consequent);
     const stubA = sinon.stub().returns(alternative);
     const result = pred(x)() ? unlessElseTable.true : unlessElseTable.false;
@@ -96,10 +96,10 @@ describe("The conditional operators", () => {
 
     property(
       `${f.name} allows synchronous and asynchronous arguments`,
-      jsc.bool,
-      jsc.bool,
-      jsc.bool,
-      jsc.bool,
+      "bool",
+      "bool",
+      "bool",
+      "bool",
       (x, rnd, rnd2, rnd3) => {
         const predicate = rnd ? pred(x) : predP(x);
         const stubC = rnd2
@@ -151,9 +151,9 @@ describe("The conditional operators", () => {
 
     property(
       `${f.name} allows synchronous and asynchronous arguments`,
-      jsc.bool,
-      jsc.bool,
-      jsc.bool,
+      "bool",
+      "bool",
+      "bool",
       (x, rnd, rnd2) => {
         const predicate = rnd ? pred(x) : predP(x);
         const stubC = rnd2
