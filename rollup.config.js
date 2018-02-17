@@ -17,21 +17,21 @@ export default [
   {
     input: "lib/index.js",
     output: {
+      name: "dashp",
       file: pkg.main,
       format: "umd",
       sourcemap: true,
     },
-    name: "dashp",
     plugins,
   },
   {
     input: "lib/index.js",
     output: {
+      name: "dashp",
       file: `${pkg.browser.split(".")[0]}.min.js`,
       format: "umd",
       sourcemap: true,
     },
-    name: "dashp",
     plugins: minify,
   },
 ];
