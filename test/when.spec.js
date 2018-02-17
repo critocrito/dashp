@@ -1,11 +1,12 @@
-import {identity, isEqual} from "lodash/fp";
+import {isEqual} from "lodash/fp";
 import jsc, {property} from "jsverify";
 import sinon from "sinon";
 
 import {anyArb} from "./arbitraries";
 import {of, when, whenElse, unless, unlessElse} from "../lib";
 
-const pred = bool => () => identity(bool);
+const pred = bool => () => bool;
+const predP = bool => () => of(bool);
 
 const fixture = Symbol("fixture");
 const consequent = Symbol("consequent");
@@ -92,6 +93,26 @@ describe("The conditional operators", () => {
         );
       }
     );
+
+    property(
+      `${f.name} allows synchronous and asynchronous arguments`,
+      jsc.bool,
+      jsc.bool,
+      jsc.bool,
+      jsc.bool,
+      (x, rnd, rnd2, rnd3) => {
+        const predicate = rnd ? pred(x) : predP(x);
+        const stubC = rnd2
+          ? sinon.stub().resolves(consequent)
+          : sinon.stub().returns(consequent);
+        const stubA = rnd3
+          ? sinon.stub().resolves(alternative)
+          : sinon.stub().returns(alternative);
+        return f(predicate, stubC, stubA, of(fixture)).then(
+          result => isEqual(result, consequent) || isEqual(result, alternative)
+        );
+      }
+    );
   });
 
   [when, unless].forEach(f => {
@@ -124,6 +145,22 @@ describe("The conditional operators", () => {
           new RegExp(
             `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a promise`
           )
+        );
+      }
+    );
+
+    property(
+      `${f.name} allows synchronous and asynchronous arguments`,
+      jsc.bool,
+      jsc.bool,
+      jsc.bool,
+      (x, rnd, rnd2) => {
+        const predicate = rnd ? pred(x) : predP(x);
+        const stubC = rnd2
+          ? sinon.stub().resolves(consequent)
+          : sinon.stub().returns(consequent);
+        return f(predicate, stubC, of(fixture)).then(
+          result => isEqual(result, consequent) || isEqual(result, fixture)
         );
       }
     );

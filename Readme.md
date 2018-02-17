@@ -308,7 +308,9 @@ Branch left if the predicate holds, otherwise branch right.
 whenElse :: Promise p => (p a -> Boolean) -> (p a -> p b) -> (p a -> p b) -> p c
 ```
 
-This is a conditional branch like the builtin `if ... else` construct.
+This is a conditional branch like the builtin `if ... else` construct. The
+`predicate`, `consequent` and `alternative` functions can either return a
+value or a Promise.
 
 ```javascript
 import {whenElse} from "dashp";
@@ -331,7 +333,8 @@ when :: Promise p => (p a -> Boolean) -> (p a -> p b) -> p c
 
 This is a conditional branch like the builtin `if` construct. If the predicate
 returns true, it will return the result of the consequent, otherwise it
-returns the original value.
+returns the original value. The `predicate` and `consequent` functions can
+either return a value or a Promise.
 
 ```javascript
 import {when} from "dashp";
@@ -352,7 +355,8 @@ unlexxElse :; Promise p => (p a -> Boolean) -> (p a -> p b) -> (p a -> p b) -> p
 ```
 
 This is a conditional branch like the builtin `if (! ... ) ... else`
-construct.
+construct.  The `predicate`, `consequent` and `alternative` functions can
+either return a value or a Promise.
 
 ```javascript
 import {unlessElse} from "dashp";
@@ -375,7 +379,8 @@ unless :: Promise p => (p a -> Boolean) -> (p a -> p b) -> p c
 
 This is a conditional branch like the builtin `if (! ...)` construct. If the
 predicate returns false, it will return the result of the consequent,
-otherwise it returns the original value.
+otherwise it returns the original value. The `predicate` and `consequent`
+functions can either return a value or a Promise.
 
 ```javascript
 import {unless} from "dashp";
