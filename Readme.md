@@ -83,6 +83,8 @@ mapP(sum, [1, 2, 3]); // dashp version.
 DashP depends on [`Array.isArray`][JS:Array.isArray]. You may need
 to polyfill it if your JavaScript environment doesn't provide it.
 
+## API
+
 <details><summary>Creating new Promises</summary>
 
 - [`of`: Lift a value into a promise.](#of)
@@ -140,8 +142,6 @@ to polyfill it if your JavaScript environment doesn't provide it.
 - [`retry`: Call an action, and retry it in case it fails.](#retry)
 
 </details>
-
-## API
 
 ### `of`
 
