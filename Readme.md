@@ -9,11 +9,11 @@ Utilities for monadic promises.
 DashP allows to program with
 [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 in a functional style. It offers a collection of higher-order and utility
-functions that operate on Promises. It feels similar to
+functions that operate on Promises and are all curried. It feels similar to
 [`lodash/fp`](https://github.com/lodash/lodash/wiki/FP-Guide), but then for
 promises.
 
-It implements [a (almost) *monadic* interface](#interoperability) for
+It implements [an (almost) *monadic* interface](#interoperability) for
 Promises, but unlike other [great](https://github.com/briancavalier/creed)
 [libraries](https://github.com/fluture-js/Fluture) it doesn't introduce new
 semantics. It just forms a small wrapper around the native Promise API. This
@@ -51,10 +51,12 @@ It also implements [Static Land](https://github.com/rpominov/static-land)
 and
 [`Monad`](https://github.com/rpominov/static-land/blob/master/docs/spec.md#monad).
 
-As @Avaq points out in #1, Promises in their current implementation can't be
-real Applicative Functors, since if a Promise holds another Promise, it
-automatically assimilates it's value. Therefore `dashp` is actually cheating
-on the precise semantics of Applicatives.
+As [Avaq](https://github.com/Avaq) points out in
+[#1](https://github.com/critocrito/dashp/issues/1), Promises in their current
+implementation can't be real Applicative Functors. If a Promise holds another
+Promise, it automatically assimilates it's value. The `then` interface acts as
+`map` and `flatMap` at the same time. Therefore `dashp` is cheating on the
+precise semantics of Applicatives.
 
 ## Contents
 
@@ -107,7 +109,15 @@ to polyfill it if your JavaScript environment doesn't provide it.
 - [`all`: Resolve all promises in an array.](#all)
 - [`fold`: Reduce a list of values to a single value, using a reduction function.](#fold)
 - [`collect`: Map a function over every element of a list.](#collect)
+- [`collect2`: Map a function over every element of a list, two at a time.](#collect2)
+- [`collect3`: Map a function over every element of a list, three at a time.](#collect3)
+- [`collect4`: Map a function over every element of a list, four at a time.](#collect4)
+- [`collect5`: Map a function over every element of a list, five at a time.](#collect5)
 - [`flatmap`: Map a function over every element of a list and concatenate the results.](#flatmap)
+- [`flatmap2`: Map a function over every element of a list and concatenate the results, two at a time.](#flatmap2)
+- [`flatmap3`: Map a function over every element of a list and concatenate the results, three at a time.](#flatmap3)
+- [`flatmap4`: Map a function over every element of a list and concatenate the results, four at a time.](#flatmap4)
+- [`flatmap5`: Map a function over every element of a list and concatenate the results, five at a time.](#flatmap5)
 
 </details>
 
@@ -426,13 +436,7 @@ collect :: Promise p => (p b a -> p b a) -> [p b a] -> p b [a]
 ```
 
 This is equivalent to `Array.map`. In it's standard version it only resolves
-one promise at a time. There are specialized versions to resolve multiple
-promises at the same time.
-
-- `collect2`: Resolve two promises at the same time.
-- `collect3`: Resolve three promises at the same time.
-- `collect4`: Resolve four promises at the same time.
-- `collect5`: Resolve five promises at the same time.
+one promise at a time.
 
 ```javascript
 import {of, collect} from "dashp";
@@ -444,6 +448,53 @@ collect(f, xs).then(console.log);
 // Prints [1, 2, 3, 4, 5]
 ```
 
+### `collect2`
+
+Map a function over every element of a list, resolve two promises in parallel.
+
+```hs
+collect :: Promise p => (p b a -> p b a) -> [p b a] -> p b [a]
+```
+
+This functions works like `collect`, with the only difference that two
+promises are resolved at the same time.
+
+### `collect3`
+
+Map a function over every element of a list, resolve three promises in
+parallel.
+
+```hs
+collect3 :: Promise p => (p b a -> p b a) -> [p b a] -> p b [a]
+```
+
+This functions works like `collect`, with the only difference that three
+promises are resolved at the same time.
+
+### `collect4`
+
+Map a function over every element of a list, resolve four promises in
+parallel.
+
+```hs
+collect4 :: Promise p => (p b a -> p b a) -> [p b a] -> p b [a]
+```
+
+This functions works like `collect`, with the only difference that four
+promises are resolved at the same time.
+
+### `collect5`
+
+Map a function over every element of a list, resolve five promises in
+parallel.
+
+```hs
+collect5 :: Promise p => (p b a -> p b a) -> [p b a] -> p b [a]
+```
+
+This functions works like `collect`, with the only difference that five
+promises are resolved at the same time.
+
 ### `flatmap`
 
 Map a function over every element of a list and concatenate the results.
@@ -454,13 +505,7 @@ flatmap :: Promise p => (p b a -> p b [a]) -> [p b a] -> p b [a]
 
 This is equivalent to calling `collect` and flattening the resulting list of
 lists into a single list. In it's standard version it only resolves one
-promise at a time. There are specialized versions to resolve multiple promises
-at the same time.
-
-- `collect2`: Resolve two promises at the same time.
-- `collect3`: Resolve three promises at the same time.
-- `collect4`: Resolve four promises at the same time.
-- `collect5`: Resolve five promises at the same time.
+promise at a time.
 
 ```javascript
 import {flatmap} from "dashp";
@@ -471,6 +516,54 @@ const xs = [1, 2];
 flatmap(f, xs).then(console.log);
 // Prints [1, 1, 2, 2]
 ```
+
+### `flatmap2`
+
+Map a function over every element of a list and concatenate the results,
+resolve two promises at the same time.
+
+```hs
+flatmap2 :: Promise p => (p b a -> p b [a]) -> [p b a] -> p b [a]
+```
+
+This is equivalent to `flatmap`, only that it resolves two promises in
+parallel.
+
+### `flatmap3`
+
+Map a function over every element of a list and concatenate the results,
+resolve three promises at the same time.
+
+```hs
+flatmap3 :: Promise p => (p b a -> p b [a]) -> [p b a] -> p b [a]
+```
+
+This is equivalent to `flatmap`, only that it resolves three promises in
+parallel.
+
+### `flatmap4`
+
+Map a function over every element of a list and concatenate the results,
+resolve four promises at the same time.
+
+```hs
+flatmap4 :: Promise p => (p b a -> p b [a]) -> [p b a] -> p b [a]
+```
+
+This is equivalent to `flatmap`, only that it resolves four promises in
+parallel.
+
+### `flatmap5`
+
+Map a function over every element of a list and concatenate the results,
+resolve five promises at the same time.
+
+```hs
+flatmap5 :: Promise p => (p b a -> p b [a]) -> [p b a] -> p b [a]
+```
+
+This is equivalent to `flatmap`, only that it resolves five promises in
+parallel.
 
 ### `isPromise`
 
