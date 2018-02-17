@@ -80,7 +80,7 @@ map(sum, [1, 2, 3]); // Lodash version.
 mapP(sum, [1, 2, 3]); // dashp version.
 ```
 
-DashP depends on [`Array.isArray`][JS:Array.isArray]. You may need
+DashP depends on [`Array.isArray`](JS:Array.isArray). You may need
 to polyfill it if your JavaScript environment doesn't provide it.
 
 ## API
