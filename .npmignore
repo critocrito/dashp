@@ -1,7 +1,10 @@
 test/
-npm-*.log
 rollup.config.js
+npm-*.log
+yarn-*.log
 .npmrc
 .babelrc
-.eslint*
-.gitlab*
+.eslintrc.json
+.lintstagedrc
+.travis.yml
+.nyc*
