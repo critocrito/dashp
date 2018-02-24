@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "scripts": {
+    "all": "babel-node ./all.suite.js",
+    "curry": "babel-node ./curry.suite.js",
+    "start": "for i in *.suite.js; do babel-node ./$i; done"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "benchmark": "^2.1.4",
+    "lodash": "^4.17.5"
+  }
+}

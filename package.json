@@ -11,7 +11,8 @@
   "config": {
     "srcDir": "lib",
     "testDir": "test",
-    "distDir": "_dist"
+    "distDir": "_dist",
+    "benchmarks": "./benchmarks/**/*.suite.js"
   },
   "scripts": {
     "commitmsg": "! git rev-parse --abbrev-ref HEAD | grep -q master || validate-commit-msg",
@@ -21,7 +22,7 @@
     "watch": "npm run test -- -w",
     "test": "cross-env NODE_ENV=test mocha -c -R progress --require babel-core/register -r test/helpers.js $npm_package_config_testDir/**/*.spec.js",
     "coverage": "nyc npm test",
-    "lint": "eslint --cache $npm_package_config_testDir $npm_package_config_srcDir",
+    "lint": "eslint $npm_package_config_testDir $npm_package_config_srcDir $npm_package_config_benchmarks",
     "fix": "npm run lint -- --fix",
     "compile": "npm run clean -s && rollup -c",
     "clean": "rimraf $npm_package_config_distDir",
