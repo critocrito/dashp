@@ -15,11 +15,11 @@
         ["env", {
           "targets": {
             "node": "current"
-          },
-          "plugins": [
-            "istanbul",
-          ]
+          }
         }]
+      ],
+      "plugins": [
+        "istanbul"
       ]
     }
   }
