@@ -1,11 +1,25 @@
 {
-  "presets": ["es2015"],
-  "env": {
+  "presets": [
+    [
+      "env",
+      {
+        "targets": {
+          "node": "4"
+        }
+      }
+    ]
+  ],
+  "env":{
     "test": {
-      "plugins": [
-        "istanbul",
-        "transform-regenerator",
-        "syntax-async-functions"
+      "presets": [
+        ["env", {
+          "targets": {
+            "node": "current"
+          },
+          "plugins": [
+            "istanbul",
+          ]
+        }]
       ]
     }
   }
