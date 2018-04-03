@@ -15,7 +15,7 @@
     "precommit": "! git rev-parse --abbrev-ref HEAD | grep -q master || (lint-staged && npm run test)",
     "prepublishOnly": "npm run build",
     "publish": "git push --follow-tags origin master",
-    "test": "cross-env NODE_ENV=test mocha -c -R progress -r babel-core/register -r test/helpers.js $npm_package_config_testDir/**/*.spec.js",
+    "test": "cross-env NODE_ENV=test mocha -c -R progress -r babel-register -r test/helpers.js $npm_package_config_testDir/**/*.spec.js",
     "coverage": "nyc npm test",
     "lint": "eslint $npm_package_config_testDir $npm_package_config_srcDir $npm_package_config_benchmarks",
     "fix": "npm run lint -- --fix",
