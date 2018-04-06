@@ -4,4 +4,4 @@ node_js:
   - "lts/boron"
   - "lts/carbon"
 after_script:
-  - nyc npm test && nyc report --reporter=text-lcov | coveralls
+  - npm run coverage && nyc report --reporter=text-lcov | coveralls
