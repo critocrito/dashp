@@ -4,7 +4,7 @@ Utilities for monadic promises.
 
 ## Synopsis
 
-[![Build Status](https://travis-ci.org/critocrito/dashp.svg?branch=master)](https://travis-ci.org/critocrito/dashp)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![npm version](https://img.shields.io/npm/v/dashp.svg?style=flat)](https://www.npmjs.com/package/dashp) ![Travis](https://img.shields.io/travis/critocrito/dashp.svg) [![Coverage Status](https://coveralls.io/repos/github/critocrito/dashp/badge.svg)](https://coveralls.io/github/critocrito/dashp)
 
 DashP allows to program with
 [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
