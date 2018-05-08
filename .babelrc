@@ -13,7 +13,7 @@
     "syntax-trailing-function-commas",
     "transform-object-rest-spread"
   ],
-  "env":{
+  "env": {
     "test": {
       "presets": [
         [
@@ -25,9 +25,7 @@
           }
         ]
       ],
-      "plugins": [
-        "istanbul"
-      ]
+      "plugins": ["istanbul"]
     }
   }
 }

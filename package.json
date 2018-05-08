@@ -11,18 +11,24 @@
     "benchmarks": "./benchmarks/**/*.suite.js"
   },
   "scripts": {
-    "commitmsg": "! git rev-parse --abbrev-ref HEAD | grep -q master || validate-commit-msg",
-    "precommit": "! git rev-parse --abbrev-ref HEAD | grep -q master || (lint-staged && npm run test)",
+    "commitmsg":
+      "! git rev-parse --abbrev-ref HEAD | grep -q master || validate-commit-msg",
+    "precommit":
+      "! git rev-parse --abbrev-ref HEAD | grep -q master || (lint-staged && npm run test)",
     "prepublishOnly": "npm run build",
     "publish": "git push --follow-tags origin master",
-    "test": "cross-env NODE_ENV=test mocha -c -R progress -r babel-register -r test/helpers.js $npm_package_config_testDir/**/*.spec.js",
+    "test":
+      "cross-env NODE_ENV=test mocha -c -R progress -r babel-register -r test/helpers.js $npm_package_config_testDir/**/*.spec.js",
     "coverage": "nyc npm test",
-    "lint": "eslint $npm_package_config_testDir $npm_package_config_srcDir $npm_package_config_benchmarks",
+    "lint":
+      "eslint $npm_package_config_testDir $npm_package_config_srcDir $npm_package_config_benchmarks",
     "fix": "npm run lint -- --fix",
-    "compile": "npm run clean -s && babel -d $npm_package_config_distDir $npm_package_config_srcDir --source-maps",
+    "compile":
+      "npm run clean -s && babel -d $npm_package_config_distDir $npm_package_config_srcDir --source-maps",
     "clean": "rimraf $npm_package_config_distDir",
     "build": "npm run lint -s && npm run test -s && npm run compile -s",
-    "release": "npm run build -s && standard-version -i Changelog.md -m \"chore(release): Bumped to version %s.\" --sign",
+    "release":
+      "npm run build -s && standard-version -i Changelog.md -m \"chore(release): Bumped to version %s.\" --sign",
     "release-candidate": "npm run release -- --prerelease \"rc\""
   },
   "repository": "https://github.com/critocrito/dashp.git",

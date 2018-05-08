@@ -30,11 +30,11 @@
     ],
     "prettier/prettier": [
       "error",
-      {"trailingComma": "all", "bracketSpacing": false}
+      { "trailingComma": "all", "bracketSpacing": false }
     ],
     "import/no-extraneous-dependencies": [
       "error",
-      {"devDependencies": ["**/test/**/*.js"]}
+      { "devDependencies": ["**/test/**/*.js"] }
     ]
   },
   "plugins": ["import", "promise", "lodash-fp", "prettier"]
