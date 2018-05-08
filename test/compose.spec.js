@@ -14,8 +14,8 @@ describe("The compose combinator", () => {
     async (w, x, y, z) =>
       isEqual(
         await compose(plusP(w), compose(plusP(x), plusP(y)), of(z)),
-        await compose(compose(plusP(w), plusP(x)), plusP(y), of(z))
-      )
+        await compose(compose(plusP(w), plusP(x)), plusP(y), of(z)),
+      ),
   );
 
   property(
@@ -26,8 +26,8 @@ describe("The compose combinator", () => {
     async (a, b, c) =>
       isEqual(
         await compose(plusP(a), plusP(b), c),
-        await compose(plusP(a), plusP(b), of(c))
-      )
+        await compose(plusP(a), plusP(b), of(c)),
+      ),
   );
 
   property(
@@ -44,8 +44,8 @@ describe("The compose combinator", () => {
       return jsc.throws(
         block,
         TypeError,
-        /^Future#compose (.+)to be a function/
+        /^Future#compose (.+)to be a function/,
       );
-    }
+    },
   );
 });

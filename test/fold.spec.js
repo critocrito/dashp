@@ -12,7 +12,7 @@ describe("The fold combinator", () => {
     "produces the same result as a synchronous reduce",
     "array nat",
     "nat",
-    async (xs, y) => isEqual(await fold(plus, y, xs), xs.reduce(plus, y))
+    async (xs, y) => isEqual(await fold(plus, y, xs), xs.reduce(plus, y)),
   );
 
   property(
@@ -20,7 +20,7 @@ describe("The fold combinator", () => {
     "array nat",
     "nat",
     async (xs, y) =>
-      isEqual(await fold(plusP, y, xs), await Bluebird.reduce(xs, plusP, y))
+      isEqual(await fold(plusP, y, xs), await Bluebird.reduce(xs, plusP, y)),
   );
 
   property(
@@ -30,7 +30,7 @@ describe("The fold combinator", () => {
     (g, xs) => {
       const block = () => fold(g, fixture, xs);
       return jsc.throws(block, TypeError, /^Future#fold (.+)to be a function/);
-    }
+    },
   );
 
   property(
@@ -39,6 +39,6 @@ describe("The fold combinator", () => {
     a => {
       const block = () => fold(x => x, fixture, a);
       return jsc.throws(block, TypeError, /^Future#fold (.+)to be an array/);
-    }
+    },
   );
 });

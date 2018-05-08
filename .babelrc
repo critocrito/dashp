@@ -9,6 +9,10 @@
       }
     ]
   ],
+  "plugins": [
+    "syntax-trailing-function-commas",
+    "transform-object-rest-spread"
+  ],
   "env":{
     "test": {
       "presets": [

@@ -14,7 +14,7 @@ describe("mapping a function over an array", () => {
     "equivalency to synchronous map",
     "array nat",
     "nat",
-    async (xs, y) => isEqual(await collect(plus(y), xs), map(plus(y), xs))
+    async (xs, y) => isEqual(await collect(plus(y), xs), map(plus(y), xs)),
   );
 
   property(
@@ -30,7 +30,7 @@ describe("mapping a function over an array", () => {
         collect5(plus(y), xs),
       ]);
       return rs.every(isEqual(rs[0]));
-    }
+    },
   );
 });
 
@@ -43,8 +43,8 @@ describe("mapping a function over an array", () => {
       async (xs, y) =>
         isEqual(
           await Bluebird.map(xs, plusP(y), {concurrency: i + 1}),
-          await f(plusP(y), xs)
-        )
+          await f(plusP(y), xs),
+        ),
     );
 
     it("adheres to the concurrency limit", async () => {
@@ -87,7 +87,7 @@ describe("mapping a function over an array", () => {
         };
 
         return f(g, xs).catch(e => e.message === msg);
-      }
+      },
     );
 
     property(
@@ -100,10 +100,10 @@ describe("mapping a function over an array", () => {
           block,
           TypeError,
           new RegExp(
-            `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a function`
-          )
+            `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a function`,
+          ),
         );
-      }
+      },
     );
 
     property(
@@ -115,10 +115,10 @@ describe("mapping a function over an array", () => {
           block,
           TypeError,
           new RegExp(
-            `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be an array`
-          )
+            `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be an array`,
+          ),
         );
-      }
+      },
     );
-  })
+  }),
 );

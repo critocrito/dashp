@@ -10,6 +10,6 @@ describe("The all combinator", () => {
     anyArb,
     "nat",
     "nat",
-    async (x, y, z) => isEqual(await all([F.of(x), plusP(y, z)])(), [x, y + z])
+    async (x, y, z) => isEqual(await all([F.of(x), plusP(y, z)])(), [x, y + z]),
   );
 });

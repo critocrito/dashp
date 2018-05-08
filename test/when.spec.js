@@ -72,10 +72,10 @@ describe("The conditional operators", () => {
           block,
           TypeError,
           new RegExp(
-            `Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a function`
-          )
+            `Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a function`,
+          ),
         );
-      }
+      },
     );
 
     property(
@@ -88,10 +88,10 @@ describe("The conditional operators", () => {
           block,
           TypeError,
           new RegExp(
-            `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a promise`
-          )
+            `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a promise`,
+          ),
         );
-      }
+      },
     );
 
     property(
@@ -109,9 +109,9 @@ describe("The conditional operators", () => {
           ? sinon.stub().resolves(alternative)
           : sinon.stub().returns(alternative);
         return f(predicate, stubC, stubA, of(fixture)).then(
-          result => isEqual(result, consequent) || isEqual(result, alternative)
+          result => isEqual(result, consequent) || isEqual(result, alternative),
         );
-      }
+      },
     );
   });
 
@@ -127,10 +127,10 @@ describe("The conditional operators", () => {
           block,
           TypeError,
           new RegExp(
-            `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a function`
-          )
+            `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a function`,
+          ),
         );
-      }
+      },
     );
 
     property(
@@ -143,10 +143,10 @@ describe("The conditional operators", () => {
           block,
           TypeError,
           new RegExp(
-            `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a promise`
-          )
+            `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a promise`,
+          ),
         );
-      }
+      },
     );
 
     property(
@@ -160,9 +160,9 @@ describe("The conditional operators", () => {
           ? sinon.stub().resolves(consequent)
           : sinon.stub().returns(consequent);
         return f(predicate, stubC, of(fixture)).then(
-          result => isEqual(result, consequent) || isEqual(result, fixture)
+          result => isEqual(result, consequent) || isEqual(result, fixture),
         );
-      }
+      },
     );
   });
 });

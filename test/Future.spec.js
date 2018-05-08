@@ -11,7 +11,7 @@ describe("The type Future", () => {
   // https://github.com/rpominov/static-land/blob/master/docs/spec.md#functor
   describe("is an instance of Functor", () => {
     property("identity", anyArb, async a =>
-      isEqual(await map(x => x, of(a)), a)
+      isEqual(await map(x => x, of(a)), a),
     );
 
     property("composition", "nat", "nat", "nat", async (a, b, c) => {
@@ -35,7 +35,7 @@ describe("The type Future", () => {
   // https://github.com/rpominov/static-land/blob/master/docs/spec.md#bifunctor
   describe("is an instance of Bifunctor", () => {
     property("identity", anyArb, async a =>
-      isEqual(await bimap(x => x, x => x, of(a)), await of(a))
+      isEqual(await bimap(x => x, x => x, of(a)), await of(a)),
     );
 
     property(
@@ -53,9 +53,9 @@ describe("The type Future", () => {
 
         return isEqual(
           await bimap(x => f(g(x)), x => h(i(x)), of(a)),
-          await bimap(f, h, bimap(g, i, of(a)))
+          await bimap(f, h, bimap(g, i, of(a))),
         );
-      }
+      },
     );
 
     property("deriving Functors map", "nat", "nat", async (a, b) => {
@@ -175,7 +175,7 @@ describe("The type Future", () => {
 
       return isEqual(
         await chain(f, chain(g, of(a))),
-        await chain(x => chain(g, f(x)), of(a))
+        await chain(x => chain(g, f(x)), of(a)),
       );
     });
 
@@ -185,7 +185,7 @@ describe("The type Future", () => {
     });
 
     property("right identity", "nat", async a =>
-      isEqual(await chain(of, of(a)), await of(a))
+      isEqual(await chain(of, of(a)), await of(a)),
     );
 
     property("throws if the first argument is not a function", anyArb, f => {

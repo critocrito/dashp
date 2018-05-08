@@ -25,10 +25,10 @@ describe("Flattening of nested arrays", () => {
   property("flatten flat arrays", "array nat", xs => isEqual(flatten(xs), xs));
 
   property("flattens only one level deep", "array nat", xs =>
-    isEqual(flatten([[xs]]), [xs])
+    isEqual(flatten([[xs]]), [xs]),
   );
 
   property("equivalency to lodash's flatten", nestedArrayArb, xxs =>
-    isEqual(flatten(xxs), loFlatten(xxs))
+    isEqual(flatten(xxs), loFlatten(xxs)),
   );
 });

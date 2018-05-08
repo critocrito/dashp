@@ -22,11 +22,11 @@ describe("The flow combinator", () => {
       const lhs = reduce((memo, x) => compose(memo, plusP(x)), identity, xs);
       const rhs = flow(fs);
       return isEqual(await lhs(y), await rhs(y));
-    }
+    },
   );
 
   property("lifts two arguments into the pipe", "nat", "nat", async (x, y) =>
-    isEqual(await flow2([sumP], x, y), x + y)
+    isEqual(await flow2([sumP], x, y), x + y),
   );
 
   property(
@@ -34,7 +34,7 @@ describe("The flow combinator", () => {
     "nat",
     "nat",
     "nat",
-    async (x, y, z) => isEqual(await flow3([sumP], x, y, z), x + y + z)
+    async (x, y, z) => isEqual(await flow3([sumP], x, y, z), x + y + z),
   );
 
   property(
@@ -44,7 +44,7 @@ describe("The flow combinator", () => {
     "nat",
     "nat",
     async (w, x, y, z) =>
-      isEqual(await flow4([sumP], w, x, y, z), w + x + y + z)
+      isEqual(await flow4([sumP], w, x, y, z), w + x + y + z),
   );
 
   [flow, flow2, flow3, flow4].forEach((f, i) => {
@@ -59,9 +59,9 @@ describe("The flow combinator", () => {
           return jsc.throws(
             block,
             TypeError,
-            new RegExp(`^Future#${name} (.+)to be an array`)
+            new RegExp(`^Future#${name} (.+)to be an array`),
           );
-        }
+        },
       );
     });
   });

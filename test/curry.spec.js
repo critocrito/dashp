@@ -14,7 +14,7 @@ describe("The currying of functions", () => {
       const f1 = loCurry(f);
       const f2 = curry2("f", f);
       return every(isEqual(f(x, y)), [f1(x, y), f2(x, y), f2(x)(y)]);
-    }
+    },
   );
 
   property(
@@ -33,7 +33,7 @@ describe("The currying of functions", () => {
         f2(x)(y, z),
         f2(x)(y)(z),
       ]);
-    }
+    },
   );
 
   property(
@@ -55,7 +55,7 @@ describe("The currying of functions", () => {
         f2(w)(x, y)(z),
         f2(w)(x)(y)(z),
       ]);
-    }
+    },
   );
 
   property(
@@ -81,7 +81,7 @@ describe("The currying of functions", () => {
         f2(v)(w, x, y)(z),
         f2(v, w)(x)(y)(z),
       ]);
-    }
+    },
   );
 
   property("curry/variadic function pattern", "nat", "nat", "nat", (...xs) => {

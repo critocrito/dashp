@@ -18,13 +18,23 @@
     "arrow-parens": "off",
     "object-curly-spacing": "off",
     "no-console": "warn",
+    "comma-dangle": [
+      "error",
+      {
+        "arrays": "always-multiline",
+        "objects": "always-multiline",
+        "imports": "always-multiline",
+        "exports": "always-multiline",
+        "functions": "always-multiline"
+      }
+    ],
     "prettier/prettier": [
       "error",
-      {"trailingComma": "es5", "bracketSpacing": false}
+      {"trailingComma": "all", "bracketSpacing": false}
     ],
     "import/no-extraneous-dependencies": [
       "error",
-      {"devDependencies": ["rollup.config.js", "**/test/**/*.js"]}
+      {"devDependencies": ["**/test/**/*.js"]}
     ]
   },
   "plugins": ["import", "promise", "lodash-fp", "prettier"]

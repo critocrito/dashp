@@ -11,7 +11,7 @@ describe("The tap combinator", () => {
   const f = x => (x = 23);
 
   property("returns the original value", anyArb, async x =>
-    isEqualAry([await tap(f, x), await tapClone(f, x), x])
+    isEqualAry([await tap(f, x), await tapClone(f, x), x]),
   );
 
   property("validates that the mapper is a function (tap)", anyArb, async g => {
@@ -35,6 +35,6 @@ describe("The tap combinator", () => {
         );
       }
       return false;
-    }
+    },
   );
 });

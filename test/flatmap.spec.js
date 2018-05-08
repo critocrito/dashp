@@ -10,7 +10,7 @@ const duplicate = n => [n, n];
 
 describe("flatmap over a list", () => {
   property("equivalency to synchronous flatmap", "array nat", async xs =>
-    isEqual(await flatmap(duplicate, xs), flatMap(duplicate, xs))
+    isEqual(await flatmap(duplicate, xs), flatMap(duplicate, xs)),
   );
 
   property("equivalency of concurrent flatmaps", "array nat", async xs => {
@@ -30,8 +30,8 @@ describe("flatmap over a list", () => {
     property("equivalency to collect", jsc.array(anyArb), async xs =>
       isEqual(
         await collect(duplicate, xs).then(flatten),
-        await f(duplicate, xs)
-      )
+        await f(duplicate, xs),
+      ),
     );
 
     it("adheres to the concurrency limit", async () => {
@@ -68,10 +68,10 @@ describe("flatmap over a list", () => {
           block,
           TypeError,
           new RegExp(
-            `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a function`
-          )
+            `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a function`,
+          ),
         );
-      }
+      },
     );
 
     property(
@@ -83,10 +83,10 @@ describe("flatmap over a list", () => {
           block,
           TypeError,
           new RegExp(
-            `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be an array`
-          )
+            `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be an array`,
+          ),
         );
-      }
+      },
     );
-  })
+  }),
 );

@@ -6,10 +6,10 @@ import {Future as F} from "../lib";
 
 describe("Lifting values into a promise", () => {
   property("is equivalent to Promise.resolve", anyArb, async x =>
-    isEqual(await F.of(x), await Promise.resolve(x))
+    isEqual(await F.of(x), await Promise.resolve(x)),
   );
 
   property("lifts any value into a promise", anyArb, async x =>
-    isEqual(await F.of(x), x)
+    isEqual(await F.of(x), x),
   );
 });
