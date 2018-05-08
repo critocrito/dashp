@@ -1,3 +1,4 @@
+.DS_STORE
 package-lock.json
 yarn.lock
 node_modules
@@ -6,3 +7,12 @@ _dist
 .npmrc
 .eslintcache
 .nyc_output
+.dir-locals.el
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+.idea
+*.iml
+.vscode
