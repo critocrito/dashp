@@ -1,7 +1,7 @@
 import {curry as loCurry, every, isEqual} from "lodash/fp";
 import {property} from "jsverify";
 
-import {curry2, curry3, curry4, curry5} from "../lib/internal/curry";
+import {curry2, curry3, curry4, curry5} from "../src/internal/curry";
 
 // TODO: Those properties don't look right. Find better ones.
 describe("The currying of functions", () => {
@@ -89,8 +89,8 @@ describe("The currying of functions", () => {
     return isEqual(xs.reduce((memo, a) => memo + a, 0), f(...xs));
   });
 
-  property("set the function name", "string", s => {
-    const f = curry2(s, x => x);
+  property("set the function name", "string", (s) => {
+    const f = curry2(s, (x) => x);
     return isEqual(f.name.replace(/-[\d]$/, ""), s);
   });
 });

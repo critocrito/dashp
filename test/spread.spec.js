@@ -3,7 +3,7 @@ import {property} from "jsverify";
 
 import {plus} from "./arbitraries";
 
-import {Future as F, spread} from "../lib";
+import {Future as F, spread} from "../src";
 
 describe("The spread operator", () => {
   property("applying variadic arguments", "nat", "nat", async (x, y) =>

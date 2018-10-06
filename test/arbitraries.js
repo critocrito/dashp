@@ -1,9 +1,9 @@
 import {curry, isEqual} from "lodash/fp";
 import jsc from "jsverify";
 
-export const isEqualAry = xs => isEqual(...xs);
+export const isEqualAry = (xs) => isEqual(...xs);
 
-export const maybePromisify = val => {
+export const maybePromisify = (val) => {
   switch (jsc.random(0, 1)) {
     case 0:
       return val;
@@ -59,7 +59,7 @@ export const anyArb = jsc.oneof([primitiveArb, collectionArb]);
 
 export const mapArb = jsc
   .array(jsc.tuple([anyArb, anyArb]))
-  .smap(xxs => new Map(xxs), m => Array.from(m.entries()));
+  .smap((xxs) => new Map(xxs), (m) => Array.from(m.entries()));
 
 export default {
   isEqualAry,

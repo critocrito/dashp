@@ -4,10 +4,10 @@ import sinon from "sinon";
 import Bluebird from "bluebird";
 
 import {anyArb, arrayArb, singleValueArb, plus, plusP} from "./arbitraries";
-import {collect, collect2, collect3, collect4, collect5} from "../lib";
+import {collect, collect2, collect3, collect4, collect5} from "../src";
 
 const isTrue = isEqual(true);
-const positiveIntegersArb = jsc.nat.smap(x => x + 1, x => x - 1);
+const positiveIntegersArb = jsc.nat.smap((x) => x + 1, (x) => x - 1);
 
 describe("mapping a function over an array", () => {
   property(
@@ -62,10 +62,10 @@ describe("mapping a function over an array", () => {
           return false;
         }, xs);
       };
-      return test(f, i + 1).then(rs => every(isTrue, rs).should.equal(true));
+      return test(f, i + 1).then((rs) => every(isTrue, rs).should.equal(true));
     });
 
-    property("adheres to the order of inputs", arrayArb, async xs => {
+    property("adheres to the order of inputs", arrayArb, async (xs) => {
       const stub = sinon.stub();
       xs.forEach((x, j) => stub.onCall(j).resolves(x));
       return f(stub, xs).then(isEqual(xs));
@@ -79,14 +79,14 @@ describe("mapping a function over an array", () => {
         const xs = [...Array(l).keys()]; // Make sure l is positive
         const fail = jsc.random(0, xs.length - 1);
 
-        const g = x => {
+        const g = (x) => {
           if (x === fail) {
             throw new Error(msg);
           }
           return x;
         };
 
-        return f(g, xs).catch(e => e.message === msg);
+        return f(g, xs).catch((e) => e.message === msg);
       },
     );
 
@@ -109,8 +109,8 @@ describe("mapping a function over an array", () => {
     property(
       "throws if the second argument is not an array",
       singleValueArb,
-      a => {
-        const block = () => f(x => x, a);
+      (a) => {
+        const block = () => f((x) => x, a);
         return jsc.throws(
           block,
           TypeError,

@@ -15,9 +15,9 @@ export const whenElse = curry4(
       invalidFunction("Future#whenElse", 2, alternative);
     if (!isThenable(p)) invalidThenable("Future#whenElse", 3, p);
 
-    const branch = x =>
+    const branch = (x) =>
       of(predicate(x)).then(
-        bool => (bool === true ? consequent(x) : alternative(x)),
+        (bool) => (bool === true ? consequent(x) : alternative(x)),
       );
     return of(p).then(branch);
   },

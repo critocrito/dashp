@@ -1,5 +1,0 @@
-{
-  "*.js": ["eslint --fix", "git add"],
-  "*.json": ["prettier --parser json --write", "git add"],
-  ".{babel,lintstaged,nyc}rc": ["prettier --parser json --write", "git add"]
-}

@@ -3,7 +3,7 @@ import jsc, {property} from "jsverify";
 import Bluebird from "bluebird";
 
 import {anyArb, arrayArb, singleValueArb, plus, plusP} from "./arbitraries";
-import {fold} from "../lib";
+import {fold} from "../src";
 
 const fixture = Symbol("fixture");
 
@@ -36,8 +36,8 @@ describe("The fold combinator", () => {
   property(
     "throws if the third argument is not an array",
     singleValueArb,
-    a => {
-      const block = () => fold(x => x, fixture, a);
+    (a) => {
+      const block = () => fold((x) => x, fixture, a);
       return jsc.throws(block, TypeError, /^Future#fold (.+)to be an array/);
     },
   );

@@ -2,7 +2,7 @@ import {isEqual} from "lodash/fp";
 import {property} from "jsverify";
 
 import {anyArb, plusP} from "./arbitraries";
-import {Future as F, all} from "../lib";
+import {Future as F, all} from "../src";
 
 describe("The all combinator", () => {
   property(

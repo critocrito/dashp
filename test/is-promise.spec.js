@@ -2,7 +2,7 @@ import {isEqual} from "lodash/fp";
 import jsc, {property} from "jsverify";
 
 import {anyArb} from "./arbitraries";
-import {Future as F, isPromise} from "../lib";
+import {Future as F, isPromise} from "../src";
 
 const maybePromiseArb = jsc
   .tuple([anyArb, jsc.bool])

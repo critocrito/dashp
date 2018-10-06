@@ -1,7 +1,8 @@
 {
   "presets": [
+    ["@build-chores/babel-preset"],
     [
-      "env",
+      "@babel/preset-env",
       {
         "targets": {
           "node": "4"
@@ -9,22 +10,8 @@
       }
     ]
   ],
-  "plugins": [
-    "syntax-trailing-function-commas",
-    "transform-object-rest-spread"
-  ],
   "env": {
     "test": {
-      "presets": [
-        [
-          "env",
-          {
-            "targets": {
-              "node": "current"
-            }
-          }
-        ]
-      ],
       "plugins": ["istanbul"]
     }
   }

@@ -1,7 +1,7 @@
 import Benchmark from "benchmark";
 import {curry} from "lodash/fp";
 
-import {curry2, curry3, curry4, curry5} from "../lib/internal/curry";
+import {curry2, curry3, curry4, curry5} from "../src/internal/curry";
 
 const add2 = (a, b) => a + b;
 const add3 = (a, b, c) => a + b + c;
@@ -37,6 +37,6 @@ suite
   .add("DashP add4 piecemeal", () => dashpAdd4(1)(23)(42)(37))
   .add("Lodash add5 piecemeal", () => loAdd5(1)(23)(42)(37)(66))
   .add("DashP add5 piecemeal", () => dashpAdd5(1)(23)(42)(37)(66))
-  .on("cycle", ev => console.log(String(ev.target)))
-  .on("error", e => console.error(e.target.error))
+  .on("cycle", (ev) => console.log(String(ev.target)))
+  .on("error", (e) => console.error(e.target.error))
   .run();

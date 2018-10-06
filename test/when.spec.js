@@ -3,10 +3,10 @@ import jsc, {property} from "jsverify";
 import sinon from "sinon";
 
 import {anyArb} from "./arbitraries";
-import {of, when, whenElse, unless, unlessElse} from "../lib";
+import {of, when, whenElse, unless, unlessElse} from "../src";
 
-const pred = bool => () => bool;
-const predP = bool => () => of(bool);
+const pred = (bool) => () => bool;
+const predP = (bool) => () => of(bool);
 
 const fixture = Symbol("fixture");
 const consequent = Symbol("consequent");
@@ -33,37 +33,37 @@ const unlessElseTable = {
 };
 
 describe("The conditional operators", () => {
-  property("when is equivalent to if", "bool", x => {
+  property("when is equivalent to if", "bool", (x) => {
     const stub = sinon.stub().returns(consequent);
     const result = pred(x)() ? whenTable.true : whenTable.false;
     return when(pred(x), stub, of(fixture)).then(isEqual(result));
   });
 
-  property("whenElse is equivalent to if-else", "bool", x => {
+  property("whenElse is equivalent to if-else", "bool", (x) => {
     const stubC = sinon.stub().returns(consequent);
     const stubA = sinon.stub().returns(alternative);
     const result = pred(x)() ? whenElseTable.true : whenElseTable.false;
     return whenElse(pred(x), stubC, stubA, of(fixture)).then(isEqual(result));
   });
 
-  property("unless is equivalent to if-not", "bool", x => {
+  property("unless is equivalent to if-not", "bool", (x) => {
     const stub = sinon.stub().returns(consequent);
     const result = pred(x)() ? unlessTable.true : unlessTable.false;
     return unless(pred(x), stub, of(fixture)).then(isEqual(result));
   });
 
-  property("unlessElse is equivalent to if-not-else", "bool", x => {
+  property("unlessElse is equivalent to if-not-else", "bool", (x) => {
     const stubC = sinon.stub().returns(consequent);
     const stubA = sinon.stub().returns(alternative);
     const result = pred(x)() ? unlessElseTable.true : unlessElseTable.false;
     return unlessElse(pred(x), stubC, stubA, of(fixture)).then(isEqual(result));
   });
 
-  [whenElse, unlessElse].forEach(f => {
+  [whenElse, unlessElse].forEach((f) => {
     property(
       `validates that the arguments of ${f.name} are functions`,
       anyArb,
-      g => {
+      (g) => {
         const args = [sinon.stub(), sinon.stub(), sinon.stub()];
         args[jsc.random(0, 2)] = g;
         const block = () => f(...args.concat(fixture));
@@ -81,7 +81,7 @@ describe("The conditional operators", () => {
     property(
       `throws if the fourth argument of ${f.name} is not a promise`,
       anyArb,
-      a => {
+      (a) => {
         const args = [sinon.stub(), sinon.stub(), sinon.stub(), a];
         const block = () => f(...args);
         return jsc.throws(
@@ -109,17 +109,18 @@ describe("The conditional operators", () => {
           ? sinon.stub().resolves(alternative)
           : sinon.stub().returns(alternative);
         return f(predicate, stubC, stubA, of(fixture)).then(
-          result => isEqual(result, consequent) || isEqual(result, alternative),
+          (result) =>
+            isEqual(result, consequent) || isEqual(result, alternative),
         );
       },
     );
   });
 
-  [when, unless].forEach(f => {
+  [when, unless].forEach((f) => {
     property(
       `validates that the arguments of ${f.name} are functions`,
       anyArb,
-      g => {
+      (g) => {
         const args = [sinon.stub(), sinon.stub()];
         args[jsc.random(0, 1)] = g;
         const block = () => f(...args.concat(fixture));
@@ -136,7 +137,7 @@ describe("The conditional operators", () => {
     property(
       `throws if the third argument of ${f.name} is not a promise`,
       anyArb,
-      a => {
+      (a) => {
         const args = [sinon.stub(), sinon.stub(), a];
         const block = () => f(...args);
         return jsc.throws(
@@ -160,7 +161,7 @@ describe("The conditional operators", () => {
           ? sinon.stub().resolves(consequent)
           : sinon.stub().returns(consequent);
         return f(predicate, stubC, of(fixture)).then(
-          result => isEqual(result, consequent) || isEqual(result, fixture),
+          (result) => isEqual(result, consequent) || isEqual(result, fixture),
         );
       },
     );

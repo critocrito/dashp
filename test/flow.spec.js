@@ -2,7 +2,7 @@ import {map, reduce, range, identity, sum, isEqual} from "lodash/fp";
 import jsc, {property} from "jsverify";
 
 import {singleValueArb, plusP} from "./arbitraries";
-import {of, flow, flow2, flow3, flow4, compose} from "../lib";
+import {of, flow, flow2, flow3, flow4, compose} from "../src";
 
 const sumP = (...args) => of(sum(args));
 const fixture = Symbol("fixture");
@@ -10,7 +10,13 @@ const fixture = Symbol("fixture");
 describe("The flow combinator", () => {
   property("chains a list of functions", "array nat", "nat", async (xs, y) => {
     const fs = map(plusP, xs);
-    return isEqual(await flow(fs, y), sum(xs) + y);
+    return isEqual(
+      await flow(
+        fs,
+        y,
+      ),
+      sum(xs) + y,
+    );
   });
 
   property(
@@ -19,7 +25,15 @@ describe("The flow combinator", () => {
     "nat",
     async (xs, y) => {
       const fs = map(plusP, xs);
-      const lhs = reduce((memo, x) => compose(memo, plusP(x)), identity, xs);
+      const lhs = reduce(
+        (memo, x) =>
+          compose(
+            memo,
+            plusP(x),
+          ),
+        identity,
+        xs,
+      );
       const rhs = flow(fs);
       return isEqual(await lhs(y), await rhs(y));
     },
@@ -54,7 +68,7 @@ describe("The flow combinator", () => {
       property(
         `${name} throws if the first argument is not an array`,
         singleValueArb,
-        a => {
+        (a) => {
           const block = () => f(a, ...range(() => of(fixture), i + 1));
           return jsc.throws(
             block,

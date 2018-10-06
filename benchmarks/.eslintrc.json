@@ -1,8 +1,6 @@
 {
   "extends": "../.eslintrc.json",
   "rules": {
-    "no-console": "off",
-    // Keep testing dependencies in the devDependencies.
-    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.js"]}]
+    "no-console": "off"
   }
 }

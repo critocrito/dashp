@@ -1,7 +1,7 @@
 import {isEqual, sum} from "lodash/fp";
 import {property} from "jsverify";
 
-import {of, lift2, lift3, lift4} from "../lib";
+import {of, lift2, lift3, lift4} from "../src";
 
 const plus = (...args) => sum(args);
 

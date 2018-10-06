@@ -2,8 +2,8 @@ import {isEqual} from "lodash/fp";
 import jsc, {property} from "jsverify";
 import sinon from "sinon";
 
-import {of, caught} from "../lib";
-import {flow, flow2, flow3, flow4} from "../lib/flow";
+import {of, caught} from "../src";
+import {flow, flow2, flow3, flow4} from "../src/flow";
 import {anyArb} from "./arbitraries";
 
 const fixture = Symbol("fixture");
@@ -28,7 +28,7 @@ describe("The caught operator", () => {
     (isFixture(x) && mock.verify()).should.equal(true);
   });
 
-  Object.keys(flows).forEach(k => {
+  Object.keys(flows).forEach((k) => {
     it(`catches exceptions inside "${k}"`, async () => {
       const mock = sinon
         .mock()
@@ -42,7 +42,7 @@ describe("The caught operator", () => {
     });
   });
 
-  property("throws if the first argument is not a function", anyArb, f => {
+  property("throws if the first argument is not a function", anyArb, (f) => {
     const block = () => caught(f, of(fixture));
     return jsc.throws(block, TypeError, /^Future#caught (.+)to be a function/);
   });

@@ -3,17 +3,17 @@ import jsc, {property} from "jsverify";
 import sinon from "sinon";
 
 import {anyArb, arrayArb, singleValueArb} from "./arbitraries";
-import {flatmap, flatmap2, flatmap3, flatmap4, flatmap5, collect} from "../lib";
+import {flatmap, flatmap2, flatmap3, flatmap4, flatmap5, collect} from "../src";
 
 const isTrue = isEqual(true);
-const duplicate = n => [n, n];
+const duplicate = (n) => [n, n];
 
 describe("flatmap over a list", () => {
-  property("equivalency to synchronous flatmap", "array nat", async xs =>
+  property("equivalency to synchronous flatmap", "array nat", async (xs) =>
     isEqual(await flatmap(duplicate, xs), flatMap(duplicate, xs)),
   );
 
-  property("equivalency of concurrent flatmaps", "array nat", async xs => {
+  property("equivalency of concurrent flatmaps", "array nat", async (xs) => {
     const rs = await Promise.all([
       flatmap(duplicate, xs),
       flatmap2(duplicate, xs),
@@ -27,7 +27,7 @@ describe("flatmap over a list", () => {
 
 [flatmap, flatmap2, flatmap3, flatmap4, flatmap5].forEach((f, i) =>
   describe(`the ${f.name} operator`, () => {
-    property("equivalency to collect", jsc.array(anyArb), async xs =>
+    property("equivalency to collect", jsc.array(anyArb), async (xs) =>
       isEqual(
         await collect(duplicate, xs).then(flatten),
         await f(duplicate, xs),
@@ -49,10 +49,10 @@ describe("flatmap over a list", () => {
           return false;
         }, xs);
       };
-      return test(f, i + 1).then(rs => every(isTrue, rs).should.equal(true));
+      return test(f, i + 1).then((rs) => every(isTrue, rs).should.equal(true));
     });
 
-    property("adheres to the order of inputs", arrayArb, async xs => {
+    property("adheres to the order of inputs", arrayArb, async (xs) => {
       const stub = sinon.stub();
       xs.forEach((x, j) => stub.onCall(j).resolves(x));
       return f(stub, xs).then(isEqual(xs));
@@ -77,8 +77,8 @@ describe("flatmap over a list", () => {
     property(
       "throws if the second argument is not an array",
       singleValueArb,
-      a => {
-        const block = () => f(x => x, a);
+      (a) => {
+        const block = () => f((x) => x, a);
         return jsc.throws(
           block,
           TypeError,

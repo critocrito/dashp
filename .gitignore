@@ -1,9 +1,8 @@
 .DS_STORE
 package-lock.json
-yarn.lock
 node_modules
 *.log*
-_dist
+dist
 .npmrc
 .eslintcache
 .nyc_output

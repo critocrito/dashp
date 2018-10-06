@@ -1,6 +1,6 @@
 import nameFn from "./namefn";
 
-const ncurry = n => {
+const ncurry = (n) => {
   const localCurry = (name, f, ...args) => {
     const g = (...largs) => {
       const rest = args.concat(largs);

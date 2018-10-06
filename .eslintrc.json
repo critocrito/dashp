@@ -1,41 +1,19 @@
 {
-  "parser": "babel-eslint",
-  "extends": [
-    "airbnb-base",
-    "plugin:lodash-fp/recommended",
-    "plugin:promise/recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
-    "prettier"
-  ],
   "env": {
-    "es6": true,
-    "node": true,
     "mocha": true
   },
+  "extends": ["@build-chores/lint", "plugin:lodash-fp/recommended"],
+  "plugins": ["lodash-fp"],
   "rules": {
-    "no-underscore-dangle": "off",
-    "arrow-parens": "off",
-    "object-curly-spacing": "off",
-    "no-console": "warn",
-    "comma-dangle": [
-      "error",
-      {
-        "arrays": "always-multiline",
-        "objects": "always-multiline",
-        "imports": "always-multiline",
-        "exports": "always-multiline",
-        "functions": "always-multiline"
-      }
-    ],
-    "prettier/prettier": [
-      "error",
-      { "trailingComma": "all", "bracketSpacing": false }
-    ],
     "import/no-extraneous-dependencies": [
       "error",
-      { "devDependencies": ["**/test/**/*.js"] }
+      {
+        "devDependencies": [
+          "**/test/**/*.js",
+          "benchmarks/**/*.js",
+          "lint-staged.config.js"
+        ]
+      }
     ]
-  },
-  "plugins": ["import", "promise", "lodash-fp", "prettier"]
+  }
 }

@@ -33,12 +33,12 @@ const collectN = (atOnce, f, xs) => {
       Promise.resolve(nextItem.value)
         .then(f)
         // eslint-disable-next-line promise/always-return
-        .then(val => {
+        .then((val) => {
           ret[i] = val;
           resolvingCount -= 1;
           next(); // eslint-disable-line promise/no-callback-in-promise
         })
-        .catch(err => {
+        .catch((err) => {
           isRejected = true;
           reject(err);
         });

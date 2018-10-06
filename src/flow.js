@@ -11,7 +11,7 @@ export const flowN = (fs, ...xs) => {
   // If we encounter a call to `caught`, wrap the whole block in an exception
   // handler.
   const [head, ...tail] = fs.reduce((memo, f) => {
-    if (/^caught-/.test(f.name)) return [p => f(flowN(memo, p))];
+    if (/^caught-/.test(f.name)) return [(p) => f(flowN(memo, p))];
     return memo.concat(f);
   }, []);
   const f = head || identity;
