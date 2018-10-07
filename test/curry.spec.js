@@ -1,96 +1,50 @@
-import {curry as loCurry, every, isEqual} from "lodash/fp";
-import {property} from "jsverify";
+import {curry as loCurry, every, isEqual, range, times} from "lodash/fp";
+import jsc, {property} from "jsverify";
 
-import {curry2, curry3, curry4, curry5} from "../src/internal/curry";
+import curries from "../src/internal/curry";
 
-// TODO: Those properties don't look right. Find better ones.
+const strArb = jsc.asciinestring.smap((s) => s.trim(), jsc.nestring.shrink);
+
+const randomApplication = (f, args) => {
+  const xs = args.slice(0, jsc.random(1, args.length));
+  if (xs.length === args.length) return f(...xs);
+  return randomApplication(f(...xs), args.slice(xs.length));
+};
+
 describe("The currying of functions", () => {
-  property(
-    "curry2 is equivalent to the original function and lodash's curry",
-    "nat",
-    "nat",
-    (x, y) => {
-      const f = (a, b) => a + b;
-      const f1 = loCurry(f);
-      const f2 = curry2("f", f);
-      return every(isEqual(f(x, y)), [f1(x, y), f2(x, y), f2(x)(y)]);
-    },
-  );
+  range(2, 11).forEach((i) => {
+    const arbs = times(() => "nat", i);
 
-  property(
-    "curry3 is equivalent to the original function and lodash's curry",
-    "nat",
-    "nat",
-    "nat",
-    (x, y, z) => {
-      const f = (a, b, c) => a + b + c;
-      const f1 = loCurry(f);
-      const f2 = curry3("f", f);
-      return every(isEqual(f(x, y, z)), [
-        f1(x, y, z),
-        f2(x, y, z),
-        f2(x, y)(z),
-        f2(x)(y, z),
-        f2(x)(y)(z),
-      ]);
-    },
-  );
+    property(
+      `curry${i} is equivalent to the original function and lodash's curry`,
+      ...arbs,
+      (...args) => {
+        const f = (...rest) => rest.reduce((memo, a) => memo + a, 0);
+        const f1 = loCurry(f);
+        const f2 = curries[`curry${i}`](`f${i}`, f);
+        return every(
+          isEqual(f(...args), [
+            f1(...args),
+            f2(...args),
+            args.reduce((memo, a) => memo(a), f2),
+            randomApplication(f2, args),
+          ]),
+        );
+      },
+    );
 
-  property(
-    "curry4 is equivalent to the original function and lodash's curry",
-    "nat",
-    "nat",
-    "nat",
-    "nat",
-    (w, x, y, z) => {
-      const f = (a, b, c, d) => a + b + c + d;
-      const f1 = loCurry(f);
-      const f2 = curry4("f", f);
-      return every(isEqual(f(w, x, y, z)), [
-        f1(w, x, y, z),
-        f2(w, x, y, z),
-        f2(w, x, y)(z),
-        f2(w, x)(y, z),
-        f2(w)(x, y, z),
-        f2(w)(x, y)(z),
-        f2(w)(x)(y)(z),
-      ]);
-    },
-  );
+    property(`variadic function pattern for curry${i}`, ...arbs, (...args) => {
+      const curry = curries[`curry${i}`];
+      const sum = (...xs) => xs.reduce((memo, a) => memo + a, 0);
+      const f = curry(`f${i}`, sum);
+      return isEqual(sum(...args), f(...args.concat(args)));
+    });
 
-  property(
-    "curry5 is equivalent to the original function and lodash's curry",
-    "nat",
-    "nat",
-    "nat",
-    "nat",
-    "nat",
-    (v, w, x, y, z) => {
-      const f = (a, b, c, d, e) => a + b + c + d + e;
-      const f1 = loCurry(f);
-      const f2 = curry5("f", f);
-      return every(isEqual(f(v, w, x, y, z)), [
-        f1(v, w, x, y, z),
-        f2(v, w, x, y, z),
-        f2(v, w, x, y)(z),
-        f2(v, w, x)(y, z),
-        f2(v, w)(x, y, z),
-        f2(v)(w, x, y, z),
-        f2(v, w)(x, y)(z),
-        f2(v)(w, x, y)(z),
-        f2(v)(w, x, y)(z),
-        f2(v, w)(x)(y)(z),
-      ]);
-    },
-  );
-
-  property("curry/variadic function pattern", "nat", "nat", "nat", (...xs) => {
-    const f = curry3("f", (...args) => args.reduce((memo, a) => memo + a, 0));
-    return isEqual(xs.reduce((memo, a) => memo + a, 0), f(...xs));
-  });
-
-  property("set the function name", "string", (s) => {
-    const f = curry2(s, (x) => x);
-    return isEqual(f.name.replace(/-[\d]$/, ""), s);
+    property(`curry${i} sets the function name`, strArb, (s) => {
+      const curry = curries[`curry${i}`];
+      const f = curry(s, (...xs) => xs.reduce((memo, a) => memo + a, 0));
+      const [, name, count] = /^(.*)-([\d]*)$/.exec(f.name);
+      return isEqual(name, s) && isEqual(parseInt(count, 10), i);
+    });
   });
 });
