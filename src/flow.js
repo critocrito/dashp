@@ -1,13 +1,9 @@
 import {of} from "./Future";
-import {curry2, curry3, curry4, curry5} from "./internal/curry";
+import curries from "./internal/curry";
 import identity from "./internal/identity";
-import {isArray} from "./internal/is";
-import {invalidArray} from "./internal/throw";
+import checkTypes from "./internal/checkTypes";
 
 export const flowN = (fs, ...xs) => {
-  const name = `flow${xs.length === 1 ? "" : xs.length}`;
-  if (!isArray(fs)) invalidArray(`Future#${name}`, 0, fs);
-
   // If we encounter a call to `caught`, wrap the whole block in an exception
   // handler.
   const [head, ...tail] = fs.reduce((memo, f) => {
@@ -19,7 +15,11 @@ export const flowN = (fs, ...xs) => {
   return tail.reduce((memo, g) => memo.then(g), of(f(...xs)));
 };
 
-export const flow = curry2("flow", flowN);
-export const flow2 = curry3("flow2", flowN);
-export const flow3 = curry4("flow3", flowN);
-export const flow4 = curry5("flow4", flowN);
+export const {flow, flow2, flow3, flow4} = Array.from(
+  ...[Array(4).keys()],
+).reduce((memo, i) => {
+  const name = `flow${i === 0 ? "" : i + 1}`;
+  const curry = curries[`curry${i + 2}`];
+  const g = curry(name, checkTypes(["array"], flowN));
+  return Object.assign(memo, {[name]: g});
+}, {});
