@@ -2,11 +2,14 @@ import nameFn from "./namefn";
 
 const ncurry = (n) => {
   const localCurry = (name, f, ...args) => {
+    // This allows checkTypes to throw nicer error messages
+    const localF = nameFn(`Future#${name}`, f);
+
     const g = (...largs) => {
       const rest = args.concat(largs);
 
-      if (rest.length < n) return localCurry(name, f, ...rest);
-      return f(...rest);
+      if (rest.length < n) return localCurry(name, localF, ...rest);
+      return localF(...rest);
     };
     return nameFn(`${name}-${n - args.length}`, g);
   };
