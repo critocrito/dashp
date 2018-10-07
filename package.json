@@ -25,7 +25,7 @@
     "lint": "eslint test src benchmarks",
     "prepublishOnly": "yarn build",
     "prerelease": "yarn build",
-    "release": "standard-version -i CHANGELOG.md -m \"chore(release): bumped to version %s\" --sign",
+    "release": "standard-version -i Changelog.md -m \"chore(release): bumped to version %s\" --sign",
     "test": "cross-env NODE_ENV=test mocha -c -R progress -r @babel/register -r test/helpers.js test/**/*.spec.js",
     "test:coverage": "cross-env NODE_ENV=test nyc yarn test",
     "test:watch": "yarn test -w"
