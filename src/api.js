@@ -38,13 +38,25 @@ export {
 export {default as fold} from "./fold";
 export {default as foldP} from "./fold";
 
-export {collect, collect2, collect3, collect4, collect5} from "./collect";
+export {
+  collect,
+  collect2,
+  collect3,
+  collect4,
+  collect5,
+  collect6,
+  collect7,
+  collect8,
+} from "./collect";
 export {
   collect as collectP,
   collect2 as collectP2,
   collect3 as collectP3,
   collect4 as collectP4,
   collect5 as collectP5,
+  collect6 as collectP6,
+  collect7 as collectP7,
+  collect8 as collectP8,
 } from "./collect";
 
 export {flatmap, flatmap2, flatmap3, flatmap4, flatmap5} from "./flatmap";

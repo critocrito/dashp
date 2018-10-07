@@ -4,7 +4,16 @@ import sinon from "sinon";
 import Bluebird from "bluebird";
 
 import {anyArb, arrayArb, singleValueArb, plus, plusP} from "./arbitraries";
-import {collect, collect2, collect3, collect4, collect5} from "../src";
+import {
+  collect,
+  collect2,
+  collect3,
+  collect4,
+  collect5,
+  collect6,
+  collect7,
+  collect8,
+} from "../src";
 
 const isTrue = isEqual(true);
 const positiveIntegersArb = jsc.nat.smap((x) => x + 1, (x) => x - 1);
@@ -28,13 +37,25 @@ describe("mapping a function over an array", () => {
         collect3(plus(y), xs),
         collect4(plus(y), xs),
         collect5(plus(y), xs),
+        collect6(plus(y), xs),
+        collect7(plus(y), xs),
+        collect8(plus(y), xs),
       ]);
       return rs.every(isEqual(rs[0]));
     },
   );
 });
 
-[collect, collect2, collect3, collect4, collect5].forEach((f, i) =>
+[
+  collect,
+  collect2,
+  collect3,
+  collect4,
+  collect5,
+  collect6,
+  collect7,
+  collect8,
+].forEach((f, i) =>
   describe(`the ${f.name} operator`, () => {
     property(
       "equivalency to Bluebird's map",

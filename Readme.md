@@ -115,6 +115,9 @@ to polyfill it if your JavaScript environment doesn't provide it.
 - [`collect3`: Map a function over every element of a list, three at a time.](#collect3)
 - [`collect4`: Map a function over every element of a list, four at a time.](#collect4)
 - [`collect5`: Map a function over every element of a list, five at a time.](#collect5)
+- [`collect6`: Map a function over every element of a list, six at a time.](#collect6)
+- [`collect7`: Map a function over every element of a list, seven at a time.](#collect7)
+- [`collect8`: Map a function over every element of a list, eight at a time.](#collect8)
 - [`flatmap`: Map a function over every element of a list and concatenate the results.](#flatmap)
 - [`flatmap2`: Map a function over every element of a list and concatenate the results, two at a time.](#flatmap2)
 - [`flatmap3`: Map a function over every element of a list and concatenate the results, three at a time.](#flatmap3)
@@ -134,10 +137,10 @@ to polyfill it if your JavaScript environment doesn't provide it.
 - [`flow2`: Lift a composed function chain over two arguments.](#flow2)
 - [`flow3`: Lift a composed function chain over three arguments.](#flow3)
 - [`flow4`: Lift a composed function chain over four arguments.](#flow4)
-- [`flow5`: Lift a composed function chain over four arguments.](#flow5)
-- [`flow6`: Lift a composed function chain over four arguments.](#flow6)
-- [`flow7`: Lift a composed function chain over four arguments.](#flow7)
-- [`flow8`: Lift a composed function chain over four arguments.](#flow8)
+- [`flow5`: Lift a composed function chain over five arguments.](#flow5)
+- [`flow6`: Lift a composed function chain over six arguments.](#flow6)
+- [`flow7`: Lift a composed function chain over seven arguments.](#flow7)
+- [`flow8`: Lift a composed function chain over eight arguments.](#flow8)
 - [`constant`: Create a function that always returns the same value.](#constant)
 - [`lift2`: Lift a binary function over two promises.](#lift2)
 - [`lift3`: Lift a ternary function over three promises.](#lift3)
@@ -465,44 +468,67 @@ Map a function over every element of a list, resolve two promises in parallel.
 collect :: Promise p => (p b a -> p b a) -> [p b a] -> p b [a]
 ```
 
-This functions works like `collect`, with the only difference that two
-promises are resolved at the same time.
+This functions works like `collect`, with the only difference that two promises are resolved at the same time.
 
 ### `collect3`
 
-Map a function over every element of a list, resolve three promises in
-parallel.
+Map a function over every element of a list, resolve three promises in parallel.
 
 ```hs
 collect3 :: Promise p => (p b a -> p b a) -> [p b a] -> p b [a]
 ```
 
-This functions works like `collect`, with the only difference that three
-promises are resolved at the same time.
+This functions works like `collect`, with the only difference that three promises are resolved at the same time.
 
 ### `collect4`
 
-Map a function over every element of a list, resolve four promises in
-parallel.
+Map a function over every element of a list, resolve four promises in parallel.
 
 ```hs
 collect4 :: Promise p => (p b a -> p b a) -> [p b a] -> p b [a]
 ```
 
-This functions works like `collect`, with the only difference that four
-promises are resolved at the same time.
+This functions works like `collect`, with the only difference that four promises are resolved at the same time.
 
 ### `collect5`
 
-Map a function over every element of a list, resolve five promises in
-parallel.
+Map a function over every element of a list, resolve five promises in parallel.
 
 ```hs
 collect5 :: Promise p => (p b a -> p b a) -> [p b a] -> p b [a]
 ```
 
-This functions works like `collect`, with the only difference that five
-promises are resolved at the same time.
+This functions works like `collect`, with the only difference that five promises are resolved at the same time.
+
+### `collect6`
+
+Map a function over every element of a list, resolve six promises in parallel.
+
+```hs
+collect6 :: Promise p => (p b a -> p b a) -> [p b a] -> p b [a]
+```
+
+This functions works like `collect`, with the only difference that six promises are resolved at the same time.
+
+### `collect7`
+
+Map a function over every element of a list, resolve seven promises in parallel.
+
+```hs
+collect7 :: Promise p => (p b a -> p b a) -> [p b a] -> p b [a]
+```
+
+This functions works like `collect`, with the only difference that seven promises are resolved at the same time.
+
+### `collect8`
+
+Map a function over every element of a list, resolve eight promises in parallel.
+
+```hs
+collect8 :: Promise p => (p b a -> p b a) -> [p b a] -> p b [a]
+```
+
+This functions works like `collect`, with the only difference that eight promises are resolved at the same time.
 
 ### `flatmap`
 
