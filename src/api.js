@@ -59,13 +59,25 @@ export {
   collect8 as collectP8,
 } from "./collect";
 
-export {flatmap, flatmap2, flatmap3, flatmap4, flatmap5} from "./flatmap";
+export {
+  flatmap,
+  flatmap2,
+  flatmap3,
+  flatmap4,
+  flatmap5,
+  flatmap6,
+  flatmap7,
+  flatmap8,
+} from "./flatmap";
 export {
   flatmap as flatmapP,
   flatmap2 as flatmapP2,
   flatmap3 as flatmapP3,
   flatmap4 as flatmapP4,
   flatmap5 as flatmapP5,
+  flatmap6 as flatmapP6,
+  flatmap7 as flatmapP7,
+  flatmap8 as flatmapP8,
 } from "./flatmap";
 
 export {default as caught} from "./caught";

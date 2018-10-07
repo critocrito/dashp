@@ -3,7 +3,17 @@ import jsc, {property} from "jsverify";
 import sinon from "sinon";
 
 import {anyArb, arrayArb, singleValueArb} from "./arbitraries";
-import {flatmap, flatmap2, flatmap3, flatmap4, flatmap5, collect} from "../src";
+import {
+  flatmap,
+  flatmap2,
+  flatmap3,
+  flatmap4,
+  flatmap5,
+  flatmap6,
+  flatmap7,
+  flatmap8,
+  collect,
+} from "../src";
 
 const isTrue = isEqual(true);
 const duplicate = (n) => [n, n];
@@ -20,12 +30,24 @@ describe("flatmap over a list", () => {
       flatmap3(duplicate, xs),
       flatmap4(duplicate, xs),
       flatmap5(duplicate, xs),
+      flatmap6(duplicate, xs),
+      flatmap7(duplicate, xs),
+      flatmap8(duplicate, xs),
     ]);
     return rs.every(isEqual(rs[0]));
   });
 });
 
-[flatmap, flatmap2, flatmap3, flatmap4, flatmap5].forEach((f, i) =>
+[
+  flatmap,
+  flatmap2,
+  flatmap3,
+  flatmap4,
+  flatmap5,
+  flatmap6,
+  flatmap7,
+  flatmap8,
+].forEach((f, i) =>
   describe(`the ${f.name} operator`, () => {
     property("equivalency to collect", jsc.array(anyArb), async (xs) =>
       isEqual(

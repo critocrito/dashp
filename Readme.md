@@ -123,6 +123,9 @@ to polyfill it if your JavaScript environment doesn't provide it.
 - [`flatmap3`: Map a function over every element of a list and concatenate the results, three at a time.](#flatmap3)
 - [`flatmap4`: Map a function over every element of a list and concatenate the results, four at a time.](#flatmap4)
 - [`flatmap5`: Map a function over every element of a list and concatenate the results, five at a time.](#flatmap5)
+- [`flatmap6`: Map a function over every element of a list and concatenate the results, six at a time.](#flatmap6)
+- [`flatmap7`: Map a function over every element of a list and concatenate the results, seven at a time.](#flatmap7)
+- [`flatmap8`: Map a function over every element of a list and concatenate the results, eight at a time.](#flatmap8)
 
 </details>
 
@@ -538,9 +541,7 @@ Map a function over every element of a list and concatenate the results.
 flatmap :: Promise p => (p b a -> p b [a]) -> [p b a] -> p b [a]
 ```
 
-This is equivalent to calling `collect` and flattening the resulting list of
-lists into a single list. In it's standard version it only resolves one
-promise at a time.
+This is equivalent to calling `collect` and flattening the resulting list of lists into a single list. In it's standard version it only resolves one promise at a time.
 
 ```javascript
 import {flatmap} from "dashp";
@@ -554,51 +555,73 @@ flatmap(f, xs).then(console.log);
 
 ### `flatmap2`
 
-Map a function over every element of a list and concatenate the results,
-resolve two promises at the same time.
+Map a function over every element of a list and concatenate the results, resolve two promises at the same time.
 
 ```hs
 flatmap2 :: Promise p => (p b a -> p b [a]) -> [p b a] -> p b [a]
 ```
 
-This is equivalent to `flatmap`, only that it resolves two promises in
-parallel.
+This is equivalent to `flatmap`, only that it resolves two promises in parallel.
 
 ### `flatmap3`
 
-Map a function over every element of a list and concatenate the results,
-resolve three promises at the same time.
+Map a function over every element of a list and concatenate the results, resolve three promises at the same time.
 
 ```hs
 flatmap3 :: Promise p => (p b a -> p b [a]) -> [p b a] -> p b [a]
 ```
 
-This is equivalent to `flatmap`, only that it resolves three promises in
-parallel.
+This is equivalent to `flatmap`, only that it resolves three promises in parallel.
 
 ### `flatmap4`
 
-Map a function over every element of a list and concatenate the results,
-resolve four promises at the same time.
+Map a function over every element of a list and concatenate the results, resolve four promises at the same time.
 
 ```hs
 flatmap4 :: Promise p => (p b a -> p b [a]) -> [p b a] -> p b [a]
 ```
 
-This is equivalent to `flatmap`, only that it resolves four promises in
-parallel.
+This is equivalent to `flatmap`, only that it resolves four promises in parallel.
 
 ### `flatmap5`
 
-Map a function over every element of a list and concatenate the results,
-resolve five promises at the same time.
+Map a function over every element of a list and concatenate the results, resolve five promises at the same time.
 
 ```hs
 flatmap5 :: Promise p => (p b a -> p b [a]) -> [p b a] -> p b [a]
 ```
 
-This is equivalent to `flatmap`, only that it resolves five promises in
-parallel.
+This is equivalent to `flatmap`, only that it resolves five promises in parallel.
+
+### `flatmap6`
+
+Map a function over every element of a list and concatenate the results, resolve six promises at the same time.
+
+```hs
+flatmap6 :: Promise p => (p b a -> p b [a]) -> [p b a] -> p b [a]
+```
+
+This is equivalent to `flatmap`, only that it resolves six promises in parallel.
+
+### `flatmap7`
+
+Map a function over every element of a list and concatenate the results, resolve seven promises at the same time.
+
+```hs
+flatmap7 :: Promise p => (p b a -> p b [a]) -> [p b a] -> p b [a]
+```
+
+This is equivalent to `flatmap`, only that it resolves seven promises in parallel.
+
+### `flatmap8`
+
+Map a function over every element of a list and concatenate the results, resolve eight promises at the same time.
+
+```hs
+flatmap8 :: Promise p => (p b a -> p b [a]) -> [p b a] -> p b [a]
+```
+
+This is equivalent to `flatmap`, only that it resolves eight promises in parallel.
 
 ### `isPromise`
 
