@@ -15,9 +15,16 @@ export const flowN = (fs, ...xs) => {
   return tail.reduce((memo, g) => memo.then(g), of(f(...xs)));
 };
 
-export const {flow, flow2, flow3, flow4} = Array.from(
-  ...[Array(4).keys()],
-).reduce((memo, i) => {
+export const {
+  flow,
+  flow2,
+  flow3,
+  flow4,
+  flow5,
+  flow6,
+  flow7,
+  flow8,
+} = Array.from(...[Array(8).keys()]).reduce((memo, i) => {
   const name = `flow${i === 0 ? "" : i + 1}`;
   const curry = curries[`curry${i + 2}`];
   const g = curry(name, checkTypes(["array"], flowN));

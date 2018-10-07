@@ -23,12 +23,16 @@ export {default as allP} from "./all";
 export {default as compose} from "./compose";
 export {default as composeP} from "./compose";
 
-export {flow, flow2, flow3, flow4} from "./flow";
+export {flow, flow2, flow3, flow4, flow5, flow6, flow7, flow8} from "./flow";
 export {
   flow as flowP,
   flow2 as flowP2,
   flow3 as flowP3,
   flow4 as flowP4,
+  flow5 as flowP5,
+  flow6 as flowP6,
+  flow7 as flowP7,
+  flow8 as flowP8,
 } from "./flow";
 
 export {default as fold} from "./fold";

@@ -1,8 +1,19 @@
-import {map, reduce, range, identity, sum, isEqual} from "lodash/fp";
+import {map, reduce, range, identity, sum, isEqual, times} from "lodash/fp";
 import jsc, {property} from "jsverify";
 
 import {singleValueArb, plusP} from "./arbitraries";
-import {of, flow, flow2, flow3, flow4, compose} from "../src";
+import {
+  of,
+  flow,
+  flow2,
+  flow3,
+  flow4,
+  flow5,
+  flow6,
+  flow7,
+  flow8,
+  compose,
+} from "../src";
 
 const sumP = (...args) => of(sum(args));
 const fixture = Symbol("fixture");
@@ -39,30 +50,19 @@ describe("The flow combinator", () => {
     },
   );
 
-  property("lifts two arguments into the pipe", "nat", "nat", async (x, y) =>
-    isEqual(await flow2([sumP], x, y), x + y),
-  );
-
-  property(
-    "lifts three arguments into the pipe",
-    "nat",
-    "nat",
-    "nat",
-    async (x, y, z) => isEqual(await flow3([sumP], x, y, z), x + y + z),
-  );
-
-  property(
-    "lifts four arguments into the pipe",
-    "nat",
-    "nat",
-    "nat",
-    "nat",
-    async (w, x, y, z) =>
-      isEqual(await flow4([sumP], w, x, y, z), w + x + y + z),
-  );
-
-  [flow, flow2, flow3, flow4].forEach((f, i) => {
+  [flow, flow2, flow3, flow4, flow5, flow6, flow7, flow8].forEach((f, i) => {
     const name = f.name.replace(/-\d$/, "");
+    const arbs = times(() => "nat", i + 1);
+
+    property(
+      `lifts ${i + 1} arguments into the pipe`,
+      ...arbs,
+      async (...args) =>
+        isEqual(
+          await f([sumP], ...args),
+          args.reduce((memo, a) => memo + a, 0),
+        ),
+    );
 
     describe("has argument type checks", () => {
       property(

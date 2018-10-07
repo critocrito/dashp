@@ -134,6 +134,10 @@ to polyfill it if your JavaScript environment doesn't provide it.
 - [`flow2`: Lift a composed function chain over two arguments.](#flow2)
 - [`flow3`: Lift a composed function chain over three arguments.](#flow3)
 - [`flow4`: Lift a composed function chain over four arguments.](#flow4)
+- [`flow5`: Lift a composed function chain over four arguments.](#flow5)
+- [`flow6`: Lift a composed function chain over four arguments.](#flow6)
+- [`flow7`: Lift a composed function chain over four arguments.](#flow7)
+- [`flow8`: Lift a composed function chain over four arguments.](#flow8)
 - [`constant`: Create a function that always returns the same value.](#constant)
 - [`lift2`: Lift a binary function over two promises.](#lift2)
 - [`lift3`: Lift a ternary function over three promises.](#lift3)
@@ -669,27 +673,22 @@ spread(plus, p).then(console.log);
 Compose functions into a chain.
 
 ```hs
-flow :: Promise p => [(a -> c)] -> p b a -> p b a
+flow :: Promise p => [(a -> c)] -> p b a -> p b c
 ```
 
-Create a function out of a list of functions, where each successive invocation
-is supplied the return value of the previous function call. The new function
-forms a pipe where the results flow from left to right so to speak. It's a
-shortcut for composing more than two functions.
+Create a function out of a list of functions, where each successive invocation is supplied the return value of the previous function call. The new function forms a pipe where the results flow from left to right so to speak. This is equivalent to Lodash's `flow` function. It's a shortcut for composing more than two functions.
 
 ```javascript
 import {of, flow} from "dashp";
 
-const f = (x, y) => of(x + y);
+const f = (x) -> (y) => of(x + y);
 const fs = [...Array(5).keys()].map(f);
 
 flow(fs, 0).then(console.log);
 // Prints 10
 ```
 
-`flow` treats any occurrence of `caught` as a special case by rewriting the
-function chains to wrap relevant parts in an exception handler. In order to
-support a syntax like:
+`flow` treats any occurrence of `caught` as a special case by rewriting the function chains to wrap relevant parts in an exception handler. In order to support a syntax like:
 
 ```
 import {flow, caught} from "dashp";
@@ -705,8 +704,7 @@ flow([
 ]);
 ```
 
-`flow` will parse the function chain for any occurrence of `caught` and
-rewrite the function chain accordingly to look like this:
+`flow` will parse the function chain for any occurrence of `caught` and rewrite the function chain accordingly to look like this:
 
 ```
 flow([
@@ -715,73 +713,75 @@ flow([
 ]);
 ```
 
-The `name` attribute of every function is checked to satisfy the following
-condition: `/^caught-/.test(f.name)`.
-
 ### `flow2`
 
 Lift a composed function chain over two arguments.
 
 ```hs
-flow :: Promise p => [(a -> a -> a) (a -> a)] -> p b a -> p b a -> p b a
+flow2 :: Promise p => [(a -> a -> c) (c -> d)] -> p b a -> p b a -> p b d
 ```
 
-This function works like `flow`, but it accepts two arguments, that are lifted
-into the first function of the chain.
-
-```javascript
-import {of, flow2} from "dashp";
-
-const f = (x, y) => of(x + y);
-const fs = [...Array(5).keys()].map(f);
-
-flow([f, ...fs], 0, 0).then(console.log);
-// Prints 10
-```
+This function works like `flow`, but it accepts two arguments, that are lifted into the first function of the chain.
 
 ### `flow3`
 
 Lift a composed function chain over three arguments.
 
 ```hs
-flow :: Promise p => [(a -> a -> a -> a) (a -> a)] -> p b a -> p b a -> p b a -> p b a
+flow3 :: Promise p => [(a -> a -> a -> c) (c -> d)] -> p b a -> p b a -> p b a -> p b d
 ```
 
-This function works like `flow`, but it accepts three arguments, that are lifted
-into the first function of the chain.
-
-```javascript
-import {of, flow3} from "dashp";
-
-const f = (x, y) => of(x + y);
-const g = (x, y, z) => of(x + y + z);
-const fs = [...Array(5).keys()].map(f);
-
-flow([g, ...fs], 0, 0, 0).then(console.log);
-// Prints 10
-```
+This function works like `flow`, but it accepts three arguments, that are lifted into the first function of the chain.
 
 ### `flow4`
 
 Lift a composed function chain over four arguments.
 
 ```hs
-flow :: Promise p => [(a -> a -> a -> a ->) (a -> a)] -> p b a -> p b a -> p b a -> p b a -> p b a
+flow4 :: Promise p => [(a -> a -> a -> a -> c) (c -> d)] -> p b a -> p b a -> p b a -> p b a -> p b d
 ```
 
-This function works like `flow`, but it accepts four arguments, that are lifted
-into the first function of the chain.
+This function works like `flow`, but it accepts four arguments, that are lifted into the first function of the chain.
 
-```javascript
-import {of, flow4} from "dashp";
+### `flow5`
 
-const f = (x, y) => of(x + y);
-const g = (w, x, y, z) => of(w + x + y + z);
-const fs = [...Array(5).keys()].map(f);
+Lift a composed function chain over five arguments.
 
-flow([g, ...fs], 0, 0, 0, 0).then(console.log);
-// Prints 10
+```hs
+flow5 :: Promise p => [(a -> a -> a -> a -> a -> c) (c -> d)] -> p b a -> p b a -> p b a -> p b a -> p b a -> p b d
 ```
+
+This function works like `flow`, but it accepts five arguments, that are lifted into the first function of the chain.
+
+### `flow6`
+
+Lift a composed function chain over six arguments.
+
+```hs
+flow6 :: Promise p => [(a -> a -> a -> a -> a -> a -> c) (c -> d)] -> p b a -> p b a -> p b a -> p b a -> p b a -> p b a -> p b d
+```
+
+This function works like `flow`, but it accepts six arguments, that are lifted into the first function of the chain.
+
+### `flow7`
+
+Lift a composed function chain over seven arguments.
+
+```hs
+flow7 :: Promise p => [(a -> a -> a -> a -> a -> a -> a -> c) (c -> d)] -> p b a -> p b a -> p b a -> p b a -> p b a -> p b a -> p b a -> p b d
+```
+
+This function works like `flow`, but it accepts seven arguments, that are lifted into the first function of the chain.
+
+### `flow8`
+
+Lift a composed function chain over eight arguments.
+
+```hs
+flow8 :: Promise p => [(a -> a -> a -> a -> a -> a -> a -> a -> c) (c -> d)] -> p b a -> p b a -> p b a -> p b a -> p b a -> p b a -> p b a -> p b a -> p b d
+```
+
+This function works like `flow`, but it accepts eight arguments, that are lifted into the first function of the chain.
 
 ### `constant`
 
