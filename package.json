@@ -6,7 +6,7 @@
   "homepage": "https://github.com/critocrito/dashp#readme",
   "repository": "https://github.com/critocrito/dashp.git",
   "version": "0.10.0",
-  "main": "_dist/index.js",
+  "main": "dist/index.js",
   "module": "lib/index.js",
   "files": [
     "dist",
