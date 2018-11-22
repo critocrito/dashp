@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.10.0"></a>
+# [0.10.0](https://github.com/critocrito/dashp/compare/v0.9.0...v0.10.0) (2018-11-22)
+
+
+### Features
+
+* expanded collect to handle up to 8 parallel promise resolutions ([18450d9](https://github.com/critocrito/dashp/commit/18450d9))
+* expanded flatmap to handle up to 8 parallel promise resolutions ([e31b1cd](https://github.com/critocrito/dashp/commit/e31b1cd))
+* provide variants of flow with up to 8 arguments ([2514ee5](https://github.com/critocrito/dashp/commit/2514ee5))
+* support curried function signatures of up to 10 arguments ([c781ff0](https://github.com/critocrito/dashp/commit/c781ff0))
+
+
+### Performance Improvements
+
+* Added benchamrks for curry and all. ([24464b2](https://github.com/critocrito/dashp/commit/24464b2))
+
+
+
 <a name="0.9.0"></a>
 # [0.9.0](https://github.com/critocrito/dashp/compare/v0.8.1...v0.9.0) (2018-02-17)
 
