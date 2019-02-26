@@ -743,9 +743,10 @@
     "@build-chores/eslint-config-lint" "0.7.0"
     lint-staged "^7.3.0"
 
-"@build-chores/test@0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@build-chores/test/-/test-0.7.0.tgz#d0e6872147f54c2f5b5bbea5cb8afbcd81047be8"
+"@build-chores/test@0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@build-chores/test/-/test-0.8.0.tgz#7b408be5fce71840deedda8193898882723c84ec"
+  integrity sha512-hHLrBwqeWhUbT5o4hLp3TnIVFVP96fSeg1Ugs/9b3BqZi91ZdNGuYCF8l6hMScdGVwIg2P1JtsSdtL7quoag+Q==
   dependencies:
     "@babel/core" "^7.1.2"
     "@babel/register" "^7.0.0"
