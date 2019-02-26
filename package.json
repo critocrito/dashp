@@ -52,7 +52,7 @@
     "lodash": "^4.17.5",
     "mocha": "^6.0.0",
     "rimraf": "^2.6.2",
-    "sinon": "^6.3.5",
+    "sinon": "^7.2.4",
     "standard-version": "^4.3.0",
     "time-span": "^2.0.0"
   },
