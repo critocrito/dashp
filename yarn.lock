@@ -695,6 +695,20 @@
     "@babel/preset-env" "^7.1.0"
     "@babel/preset-flow" "^7.0.0"
 
+"@build-chores/babel-preset@0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@build-chores/babel-preset/-/babel-preset-0.8.0.tgz#c1d4d51269431163d151a24ef448c6d14d69b3cd"
+  integrity sha512-P5DPx4pBHjQO/lSrT3l+Qimo3S1qvmlDNc98hu8j1AalHANmcevd2BNkS9Eid7Eog1+LuuL6HVlKjnGFFqfW6A==
+  dependencies:
+    "@babel/cli" "^7.1.2"
+    "@babel/core" "^7.1.2"
+    "@babel/helper-plugin-utils" "^7.0.0"
+    "@babel/plugin-proposal-class-properties" "^7.1.0"
+    "@babel/plugin-syntax-flow" "^7.0.0"
+    "@babel/plugin-transform-flow-strip-types" "^7.0.0"
+    "@babel/preset-env" "^7.1.0"
+    "@babel/preset-flow" "^7.0.0"
+
 "@build-chores/commitlint@0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@build-chores/commitlint/-/commitlint-0.7.0.tgz#2fd1b0914b96c1772ff53a31f1b001ed44415dc1"
