@@ -37,7 +37,7 @@
     "@build-chores/babel-preset": "0.8.0",
     "@build-chores/commitlint": "0.7.0",
     "@build-chores/eslint-config-lint": "0.7.0",
-    "@build-chores/staged": "0.7.0",
+    "@build-chores/staged": "0.8.0",
     "@build-chores/test": "0.7.0",
     "benchmark": "^2.1.4",
     "bluebird": "^3.5.1",
