@@ -5894,9 +5894,10 @@ through@2, "through@>=2.2.7 <3", through@^2.3.6, through@^2.3.8:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
 
-time-span@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/time-span/-/time-span-2.0.0.tgz#e7624a37917a49729dbf3b7c47c5b799440e532f"
+time-span@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/time-span/-/time-span-3.0.0.tgz#75957f8754c64e9245394fa22d7f788e1c7e4e86"
+  integrity sha512-436XxRlp92x+dNY+kmNFLaXH2WkwClYc9QessUNJHCYgPCqmbtA5gnfOfZZIBgfMWdYAYPGOoaOc0WQ5b5jiRA==
   dependencies:
     convert-hrtime "^2.0.0"
 
