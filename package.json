@@ -66,5 +66,8 @@
     "promises",
     "promises-aplus",
     "static-land"
-  ]
+  ],
+  "engines": {
+    "node": ">=8"
+  }
 }
