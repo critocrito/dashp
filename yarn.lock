@@ -2250,11 +2250,12 @@ dot@~1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/dot/-/dot-1.0.3.tgz#f8750bfb6b03c7664eb0e6cb1eb4c66419af9427"
 
-dotgitignore@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/dotgitignore/-/dotgitignore-1.0.3.tgz#a442cbde7dc20dff51cdb849e4c5a64568c07923"
+dotgitignore@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/dotgitignore/-/dotgitignore-2.1.0.tgz#a4b15a4e4ef3cf383598aaf1dfa4a04bcc089b7b"
+  integrity sha512-sCm11ak2oY6DglEPpCB8TixLjWAxd3kJTs6UIcSasNYxXdFPV+YKlye92c8H4kKFqV5qYMIh7d+cYecEg0dIkA==
   dependencies:
-    find-up "^2.1.0"
+    find-up "^3.0.0"
     minimatch "^3.0.4"
 
 duplexer2@~0.1.4:
@@ -5703,17 +5704,17 @@ staged-git-files@1.1.2:
   resolved "https://registry.yarnpkg.com/staged-git-files/-/staged-git-files-1.1.2.tgz#4326d33886dc9ecfa29a6193bf511ba90a46454b"
   integrity sha512-0Eyrk6uXW6tg9PYkhi/V/J4zHp33aNyi2hOCmhFLqLTIhbgqWn5jlSzI+IU0VqrZq6+DbHcabQl/WP6P3BG0QA==
 
-standard-version@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/standard-version/-/standard-version-5.0.0.tgz#b4543fbf1e7e2ef70a7085150c5b0a91eb754c97"
-  integrity sha512-ODn74fVhNVxmVD65YaNour7pHmJ/7fXuINPsTha2OndLmrajBmUz2q1Ah5s7lChTzWUe78F6uinRMpiSxvZKfw==
+standard-version@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/standard-version/-/standard-version-5.0.2.tgz#39fc8ce9a2850cc70868a39f9a4c9661a4439beb"
+  integrity sha512-vvdWZySinwWU9UZhtgYUGGTkYzqrwYMw3c7CFJ17E7vMbAEqVSui/bm+ZcSukAAU2WmphPTWIKFmn8ni+lk4NA==
   dependencies:
     chalk "^2.4.1"
     conventional-changelog "^3.0.6"
     conventional-recommended-bump "^4.0.4"
     detect-indent "^5.0.0"
     detect-newline "^2.1.0"
-    dotgitignore "^1.0.3"
+    dotgitignore "^2.1.0"
     figures "^2.0.0"
     fs-access "^1.0.0"
     git-semver-tags "^2.0.2"
@@ -5911,9 +5912,10 @@ through@2, "through@>=2.2.7 <3", through@^2.3.6, through@^2.3.8:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
 
-time-span@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/time-span/-/time-span-2.0.0.tgz#e7624a37917a49729dbf3b7c47c5b799440e532f"
+time-span@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/time-span/-/time-span-3.0.0.tgz#75957f8754c64e9245394fa22d7f788e1c7e4e86"
+  integrity sha512-436XxRlp92x+dNY+kmNFLaXH2WkwClYc9QessUNJHCYgPCqmbtA5gnfOfZZIBgfMWdYAYPGOoaOc0WQ5b5jiRA==
   dependencies:
     convert-hrtime "^2.0.0"
 
