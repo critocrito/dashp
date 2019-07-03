@@ -46,7 +46,7 @@
     "coveralls": "^3.0.0",
     "cross-env": "^5.2.0",
     "eslint-plugin-lodash-fp": "^2.2.0-a1",
-    "husky": "^1.1.1",
+    "husky": "^2.0.0",
     "in-range": "^2.0.0",
     "jsverify": "github:critocrito/jsverify#throws-regex",
     "lodash": "^4.17.5",
