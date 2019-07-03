@@ -39,7 +39,9 @@ describe("The retry operator for Promises", () => {
       .resolves();
     const end = timeSpan();
     await retry(mock);
-    (inRange(end(), 250, 300) && mock.verify()).should.equal(true);
+    (inRange(end(), {start: 250, end: 300}) && mock.verify()).should.equal(
+      true,
+    );
   });
 
   it("can retry functions with arguments", async () => {
