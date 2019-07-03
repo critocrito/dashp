@@ -12,13 +12,13 @@ describe("The delay operator", () => {
   it("resolves a promise after some time", async () => {
     const end = timeSpan();
     const resolved = await delay(50, fixture);
-    return isTrue(inRange(end(), 50, 70)) && isFixture(resolved);
+    return isTrue(inRange(end(), {start: 50, end: 70})) && isFixture(resolved);
   });
 
   it("can be used to delay a promise chain", async () => {
     const end = timeSpan();
     const resolved = await Promise.resolve(fixture).then(delay(50));
-    return isTrue(inRange(end(), 50, 70)) && isFixture(resolved);
+    return isTrue(inRange(end(), {start: 50, end: 70})) && isFixture(resolved);
   });
 
   it("can cancel a promise", () => {

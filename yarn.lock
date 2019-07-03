@@ -3413,9 +3413,10 @@ imurmurhash@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
 
-in-range@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/in-range/-/in-range-1.0.0.tgz#093d863a11cc6d042a967ec366b648720f360766"
+in-range@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/in-range/-/in-range-2.0.0.tgz#61bc3a0a19299f1739aaf3da906fd4580b26b2d1"
+  integrity sha512-qcbuBQ9FdrlPHZsQTCrSkY1vj90aSO/rx8KOiVO1ZtSJ+vWLaNKjTZODKHL84iZEvdD4fZISZFdQ6lMyHIJeuw==
 
 indent-string@^2.1.0:
   version "2.1.0"
