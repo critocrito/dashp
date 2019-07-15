@@ -9,8 +9,8 @@ export const whenElse = curry4(
     ["function", "function", "function", "thenable"],
     (predicate, consequent, alternative, p) => {
       const branch = (x) =>
-        of(predicate(x)).then(
-          (bool) => (bool === true ? consequent(x) : alternative(x)),
+        of(predicate(x)).then((bool) =>
+          bool === true ? consequent(x) : alternative(x),
         );
       return of(p).then(branch);
     },
