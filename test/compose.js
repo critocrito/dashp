@@ -1,7 +1,7 @@
 import {isEqual} from "lodash/fp";
 import {testProp, fc} from "ava-fast-check";
 
-import {throws, plusP} from "./_helpers";
+import {plusP} from "./_helpers";
 import {of, compose} from "../src";
 
 testProp(
@@ -44,26 +44,4 @@ testProp(
         of(c),
       ),
     ),
-);
-
-testProp(
-  "throws if the first two arguments are not functions",
-  [fc.anything(), fc.nat(), fc.boolean()],
-  (f, a, p) => {
-    const block = () => {
-      if (p) {
-        return compose(
-          f,
-          (x) => x,
-          a,
-        );
-      }
-      return compose(
-        (x) => x,
-        f,
-        a,
-      );
-    };
-    return throws(block, TypeError, /^Future#compose (.+)to be a function/);
-  },
 );

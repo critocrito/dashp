@@ -91,42 +91,4 @@ testProp(
       return f(stub, xs).then(isEqual(xs));
     },
   );
-
-  testProp(
-    `${f.name} throws if the first argument is not a function`,
-    [fc.anything(), fc.array(fc.anything())],
-    async (g, xs) => {
-      try {
-        await (() => f(g, xs))();
-      } catch (e) {
-        if (
-          e instanceof TypeError &&
-          new RegExp(
-            `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a function`,
-          ).test(e.message)
-        )
-          return true;
-      }
-      return false;
-    },
-  );
-
-  testProp(
-    `${f.name} throws if the second argument is not an array`,
-    [singleValueArb()],
-    async (a) => {
-      try {
-        await (() => f((x) => x, a))();
-      } catch (e) {
-        if (
-          e instanceof TypeError &&
-          new RegExp(
-            `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be an array`,
-          ).test(e.message)
-        )
-          return true;
-      }
-      return false;
-    },
-  );
 });

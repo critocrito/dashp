@@ -4,8 +4,6 @@ import sinon from "sinon";
 
 import {of, when, whenElse, unless, unlessElse} from "../src";
 
-import {throws, random} from "./_helpers";
-
 const pred = (bool) => () => bool;
 const predP = (bool) => () => of(bool);
 
@@ -61,40 +59,6 @@ testProp("unlessElse is equivalent to if-not-else", [fc.boolean()], (x) => {
 
 [whenElse, unlessElse].forEach((f) => {
   testProp(
-    `validates that the arguments of ${f.name} are functions`,
-    [fc.anything()],
-    (g) => {
-      const args = [sinon.stub(), sinon.stub(), sinon.stub()];
-      args[random(0, 2)] = g;
-      const block = () => f(...args.concat(fixture));
-
-      return throws(
-        block,
-        TypeError,
-        new RegExp(
-          `Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a function`,
-        ),
-      );
-    },
-  );
-
-  testProp(
-    `throws if the fourth argument of ${f.name} is not a promise`,
-    [fc.anything()],
-    (a) => {
-      const args = [sinon.stub(), sinon.stub(), sinon.stub(), a];
-      const block = () => f(...args);
-      return throws(
-        block,
-        TypeError,
-        new RegExp(
-          `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a promise`,
-        ),
-      );
-    },
-  );
-
-  testProp(
     `${f.name} allows synchronous and asynchronous arguments`,
     [fc.boolean(), fc.boolean(), fc.boolean(), fc.boolean()],
     (x, rnd, rnd2, rnd3) => {
@@ -113,39 +77,6 @@ testProp("unlessElse is equivalent to if-not-else", [fc.boolean()], (x) => {
 });
 
 [when, unless].forEach((f) => {
-  testProp(
-    `validates that the arguments of ${f.name} are functions`,
-    [fc.anything()],
-    (g) => {
-      const args = [sinon.stub(), sinon.stub()];
-      args[random(0, 1)] = g;
-      const block = () => f(...args.concat(fixture));
-      return throws(
-        block,
-        TypeError,
-        new RegExp(
-          `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a function`,
-        ),
-      );
-    },
-  );
-
-  testProp(
-    `throws if the third argument of ${f.name} is not a promise`,
-    [fc.anything()],
-    (a) => {
-      const args = [sinon.stub(), sinon.stub(), a];
-      const block = () => f(...args);
-      return throws(
-        block,
-        TypeError,
-        new RegExp(
-          `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a promise`,
-        ),
-      );
-    },
-  );
-
   testProp(
     `${f.name} allows synchronous and asynchronous arguments`,
     [fc.boolean(), fc.boolean(), fc.boolean()],

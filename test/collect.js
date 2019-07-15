@@ -4,7 +4,7 @@ import {map, every, isEqual} from "lodash/fp";
 import sinon from "sinon";
 import Bluebird from "bluebird";
 
-import {singleValueArb, random, throws, plus, plusP} from "./_helpers";
+import {random, plus, plusP} from "./_helpers";
 import {
   collect,
   collect2,
@@ -108,31 +108,5 @@ testProp(
         .then(() => true)
         .catch((e) => e.message === msg);
     },
-  );
-
-  testProp(
-    `${f.name} throws if the first argument is not a function`,
-    [fc.anything(), fc.array(fc.anything())],
-    (g, xs) =>
-      throws(
-        () => f(g, xs),
-        TypeError,
-        new RegExp(
-          `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be a function`,
-        ),
-      ),
-  );
-
-  testProp(
-    `${f.name} throws if the second argument is not an array`,
-    [singleValueArb()],
-    (a) =>
-      throws(
-        () => f((x) => x, a),
-        TypeError,
-        new RegExp(
-          `^Future#${f.name.replace(/-[\d]$/, "")} (.+)to be an array`,
-        ),
-      ),
   );
 });

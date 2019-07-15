@@ -10,7 +10,6 @@ import {
 } from "./collect";
 import {curry2} from "./internal/curry";
 import flatten from "./internal/flatten";
-import checkTypes from "./internal/checkTypes";
 
 const flatmapN = (mapper, f, xs) => mapper(f, xs).then(flatten);
 
@@ -34,9 +33,6 @@ export const {
   collect8,
 ].reduce((memo, m, i) => {
   const name = `flatmap${i === 0 ? "" : i + 1}`;
-  const f = curry2(
-    name,
-    checkTypes(["function", "array"], (g, xs) => flatmapN(m, g, xs)),
-  );
+  const f = curry2(name, (g, xs) => flatmapN(m, g, xs));
   return Object.assign(memo, {[name]: f});
 }, {});

@@ -3,7 +3,7 @@ import {isEqual} from "lodash/fp";
 import {testProp, fc} from "ava-fast-check";
 import sinon from "sinon";
 
-import {throws, plus, plusP} from "./_helpers";
+import {plus, plusP} from "./_helpers";
 import {of, map, bimap, ap, chain} from "../src/Future";
 import comp from "../src/compose";
 
@@ -23,28 +23,6 @@ testProp(
 
     return isEqual(await map(comp(f, g), of(a)), await map(f, map(g, of(a))));
   },
-);
-
-testProp(
-  "map throws if the first argument is not a function",
-  [fc.anything()],
-  (a) =>
-    throws(
-      () => map(a, of(fixture)),
-      TypeError,
-      /^Future#map (.+)to be a function/,
-    ),
-);
-
-testProp(
-  "map throws if the second argument is not a promise",
-  [fc.anything()],
-  (a) =>
-    throws(
-      () => map((x) => x, a),
-      TypeError,
-      /^Future#map (.+)to be a promise/,
-    ),
 );
 
 // https://github.com/rpominov/static-land/blob/master/docs/spec.md#bifunctor
@@ -119,39 +97,6 @@ test("doesn't call the left function if the right one throws", async (t) => {
   t.true(g.verify());
 });
 
-testProp(
-  "bifunctor throws if the first argument is not a function",
-  [fc.anything()],
-  (f) =>
-    throws(
-      () => bimap(f, (x) => x, of(fixture)),
-      TypeError,
-      /^Future#bimap (.+)to be a function/,
-    ),
-);
-
-testProp(
-  "bifunctor throws if the second argument is not a function",
-  [fc.anything()],
-  (f) =>
-    throws(
-      () => bimap((x) => x, f, of(fixture)),
-      TypeError,
-      /^Future#bimap (.+)to be a function/,
-    ),
-);
-
-testProp(
-  "bifunctor throws if the third argument is not a promise",
-  [fc.anything()],
-  (a) =>
-    throws(
-      () => bimap((x) => x, (x) => x, a),
-      TypeError,
-      /^Future#bimap (.+)to be a promise/,
-    ),
-);
-
 // https://github.com/rpominov/static-land/blob/master/docs/spec.md#applicative
 testProp("identity applicative", [fc.nat()], async (a) => {
   const v = of(a);
@@ -190,28 +135,6 @@ testProp(
   },
 );
 
-testProp(
-  "applicative throws if the first argument is not a promise",
-  [fc.anything()],
-  (f) =>
-    throws(
-      () => ap(f, of(fixture)),
-      TypeError,
-      /^Future#ap (.+)to be a promise/,
-    ),
-);
-
-testProp(
-  "applicative throws if the second argument is not a promise",
-  [fc.anything()],
-  (a) =>
-    throws(
-      () => ap(of((x) => x), a),
-      TypeError,
-      /^Future#ap (.+)to be a promise/,
-    ),
-);
-
 // https://github.com/rpominov/static-land/blob/master/docs/spec.md#monad
 testProp(
   "monad associativity",
@@ -234,26 +157,4 @@ testProp("monad left identity", [fc.nat(), fc.nat()], async (a, b) => {
 
 testProp("monad right identity", [fc.nat()], async (a) =>
   isEqual(await chain(of, of(a)), await of(a)),
-);
-
-testProp(
-  "monad throws if the first argument is not a function",
-  [fc.anything()],
-  (f) =>
-    throws(
-      () => chain(f, of(fixture)),
-      TypeError,
-      /^Future#chain (.+)to be a function/,
-    ),
-);
-
-testProp(
-  "monad throws if the second argument is not a promise",
-  [fc.anything()],
-  (a) =>
-    throws(
-      () => chain((x) => x, a),
-      TypeError,
-      /^Future#chain (.+)to be a promise/,
-    ),
 );

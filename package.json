@@ -15,6 +15,7 @@
   "scripts": {
     "benchmarks": "for i in benchmarks/*.suite.js; do babel-node $i; done",
     "benchmarks:all": "babel-node benchmarks/all.suite.js",
+    "benchmarks:checkTypes": "babel-node benchmarks/check-types.suite.js",
     "benchmarks:curry": "babel-node benchmarks/curry.suite.js",
     "build": "yarn lint && yarn test && yarn compile",
     "clean": "rimraf dist",
@@ -44,8 +45,8 @@
     "bluebird": "^3.5.1",
     "coveralls": "^3.0.0",
     "eslint-plugin-lodash-fp": "^2.2.0-a1",
-    "husky": "^2.0.0",
     "fast-check": "^1.15.1",
+    "husky": "^2.0.0",
     "in-range": "^2.0.0",
     "lodash": "^4.17.5",
     "nyc": "^14.1.1",

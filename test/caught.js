@@ -1,12 +1,9 @@
 import test from "ava";
 import {isEqual} from "lodash/fp";
-import {testProp, fc} from "ava-fast-check";
 import sinon from "sinon";
 
-import {of} from "../src/Future";
 import caught from "../src/caught";
 import {flow, flow2, flow3, flow4} from "../src/flow";
-import {throws} from "./_helpers";
 
 const fixture = Symbol("fixture");
 const isFixture = isEqual(fixture);
@@ -42,14 +39,3 @@ Object.keys(flows).forEach((k) => {
     t.true(isFixture(x) && mock.verify());
   });
 });
-
-testProp(
-  "throws if the first argument is not a function",
-  [fc.anything()],
-  (f) =>
-    throws(
-      () => caught(f, of(fixture)),
-      TypeError,
-      /^Future#caught (.+)to be a function/,
-    ),
-);
