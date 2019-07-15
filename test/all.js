@@ -1,8 +1,8 @@
+import {fc, testProp} from "ava-fast-check";
 import {isEqual} from "lodash/fp";
-import {testProp, fc} from "ava-fast-check";
 
+import {all, Future as F} from "../src";
 import {plusP} from "./_helpers";
-import {Future as F, all} from "../src";
 
 testProp(
   "resolve a list of promises",

@@ -1,8 +1,8 @@
+import {fc, testProp} from "ava-fast-check";
 import {isEqual} from "lodash/fp";
-import {testProp, fc} from "ava-fast-check";
 
+import {compose, of} from "../src";
 import {plusP} from "./_helpers";
-import {of, compose} from "../src";
 
 testProp(
   "is always associative",

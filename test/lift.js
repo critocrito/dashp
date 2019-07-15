@@ -1,7 +1,7 @@
+import {fc, testProp} from "ava-fast-check";
 import {isEqual, sum} from "lodash/fp";
-import {testProp, fc} from "ava-fast-check";
 
-import {of, lift2, lift3, lift4} from "../src";
+import {lift2, lift3, lift4, of} from "../src";
 
 // plus must *not* be curried, hence the helpers version doesn't work here.
 const plus = (...args) => sum(args);

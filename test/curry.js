@@ -1,5 +1,5 @@
+import {fc, testProp} from "ava-fast-check";
 import {curry as loCurry, every, isEqual, range, times} from "lodash/fp";
-import {testProp, fc} from "ava-fast-check";
 
 import curries from "../src/internal/curry";
 import {random} from "./_helpers";

@@ -1,8 +1,8 @@
+import {fc, testProp} from "ava-fast-check";
 import {isEqual} from "lodash/fp";
-import {testProp, fc} from "ava-fast-check";
 import sinon from "sinon";
 
-import {of, when, whenElse, unless, unlessElse} from "../src";
+import {of, unless, unlessElse, when, whenElse} from "../src";
 
 const pred = (bool) => () => bool;
 const predP = (bool) => () => of(bool);

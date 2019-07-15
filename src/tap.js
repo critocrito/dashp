@@ -1,7 +1,7 @@
-import {of} from "./Future";
 import {flow} from "./flow";
-import {curry2} from "./internal/curry";
+import {of} from "./Future";
 import clone from "./internal/clone";
+import {curry2} from "./internal/curry";
 
 const k = (f, p) =>
   of(p)

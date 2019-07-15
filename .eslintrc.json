@@ -1,10 +1,43 @@
 {
+  "parser": "babel-eslint",
   "env": {
-    "mocha": true
+    "es6": true
   },
-  "extends": ["@build-chores/lint", "plugin:lodash-fp/recommended"],
-  "plugins": ["lodash-fp"],
+  "extends": [
+    "airbnb-base",
+    "plugin:prettier/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "plugin:promise/recommended",
+    "plugin:ava/recommended"
+  ],
+  "plugins": [
+    "import",
+    "simple-import-sort",
+    "promise",
+    "prettier",
+    "filenames",
+    "ava"
+  ],
   "rules": {
+    "no-underscore-dangle": "off",
+    "arrow-parens": "off",
+    "object-curly-spacing": "off",
+    "no-console": "warn",
+    "class-methods-use-this": "off",
+    "comma-dangle": [
+      "error",
+      {
+        "arrays": "always-multiline",
+        "objects": "always-multiline",
+        "imports": "always-multiline",
+        "exports": "always-multiline",
+        "functions": "always-multiline"
+      }
+    ],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "import/prefer-default-export": "off",
     "import/no-extraneous-dependencies": [
       "error",
       {
@@ -14,6 +47,8 @@
           "lint-staged.config.js"
         ]
       }
-    ]
+    ],
+    "import/order": "off",
+    "simple-import-sort/sort": "error"
   }
 }

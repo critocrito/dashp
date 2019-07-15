@@ -1,7 +1,7 @@
 import test from "ava";
+import inRange from "in-range";
 import {isEqual} from "lodash/fp";
 import timeSpan from "time-span";
-import inRange from "in-range";
 
 import {delay} from "../src";
 

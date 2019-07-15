@@ -1,8 +1,7 @@
+import caught from "./caught";
+import delay from "./delay";
 import {curry2, curry3, curry4} from "./internal/curry";
 import nameFn from "./internal/namefn";
-
-import delay from "./delay";
-import caught from "./caught";
 import isPromise from "./is-promise";
 
 // times is 0-indexed. A times value of 4, actually makes 5 retries.

@@ -1,11 +1,11 @@
 import test from "ava";
+import {fc, testProp} from "ava-fast-check";
 import {isEqual} from "lodash/fp";
-import {testProp, fc} from "ava-fast-check";
 import sinon from "sinon";
 
-import {plus, plusP} from "./_helpers";
-import {of, map, bimap, ap, chain} from "../src/Future";
 import comp from "../src/compose";
+import {ap, bimap, chain, map, of} from "../src/Future";
+import {plus, plusP} from "./_helpers";
 
 const fixture = Symbol("fixture");
 

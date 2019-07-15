@@ -1,9 +1,9 @@
-import {isEqual} from "lodash/fp";
-import {testProp, fc} from "ava-fast-check";
+import {fc, testProp} from "ava-fast-check";
 import Bluebird from "bluebird";
+import {isEqual} from "lodash/fp";
 
-import {plus, plusP} from "./_helpers";
 import {fold} from "../src";
+import {plus, plusP} from "./_helpers";
 
 testProp(
   "produces the same result as a synchronous reduce",

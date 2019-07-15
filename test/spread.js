@@ -1,9 +1,8 @@
+import {fc, testProp} from "ava-fast-check";
 import {isEqual} from "lodash/fp";
-import {testProp, fc} from "ava-fast-check";
-
-import {plus} from "./_helpers";
 
 import {Future as F, spread} from "../src";
+import {plus} from "./_helpers";
 
 testProp("applying variadic arguments", [fc.nat(), fc.nat()], async (x, y) =>
   isEqual(await spread(plus, F.of([x, y])), plus(x, y)),

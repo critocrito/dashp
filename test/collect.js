@@ -1,10 +1,9 @@
 import test from "ava";
-import {testProp, fc} from "ava-fast-check";
-import {map, every, isEqual} from "lodash/fp";
-import sinon from "sinon";
+import {fc, testProp} from "ava-fast-check";
 import Bluebird from "bluebird";
+import {every, isEqual, map} from "lodash/fp";
+import sinon from "sinon";
 
-import {random, plus, plusP} from "./_helpers";
 import {
   collect,
   collect2,
@@ -15,6 +14,7 @@ import {
   collect7,
   collect8,
 } from "../src";
+import {plus, plusP, random} from "./_helpers";
 
 const isTrue = isEqual(true);
 

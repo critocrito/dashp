@@ -1,7 +1,7 @@
-import {testProp, fc} from "ava-fast-check";
+import {fc, testProp} from "ava-fast-check";
 
-import {mapArb} from "./_helpers";
 import clone from "../src/internal/clone";
+import {mapArb} from "./_helpers";
 
 testProp("clone arrays", [fc.array(fc.nat())], (xs) => xs !== clone(xs));
 

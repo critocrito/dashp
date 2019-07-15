@@ -1,5 +1,5 @@
-import {curry, isEqual} from "lodash/fp";
 import fc from "fast-check";
+import {curry, isEqual} from "lodash/fp";
 
 export const mapArb = fc.object().map((o) => new Map(Object.entries(o)));
 

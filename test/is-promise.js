@@ -1,5 +1,5 @@
+import {fc, testProp} from "ava-fast-check";
 import {isEqual} from "lodash/fp";
-import {testProp, fc} from "ava-fast-check";
 
 import {Future as F, isPromise} from "../src";
 

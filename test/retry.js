@@ -1,7 +1,7 @@
 import test from "ava";
-import timeSpan from "time-span";
 import inRange from "in-range";
 import sinon from "sinon";
+import timeSpan from "time-span";
 
 import {retry, retry2, retry3, retry4} from "../src";
 

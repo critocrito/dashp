@@ -1,6 +1,6 @@
 import Benchmark from "benchmark";
 
-import {of, allP} from "../src";
+import {allP, of} from "../src";
 import nameFn from "../src/internal/namefn";
 
 const onePromise = () => [...Array(1).keys()].map((x) => Promise.resolve(x));

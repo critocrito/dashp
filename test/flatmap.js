@@ -1,9 +1,10 @@
 import test from "ava";
-import {flatMap, flatten, every, isEqual} from "lodash/fp";
-import {testProp, fc} from "ava-fast-check";
+import {fc, testProp} from "ava-fast-check";
+import {every, flatMap, flatten, isEqual} from "lodash/fp";
 import sinon from "sinon";
 
 import {
+  collect,
   flatmap,
   flatmap2,
   flatmap3,
@@ -12,7 +13,6 @@ import {
   flatmap6,
   flatmap7,
   flatmap8,
-  collect,
 } from "../src";
 import {singleValueArb} from "./_helpers";
 

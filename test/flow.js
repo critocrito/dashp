@@ -1,9 +1,8 @@
-import {map, reduce, identity, sum, isEqual, times} from "lodash/fp";
-import {testProp, fc} from "ava-fast-check";
+import {fc, testProp} from "ava-fast-check";
+import {identity, isEqual, map, reduce, sum, times} from "lodash/fp";
 
-import {plusP} from "./_helpers";
 import {
-  of,
+  compose,
   flow,
   flow2,
   flow3,
@@ -12,8 +11,9 @@ import {
   flow6,
   flow7,
   flow8,
-  compose,
+  of,
 } from "../src";
+import {plusP} from "./_helpers";
 
 const sumP = (...args) => of(sum(args));
 
