@@ -1,8 +1,8 @@
 language: node_js
 node_js:
-  - "lts/carbon"
-  - "lts/dubnium"
-  - "11"
+  - "8"
+  - "10"
+  - "12"
 cache:
   yarn: true
   directories:
@@ -11,8 +11,9 @@ install:
   - yarn install
 script:
   - yarn build
-after_script:
-  - yarn test:coverage && nyc report --reporter=text-lcov | coveralls
+  - yarn test:coverage
+after_success:
+  - nyc report --reporter=text-lcov | coveralls
 notifications:
   email:
     on_success: change
