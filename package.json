@@ -26,31 +26,29 @@
     "prepublishOnly": "yarn build",
     "prerelease": "yarn build",
     "release": "standard-version -i Changelog.md -m \"chore(release): bumped to version %s\" --sign",
-    "test": "cross-env NODE_ENV=test mocha -c -R progress -r @babel/register -r test/helpers.js test/**/*.spec.js",
-    "test:coverage": "cross-env NODE_ENV=test nyc yarn test",
+    "test": "ava",
+    "test:coverage": "nyc ava",
     "test:watch": "yarn test -w"
   },
   "devDependencies": {
     "@babel/node": "^7.0.0",
-    "@babel/polyfill": "^7.0.0",
     "@babel/register": "^7.0.0",
     "@build-chores/babel-preset": "0.9.0",
     "@build-chores/commitlint": "0.9.0",
     "@build-chores/eslint-config-lint": "0.9.0",
     "@build-chores/staged": "0.9.0",
-    "@build-chores/test": "0.9.0",
+    "ava": "^2.1.0",
+    "ava-fast-check": "^1.1.1",
+    "babel-plugin-istanbul": "^5.1.4",
     "benchmark": "^2.1.4",
     "bluebird": "^3.5.1",
-    "chai": "^4.1.2",
-    "chai-as-promised": "^7.1.1",
     "coveralls": "^3.0.0",
-    "cross-env": "^5.2.0",
     "eslint-plugin-lodash-fp": "^2.2.0-a1",
     "husky": "^2.0.0",
+    "fast-check": "^1.15.1",
     "in-range": "^2.0.0",
-    "jsverify": "github:critocrito/jsverify#throws-regex",
     "lodash": "^4.17.5",
-    "mocha": "^6.0.0",
+    "nyc": "^14.1.1",
     "rimraf": "^2.6.2",
     "sinon": "^7.2.7",
     "standard-version": "^6.0.1",
@@ -69,5 +67,10 @@
   ],
   "engines": {
     "node": ">=8"
+  },
+  "ava": {
+    "require": [
+      "@babel/register"
+    ]
   }
 }
