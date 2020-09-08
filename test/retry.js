@@ -3,7 +3,7 @@ import inRange from "in-range";
 import sinon from "sinon";
 import timeSpan from "time-span";
 
-import {retry, retry2, retry3, retry4} from "../src";
+import {retry, retry2, retry3, retry4, retry5} from "../src";
 
 const fixture = Symbol("fixture");
 
@@ -57,13 +57,19 @@ test("can retry functions with arguments", async (t) => {
     .once()
     .withArgs(fixture, fixture, fixture)
     .resolves();
+  const mock5 = sinon
+    .mock()
+    .once()
+    .withArgs(fixture, fixture, fixture, fixture)
+    .resolves();
 
   await Promise.all([
     retry2(mock2, fixture),
     retry3(mock3, fixture, fixture),
     retry4(mock4, fixture, fixture, fixture),
+    retry5(mock5, fixture, fixture, fixture, fixture),
   ]);
-  t.true(mock2.verify() && mock3.verify() && mock4.verify());
+  t.true(mock2.verify() && mock3.verify() && mock4.verify() && mock5.verify());
 });
 
 test("accepts promises and functions and actions", async (t) => {

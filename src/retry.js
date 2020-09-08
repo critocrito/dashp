@@ -1,6 +1,6 @@
 import caught from "./caught";
 import delay from "./delay";
-import {curry2, curry3, curry4} from "./internal/curry";
+import {curry2, curry3, curry4, curry5} from "./internal/curry";
 import nameFn from "./internal/namefn";
 import isPromise from "./is-promise";
 
@@ -27,3 +27,4 @@ export const retry = nameFn("retry", retrier(4, 250));
 export const retry2 = curry2("retry2", retrier(4, 250));
 export const retry3 = curry3("retry3", retrier(4, 250));
 export const retry4 = curry4("retry4", retrier(4, 250));
+export const retry5 = curry5("retry5", retrier(4, 250));

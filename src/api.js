@@ -100,12 +100,13 @@ export {default as spreadP} from "./spread";
 export {default as delay} from "./delay";
 export {default as delayP} from "./delay";
 
-export {retry, retry2, retry3, retry4} from "./retry";
+export {retry, retry2, retry3, retry4, retry5} from "./retry";
 export {
   retry as retryP,
   retry2 as retryP2,
   retry3 as retryP3,
   retry4 as retryP4,
+  retry5 as retryP5,
 } from "./retry";
 
 export {default as isPromise} from "./is-promise";
