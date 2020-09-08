@@ -1,6 +1,20 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [0.11.0](https://github.com/critocrito/dashp/compare/v0.10.1...v0.11.0) (2020-09-08)
+
+
+### Bug Fixes
+
+* prettier formatting ([84e1a66](https://github.com/critocrito/dashp/commit/84e1a66))
+
+
+### Features
+
+* add retry5 ([2817ccc](https://github.com/critocrito/dashp/commit/2817ccc))
+
+
 
 <a name="0.10.1"></a>
 ## [0.10.1](https://github.com/critocrito/dashp/compare/v0.10.0...v0.10.1) (2018-11-22)
