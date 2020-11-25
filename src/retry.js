@@ -13,7 +13,7 @@ const retrier = (times, waitTime) => (action, ...args) => {
     if (iter <= 0) return f(...args);
     return caught(
       () =>
-        delay(waitMs, null).then(() =>
+        delay(waitMs, undefined).then(() =>
           resolver(iter - 1, waitMs * delayModifier),
         ),
       f(...args),

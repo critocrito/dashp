@@ -3,7 +3,7 @@ import nameFn from "./namefn";
 const ncurry = (n) => {
   const localCurry = (name, f, ...args) => {
     // This allows checkTypes to throw nicer error messages.
-    const localF = nameFn(`Future#${name}`, f);
+    const localF = nameFn(`future#${name}`, f);
 
     const g = (...largs) => {
       const rest = args.concat(largs);

@@ -5,6 +5,7 @@ import {isArray} from "./is";
 export default (xxs) => {
   const result = [];
 
+  // eslint-disable-next-line unicorn/no-null
   if (xxs == null) return result;
 
   xxs.forEach((xs) => {

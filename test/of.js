@@ -1,6 +1,6 @@
 import {fc, testProp} from "ava-fast-check";
 
-import {of} from "../src/Future";
+import {of} from "../src/future";
 
 testProp("is equivalent to Promise.resolve", [fc.anything()], async (t, x) =>
   t.is(await of(x), await Promise.resolve(x)),

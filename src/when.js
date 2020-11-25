@@ -1,4 +1,4 @@
-import {of} from "./Future";
+import {of} from "./future";
 import {curry3, curry4} from "./internal/curry";
 import identity from "./internal/identity";
 

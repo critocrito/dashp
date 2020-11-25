@@ -18,7 +18,7 @@ test("retries a promise 5 times", async function (t) {
   const mock = sinon.mock().exactly(5).rejects("Type Error");
   try {
     await retry(mock);
-  } catch (e) {} // eslint-disable-line no-empty
+  } catch {} // eslint-disable-line no-empty
   t.true(mock.verify());
 });
 

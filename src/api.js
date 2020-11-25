@@ -61,15 +61,15 @@ export {
 } from "./flow";
 export {default as fold} from "./fold";
 export {default as foldP} from "./fold";
-export {default as Future} from "./Future";
-export {ap, bimap, chain, map, of} from "./Future";
+export {default as Future} from "./future";
+export {ap, bimap, chain, map, of} from "./future";
 export {
   ap as apP,
   bimap as bimapP,
   chain as chainP,
   map as mapP,
   of as ofP,
-} from "./Future";
+} from "./future";
 export {default as isPromise} from "./is-promise";
 export {default as isPromiseP} from "./is-promise";
 export {lift2, lift3, lift4} from "./lift";

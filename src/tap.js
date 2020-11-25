@@ -1,5 +1,5 @@
 import {flow} from "./flow";
-import {of} from "./Future";
+import {of} from "./future";
 import clone from "./internal/clone";
 import {curry2} from "./internal/curry";
 

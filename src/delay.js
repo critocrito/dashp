@@ -9,7 +9,7 @@ export default curry2("delay", (ms, value) => {
     cancel = () => {
       if (timeOut) {
         clearTimeout(timeOut);
-        timeOut = null;
+        timeOut = undefined;
       }
       reject(new Error("Promise canceled"));
     };

@@ -63,7 +63,7 @@ testProp(
   );
 
   test(`${f.name} adheres to the concurrency limit`, async (t) => {
-    const xs = Array(100).fill(0);
+    const xs = new Array(100).fill(0);
     const testF = (mapper, concurrency) => {
       let running = 0;
       return mapper(async () => {
@@ -96,7 +96,7 @@ testProp(
     `${f.name} rejects the collection if an element rejects`,
     [fc.array(fc.nat()), fc.string()],
     async (t, l, msg) => {
-      const xs = [...Array.from(l).keys()]; // Make sure l is positive
+      const xs = [...[...l].keys()]; // Make sure l is positive
 
       const g = (x) => {
         if (x === random(0, xs.length)) {
@@ -108,8 +108,8 @@ testProp(
       try {
         const result = await f(g, xs);
         t.deepEqual(result, xs);
-      } catch (e) {
-        t.is(e.message, msg);
+      } catch (error) {
+        t.is(error.message, msg);
       }
     },
   );

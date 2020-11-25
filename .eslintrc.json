@@ -10,7 +10,8 @@
     "plugin:import/warnings",
     "plugin:import/typescript",
     "plugin:promise/recommended",
-    "plugin:ava/recommended"
+    "plugin:ava/recommended",
+    "plugin:unicorn/recommended"
   ],
   "plugins": [
     "import",
@@ -18,7 +19,8 @@
     "promise",
     "prettier",
     "filenames",
-    "ava"
+    "ava",
+    "unicorn"
   ],
   "rules": {
     "no-underscore-dangle": "off",
@@ -50,6 +52,10 @@
     ],
     "import/order": "off",
     "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error"
+    "simple-import-sort/exports": "error",
+    "unicorn/prevent-abbreviations": "off",
+    "unicorn/no-useless-undefined": "off",
+    "unicorn/no-reduce": "off",
+    "unicorn/no-fn-reference-in-iterator": "off"
   }
 }

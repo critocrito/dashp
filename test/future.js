@@ -3,7 +3,7 @@ import {fc, testProp} from "ava-fast-check";
 import sinon from "sinon";
 
 import comp from "../src/compose";
-import {ap, bimap, chain, map, of} from "../src/Future";
+import {ap, bimap, chain, map, of} from "../src/future";
 import {plus, plusP} from "./_helpers";
 
 const fixture = Symbol("fixture");
@@ -85,7 +85,7 @@ test("doesn't call the right function if the left one throws", async (t) => {
   const g = sinon.mock().never();
   try {
     await bimap(f, g, a());
-  } catch (e) {} // eslint-disable-line no-empty
+  } catch {} // eslint-disable-line no-empty
   t.true(f.verify());
   t.true(g.verify());
 });
@@ -96,7 +96,7 @@ test("doesn't call the left function if the right one throws", async (t) => {
   const g = sinon.mock().once().rejects();
   try {
     await bimap(f, g, a());
-  } catch (e) {} // eslint-disable-line no-empty
+  } catch {} // eslint-disable-line no-empty
   t.true(f.verify());
   t.true(g.verify());
 });

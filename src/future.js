@@ -12,9 +12,9 @@ const bimap = curry3("bimap", (left, right, p) => {
       mark = true;
       return right(x);
     })
-    .catch((e) => {
-      if (mark) throw e;
-      return left(e);
+    .catch((error) => {
+      if (mark) throw error;
+      return left(error);
     });
 });
 

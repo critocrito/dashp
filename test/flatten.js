@@ -13,7 +13,7 @@ const nest = (xs) => {
     case 2: // duplicate
       return [xs, xs];
     case 3: // null
-      return null;
+      return undefined;
     default:
       // do nothing
       return xs;

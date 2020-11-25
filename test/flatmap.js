@@ -65,7 +65,7 @@ testProp(
   );
 
   test(`${f.name} adheres to the concurrency limit`, async (t) => {
-    const xs = Array(100).fill(0);
+    const xs = new Array(100).fill(0);
     const testFn = (mapper, concurrency) => {
       let running = 0;
       return mapper(async () => {

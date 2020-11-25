@@ -14,10 +14,11 @@ export const isEqualAry = (xs) => isEqual(...xs);
 export const throws = async (f, error = Error, msg) => {
   try {
     await f();
-  } catch (e) {
-    if (e instanceof error) {
-      if (msg instanceof RegExp) return msg.test(e.message);
-      return msg == null || e.message === msg;
+  } catch (error_) {
+    if (error_ instanceof error) {
+      if (msg instanceof RegExp) return msg.test(error_.message);
+      // eslint-disable-next-line unicorn/no-null
+      return msg == null || error_.message === msg;
     }
   }
   return false;
@@ -30,3 +31,5 @@ export const plusP = curry((x, y) => Promise.resolve(plus(x, y)));
 export const minus = curry((x, y) => x - y);
 
 export const minusP = curry((x, y) => Promise.resolve(minus(x, y)));
+
+export const sum = (...xs) => xs.reduce((memo, a) => memo + a, 0);

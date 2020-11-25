@@ -1,4 +1,4 @@
-import {of} from "./Future";
+import {of} from "./future";
 import {curry3} from "./internal/curry";
 
 export default curry3("fold", (f, acc, xs) =>

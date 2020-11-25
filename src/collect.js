@@ -32,9 +32,9 @@ const collectN = (atOnce) => (f, xs) =>
           resolvingCount -= 1;
           next(); // eslint-disable-line promise/no-callback-in-promise
         })
-        .catch((err) => {
+        .catch((error) => {
           isRejected = true;
-          reject(err);
+          reject(error);
         });
     };
 
@@ -53,7 +53,7 @@ export const {
   collect6,
   collect7,
   collect8,
-} = [...Array(8).keys()].reduce((memo, i) => {
+} = [...new Array(8).keys()].reduce((memo, i) => {
   const name = `collect${i === 0 ? "" : i + 1}`;
   return Object.assign(memo, {[name]: curry2(name, collectN(i + 1))});
 }, {});

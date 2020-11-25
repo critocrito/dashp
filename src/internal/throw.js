@@ -1,6 +1,6 @@
 const ordinal = ["first", "second", "third", "fourth", "fifth"];
 
-const show = (p) => JSON.stringify(p, null, 2);
+const show = (p) => JSON.stringify(p, undefined, 2);
 
 export const typeError = (message) => {
   throw new TypeError(message);

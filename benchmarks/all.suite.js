@@ -3,13 +3,16 @@ import Benchmark from "benchmark";
 import {allP, of} from "../src";
 import nameFn from "../src/internal/namefn";
 
-const onePromise = () => [...Array(1).keys()].map((x) => Promise.resolve(x));
-const fivePromises = () => [...Array(5).keys()].map((x) => Promise.resolve(x));
-const tenPromises = () => [...Array(10).keys()].map((x) => Promise.resolve(x));
+const onePromise = () =>
+  [...new Array(1).keys()].map((x) => Promise.resolve(x));
+const fivePromises = () =>
+  [...new Array(5).keys()].map((x) => Promise.resolve(x));
+const tenPromises = () =>
+  [...new Array(10).keys()].map((x) => Promise.resolve(x));
 const hundredPromises = () =>
-  [...Array(100).keys()].map((x) => Promise.resolve(x));
+  [...new Array(100).keys()].map((x) => Promise.resolve(x));
 const thousandPromises = () =>
-  [...Array(1000).keys()].map((x) => Promise.resolve(x));
+  [...new Array(1000).keys()].map((x) => Promise.resolve(x));
 
 const allTyped = nameFn("allTyped", (xs) => () => Promise.all(xs.map(of)));
 const allTyped2 = nameFn("allTyped2", (xs) => () => Promise.all(xs));

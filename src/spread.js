@@ -1,4 +1,4 @@
-import {of} from "./Future";
+import {of} from "./future";
 import {curry2} from "./internal/curry";
 import {isArray} from "./internal/is";
 
