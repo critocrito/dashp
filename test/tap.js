@@ -11,5 +11,6 @@ const f = (x) => (x = 23);
 testProp(
   "tap and tapClone return the same values",
   [fc.anything()],
-  async (x) => isEqualAry([await tap(f, x), await tapClone(f, x), x]),
+  async (t, x) =>
+    t.true(isEqualAry([await tap(f, x), await tapClone(f, x), x])),
 );

@@ -1,5 +1,5 @@
 import {fc, testProp} from "ava-fast-check";
-import {identity, isEqual, map, reduce, sum, times} from "lodash/fp";
+import {identity, map, reduce, sum, times} from "lodash/fp";
 
 import {
   compose,
@@ -20,9 +20,9 @@ const sumP = (...args) => of(sum(args));
 testProp(
   "chains a list of functions",
   [fc.array(fc.nat()), fc.nat()],
-  async (xs, y) => {
+  async (t, xs, y) => {
     const fs = map(plusP, xs);
-    return isEqual(
+    return t.is(
       await flow(
         fs,
         y,
@@ -35,7 +35,7 @@ testProp(
 testProp(
   "is equivalent to composing functions",
   [fc.array(fc.nat()), fc.nat()],
-  async (xs, y) => {
+  async (t, xs, y) => {
     const fs = map(plusP, xs);
     const lhs = reduce(
       (memo, x) =>
@@ -47,14 +47,14 @@ testProp(
       xs,
     );
     const rhs = flow(fs);
-    return isEqual(await lhs(y), await rhs(y));
+    return t.is(await lhs(y), await rhs(y));
   },
 );
 
 [flow, flow2, flow3, flow4, flow5, flow6, flow7, flow8].forEach((f, i) => {
   const arbs = times(() => fc.nat(), i + 1);
 
-  testProp(`lifts ${i + 1} arguments into the pipe`, arbs, async (...args) =>
-    isEqual(await f([sumP], ...args), args.reduce((memo, a) => memo + a, 0)),
+  testProp(`lifts ${i + 1} arguments into the pipe`, arbs, async (t, ...args) =>
+    t.is(await f([sumP], ...args), args.reduce((memo, a) => memo + a, 0)),
   );
 });

@@ -17,30 +17,35 @@ range(2, 11).forEach((i) => {
   testProp(
     `curry${i} is equivalent to the original function and lodash's curry`,
     arbs,
-    (...args) => {
+    (t, ...args) => {
       const f = (...rest) => rest.reduce((memo, a) => memo + a, 0);
       const f1 = loCurry(f);
       const f2 = curries[`curry${i}`](`f${i}`, f);
-      return every(isEqual(f(...args)), [
-        f1(...args),
-        f2(...args),
-        args.reduce((memo, a) => memo(a), f2),
-        randomApplication(f2, args),
-      ]);
+
+      t.true(
+        every(isEqual(f(...args)), [
+          f1(...args),
+          f2(...args),
+          args.reduce((memo, a) => memo(a), f2),
+          randomApplication(f2, args),
+        ]),
+      );
     },
   );
 
-  testProp(`variadic function pattern for curry${i}`, arbs, (...args) => {
+  testProp(`variadic function pattern for curry${i}`, arbs, (t, ...args) => {
     const curry = curries[`curry${i}`];
     const sum = (...xs) => xs.reduce((memo, a) => memo + a, 0);
     const f = curry(`f${i}`, sum);
-    return isEqual(sum(...args), f(...args.concat(args)));
+
+    t.is(sum(...args), f(...args.concat(args)));
   });
 
-  testProp(`curry${i} sets the function name`, [fc.string(1, 50)], (s) => {
+  testProp(`curry${i} sets the function name`, [fc.string(1, 50)], (t, s) => {
     const curry = curries[`curry${i}`];
     const f = curry(s, (...xs) => xs.reduce((memo, a) => memo + a, 0));
     const [, name, count] = /^(.*)-([\d]*)$/.exec(f.name);
-    return isEqual(name, s) && isEqual(parseInt(count, 10), i);
+    t.is(name, s);
+    t.is(parseInt(count, 10), i);
   });
 });

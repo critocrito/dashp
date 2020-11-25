@@ -1,8 +1,11 @@
 import {fc, testProp} from "ava-fast-check";
 
 import {reject} from "../src";
-import {throws} from "./_helpers";
 
-testProp("takes a string", [fc.boolean(), fc.string()], (b, msg) =>
-  throws(() => (b ? reject(new Error(msg)) : reject(msg)), Error, msg),
-);
+testProp("takes a string", [fc.boolean(), fc.string()], async (t, b, msg) => {
+  const error = await t.throwsAsync(() =>
+    b ? reject(new Error(msg)) : reject(msg),
+  );
+
+  t.is(error.message, msg);
+});

@@ -22,13 +22,14 @@ const duplicate = (n) => [n, n];
 testProp(
   "equivalency to synchronous flatmap",
   [fc.array(fc.nat())],
-  async (xs) => isEqual(await flatmap(duplicate, xs), flatMap(duplicate, xs)),
+  async (t, xs) =>
+    t.deepEqual(await flatmap(duplicate, xs), flatMap(duplicate, xs)),
 );
 
 testProp(
   "equivalency of concurrent flatmaps",
   [fc.array(fc.nat())],
-  async (xs) => {
+  async (t, xs) => {
     const rs = await Promise.all([
       flatmap(duplicate, xs),
       flatmap2(duplicate, xs),
@@ -39,7 +40,7 @@ testProp(
       flatmap7(duplicate, xs),
       flatmap8(duplicate, xs),
     ]);
-    return rs.every(isEqual(rs[0]));
+    return t.true(rs.every(isEqual(rs[0])));
   },
 );
 
@@ -56,8 +57,8 @@ testProp(
   testProp(
     `${f.name} is equivalent to collect`,
     [fc.array(fc.anything())],
-    async (xs) =>
-      isEqual(
+    async (t, xs) =>
+      t.deepEqual(
         await collect(duplicate, xs).then(flatten),
         await f(duplicate, xs),
       ),
@@ -85,10 +86,11 @@ testProp(
   testProp(
     `${f.name} adheres to the order of inputs`,
     [fc.array(singleValueArb())],
-    async (xs) => {
+    async (t, xs) => {
       const stub = sinon.stub();
       xs.forEach((x, j) => stub.onCall(j).resolves(x));
-      return f(stub, xs).then(isEqual(xs));
+      const result = await f(stub, xs);
+      t.deepEqual(result, xs);
     },
   );
 });

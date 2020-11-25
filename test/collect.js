@@ -21,13 +21,13 @@ const isTrue = isEqual(true);
 testProp(
   "equivalency to synchronous map",
   [fc.array(fc.nat()), fc.nat()],
-  async (xs, y) => isEqual(await collect(plus(y), xs), map(plus(y), xs)),
+  async (t, xs, y) => t.deepEqual(await collect(plus(y), xs), map(plus(y), xs)),
 );
 
 testProp(
   "equivalency of concurrent maps",
   [fc.array(fc.nat()), fc.nat()],
-  async (xs, y) => {
+  async (t, xs, y) => {
     const rs = await Promise.all([
       collect(plus(y), xs),
       collect2(plus(y), xs),
@@ -38,7 +38,7 @@ testProp(
       collect7(plus(y), xs),
       collect8(plus(y), xs),
     ]);
-    return rs.every(isEqual(rs[0]));
+    return t.true(rs.every(isEqual(rs[0])));
   },
 );
 
@@ -55,8 +55,8 @@ testProp(
   testProp(
     `${f.name} is equivalent to Bluebird's map`,
     [fc.array(fc.nat()), fc.nat()],
-    async (xs, y) =>
-      isEqual(
+    async (t, xs, y) =>
+      t.deepEqual(
         await Bluebird.map(xs, plusP(y), {concurrency: i + 1}),
         await f(plusP(y), xs),
       ),
@@ -84,17 +84,18 @@ testProp(
   testProp(
     `${f.name} adheres to the order of inputs`,
     [fc.array(fc.anything())],
-    async (xs) => {
+    async (t, xs) => {
       const stub = sinon.stub();
       xs.forEach((x, j) => stub.onCall(j).resolves(x));
-      return f(stub, xs).then(isEqual(xs));
+      const result = await f(stub, xs);
+      t.deepEqual(result, xs);
     },
   );
 
   testProp(
     `${f.name} rejects the collection if an element rejects`,
     [fc.array(fc.nat()), fc.string()],
-    async (l, msg) => {
+    async (t, l, msg) => {
       const xs = [...Array.from(l).keys()]; // Make sure l is positive
 
       const g = (x) => {
@@ -104,9 +105,12 @@ testProp(
         return x;
       };
 
-      return f(g, xs)
-        .then(() => true)
-        .catch((e) => e.message === msg);
+      try {
+        const result = await f(g, xs);
+        t.deepEqual(result, xs);
+      } catch (e) {
+        t.is(e.message, msg);
+      }
     },
   );
 });

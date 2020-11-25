@@ -1,5 +1,4 @@
 import {fc, testProp} from "ava-fast-check";
-import {isEqual} from "lodash/fp";
 
 import {compose, of} from "../src";
 import {plusP} from "./_helpers";
@@ -7,8 +6,8 @@ import {plusP} from "./_helpers";
 testProp(
   "is always associative",
   [fc.nat(), fc.nat(), fc.nat(), fc.nat()],
-  async (w, x, y, z) =>
-    isEqual(
+  async (t, w, x, y, z) =>
+    t.is(
       await compose(
         plusP(w),
         compose(
@@ -31,8 +30,8 @@ testProp(
 testProp(
   "accepts a value and a promise for a value as last argument",
   [fc.nat(), fc.nat(), fc.nat()],
-  async (a, b, c) =>
-    isEqual(
+  async (t, a, b, c) =>
+    t.is(
       await compose(
         plusP(a),
         plusP(b),
