@@ -28,8 +28,11 @@ jobs:
         yarn lint
         yarn test:coverage
         yarn compile
+        nyc report --reporter=text-lcov > lcov.info
     - name: Coveralls
-      if: matrix.node-version == '12.x'
       uses: coverallsapp/github-action@master
       with:
+        path-to-lcov: ./lcov.info
         github-token: ${{ secrets.GITHUB_TOKEN }}
+        flag-name: unit-${{ matrix.node-version }}
+        parallel: true
