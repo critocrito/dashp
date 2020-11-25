@@ -22,5 +22,5 @@ const ap = curry2("ap", (pf, p) => Promise.all([pf, p]).then(([f, x]) => f(x)));
 
 const chain = curry2("chain", (f, p) => p.then(f));
 
-export {of, map, bimap, ap, chain};
+export {ap, bimap, chain, map, of};
 export default {of, map, bimap, ap, chain};

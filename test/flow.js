@@ -22,13 +22,7 @@ testProp(
   [fc.array(fc.nat()), fc.nat()],
   async (t, xs, y) => {
     const fs = map(plusP, xs);
-    return t.is(
-      await flow(
-        fs,
-        y,
-      ),
-      sum(xs) + y,
-    );
+    return t.is(await flow(fs, y), sum(xs) + y);
   },
 );
 
@@ -37,15 +31,7 @@ testProp(
   [fc.array(fc.nat()), fc.nat()],
   async (t, xs, y) => {
     const fs = map(plusP, xs);
-    const lhs = reduce(
-      (memo, x) =>
-        compose(
-          memo,
-          plusP(x),
-        ),
-      identity,
-      xs,
-    );
+    const lhs = reduce((memo, x) => compose(memo, plusP(x)), identity, xs);
     const rhs = flow(fs);
     return t.is(await lhs(y), await rhs(y));
   },
@@ -55,6 +41,9 @@ testProp(
   const arbs = times(() => fc.nat(), i + 1);
 
   testProp(`lifts ${i + 1} arguments into the pipe`, arbs, async (t, ...args) =>
-    t.is(await f([sumP], ...args), args.reduce((memo, a) => memo + a, 0)),
+    t.is(
+      await f([sumP], ...args),
+      args.reduce((memo, a) => memo + a, 0),
+    ),
   );
 });

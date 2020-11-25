@@ -26,7 +26,14 @@ testProp(
 
 // https://github.com/rpominov/static-land/blob/master/docs/spec.md#bifunctor
 testProp("identity of bifunctor", [fc.anything()], async (t, a) =>
-  t.is(await bimap((x) => x, (x) => x, of(a)), await of(a)),
+  t.is(
+    await bimap(
+      (x) => x,
+      (x) => x,
+      of(a),
+    ),
+    await of(a),
+  ),
 );
 
 testProp(
@@ -39,7 +46,11 @@ testProp(
     const i = plus(e);
 
     return t.is(
-      await bimap((x) => f(g(x)), (x) => h(i(x)), of(a)),
+      await bimap(
+        (x) => f(g(x)),
+        (x) => h(i(x)),
+        of(a),
+      ),
       await bimap(f, h, bimap(g, i, of(a))),
     );
   },
@@ -70,10 +81,7 @@ test("maps the right function over the resolution value", async (t) => {
 
 test("doesn't call the right function if the left one throws", async (t) => {
   const a = sinon.stub().rejects();
-  const f = sinon
-    .mock()
-    .once()
-    .rejects();
+  const f = sinon.mock().once().rejects();
   const g = sinon.mock().never();
   try {
     await bimap(f, g, a());
@@ -85,10 +93,7 @@ test("doesn't call the right function if the left one throws", async (t) => {
 test("doesn't call the left function if the right one throws", async (t) => {
   const a = sinon.stub().resolves();
   const f = sinon.mock().never();
-  const g = sinon
-    .mock()
-    .once()
-    .rejects();
+  const g = sinon.mock().once().rejects();
   try {
     await bimap(f, g, a());
   } catch (e) {} // eslint-disable-line no-empty
@@ -99,7 +104,13 @@ test("doesn't call the left function if the right one throws", async (t) => {
 // https://github.com/rpominov/static-land/blob/master/docs/spec.md#applicative
 testProp("identity applicative", [fc.nat()], async (t, a) => {
   const v = of(a);
-  return t.is(await ap(of((x) => x), v), a);
+  return t.is(
+    await ap(
+      of((x) => x),
+      v,
+    ),
+    a,
+  );
 });
 
 testProp("homomorphism applicative", [fc.nat(), fc.nat()], async (t, a, b) => {
@@ -109,7 +120,13 @@ testProp("homomorphism applicative", [fc.nat(), fc.nat()], async (t, a, b) => {
 
 testProp("interchange applicative", [fc.nat(), fc.nat()], async (t, a, b) => {
   const u = of(plus(b));
-  return t.is(await ap(u, of(b)), await ap(of((f) => f(b)), u));
+  return t.is(
+    await ap(u, of(b)),
+    await ap(
+      of((f) => f(b)),
+      u,
+    ),
+  );
 });
 
 testProp(

@@ -8,20 +8,14 @@ import {retry, retry2, retry3, retry4, retry5} from "../src";
 const fixture = Symbol("fixture");
 
 test("retries a promise returning function", async (t) => {
-  const mock = sinon
-    .mock()
-    .once()
-    .returns();
+  const mock = sinon.mock().once().returns();
   await retry(mock);
   t.true(mock.verify());
 });
 
 // eslint-disable-next-line func-names
-test("retries a promise 5 times", async function(t) {
-  const mock = sinon
-    .mock()
-    .exactly(5)
-    .rejects("Type Error");
+test("retries a promise 5 times", async function (t) {
+  const mock = sinon.mock().exactly(5).rejects("Type Error");
   try {
     await retry(mock);
   } catch (e) {} // eslint-disable-line no-empty
@@ -42,16 +36,8 @@ test("retries with a delay", async (t) => {
 });
 
 test("can retry functions with arguments", async (t) => {
-  const mock2 = sinon
-    .mock()
-    .once()
-    .withArgs(fixture)
-    .resolves();
-  const mock3 = sinon
-    .mock()
-    .once()
-    .withArgs(fixture, fixture)
-    .resolves();
+  const mock2 = sinon.mock().once().withArgs(fixture).resolves();
+  const mock3 = sinon.mock().once().withArgs(fixture, fixture).resolves();
   const mock4 = sinon
     .mock()
     .once()

@@ -10,10 +10,7 @@ const isFixture = isEqual(fixture);
 const flows = {flow, flow2, flow3, flow4};
 
 test("calls exception handlers when throwing an error", async (t) => {
-  const mock = sinon
-    .mock()
-    .once()
-    .resolves(fixture);
+  const mock = sinon.mock().once().resolves(fixture);
   const stub = sinon.stub().rejects();
   const x = await caught(mock, stub());
   t.true(isFixture(x) && mock.verify());
@@ -28,10 +25,7 @@ test("doesn't call the exception handlers unless it throws", async (t) => {
 
 Object.keys(flows).forEach((k) => {
   test(`catches exceptions inside "${k}"`, async (t) => {
-    const mock = sinon
-      .mock()
-      .once()
-      .resolves(fixture);
+    const mock = sinon.mock().once().resolves(fixture);
     const stub = sinon.stub().rejects();
     const f = flows[k];
     // The first mock will be skipped, since stub throws and jumps to caught.
