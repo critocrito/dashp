@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x, 14.x]
+        node-version: [10.x, 12.x, 14.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -23,11 +23,13 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: yarn --frozen-lockfile
-    - run: yarn lint
-    - run: yarn test:coverage
-    - run: yarn compile
+    - run: |
+        yarn --frozen-lockfile
+        yarn lint
+        yarn test:coverage
+        yarn compile
     - name: Coveralls
+      if: matrix.node-version == 12.x
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
