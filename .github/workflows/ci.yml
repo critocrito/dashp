@@ -28,7 +28,7 @@ jobs:
         yarn lint
         yarn test:coverage
         yarn compile
-        nyc report --reporter=text-lcov > lcov.info
+        node_modules/.bin/nyc report --reporter=text-lcov > lcov.info
     - name: Coveralls
       uses: coverallsapp/github-action@master
       with:
