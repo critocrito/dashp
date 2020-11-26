@@ -6,50 +6,48 @@
   "homepage": "https://github.com/critocrito/dashp#readme",
   "repository": "https://github.com/critocrito/dashp.git",
   "version": "0.11.0",
-  "main": "dist/index.js",
-  "module": "lib/index.js",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es/index.js",
   "files": [
+    "*.d.ts",
+    "*.d.ts.map",
     "dist",
     "src"
   ],
   "scripts": {
-    "benchmarks": "for i in benchmarks/*.suite.js; do babel-node $i; done",
-    "benchmarks:all": "babel-node benchmarks/all.suite.js",
-    "benchmarks:checkTypes": "babel-node benchmarks/check-types.suite.js",
-    "benchmarks:curry": "babel-node benchmarks/curry.suite.js",
-    "prebuild": "yarn verify",
-    "build": "yarn compile",
-    "clean": "rimraf dist",
-    "precompile": "yarn clean",
-    "compile": "babel --verbose -s -D -d dist src",
-    "compile:watch": "yarn compile -w",
+    "benchmarks": "for i in benchmarks/*.suite.js; do node $i; done",
+    "benchmarks:all": "node benchmarks/all.suite.js",
+    "benchmarks:curry": "node benchmarks/curry.suite.js",
+    "build": "yarn clean && yarn ts:cjs && yarn ts:es && yarn ts:typedefs",
+    "clean": "rimraf dist internal ./*.d.ts ./*.d.ts.map",
     "fix": "yarn lint --fix",
-    "lint": "eslint test src benchmarks",
+    "lint": "eslint --ext .js,.ts src test",
+    "lint:benchmarks": "eslint benchmarks",
+    "postpublish": "yarn clean",
     "prepublishOnly": "yarn build",
-    "prerelease": "yarn build",
-    "release": "standard-version -i Changelog.md -m \"chore(release): bumped to version %s\" --sign",
-    "test": "ava",
-    "test:coverage": "nyc ava && nyc report --reporter=text-lcov > .lcov.info",
+    "release": "yarn build && standard-version -i Changelog.md -m \"chore(release): bumped to version %s\" --sign",
+    "test": "nyc ava && nyc report --reporter=text-lcov > .lcov.info",
     "test:watch": "yarn test -w",
-    "verify": "yarn lint && yarn test:coverage"
+    "ts:cjs": "yarn tsc -p ts/cjs.tsconfig.json",
+    "ts:es": "yarn tsc -p ts/es.tsconfig.json",
+    "ts:typedefs": "yarn tsc -p ts/types.tsconfig.json && mv defs/* . && rmdir defs",
+    "ts:watch": "yarn ts:cjs -w"
   },
+  "types": "index.d.ts",
   "devDependencies": {
-    "@babel/cli": "^7.12.8",
-    "@babel/core": "^7.12.9",
-    "@babel/node": "^7.12.6",
-    "@babel/preset-env": "^7.12.7",
-    "@babel/register": "^7.12.1",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
+    "@types/lodash": "^4.14.165",
+    "@types/node": "^14.14.10",
+    "@typescript-eslint/eslint-plugin": "^4.8.2",
+    "@typescript-eslint/parser": "^4.8.2",
     "ava": "^3.13.0",
     "ava-fast-check": "^4.0.0",
-    "babel-eslint": "^10.1.0",
-    "babel-plugin-istanbul": "^6.0.0",
     "benchmark": "^2.1.4",
     "bluebird": "^3.7.2",
     "coveralls": "^3.1.0",
     "eslint": "^7.14.0",
-    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-airbnb-typescript": "^12.0.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-ava": "^11.0.0",
     "eslint-plugin-filenames": "^1.3.2",
@@ -70,7 +68,10 @@
     "rimraf": "^2.6.2",
     "sinon": "^9.2.1",
     "standard-version": "^6.0.1",
-    "time-span": "^3.0.0"
+    "time-span": "^3.0.0",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.1.2",
+    "typescript-language-server": "^0.4.0"
   },
   "keywords": [
     "async",
@@ -88,13 +89,22 @@
   },
   "ava": {
     "require": [
-      "@babel/register"
+      "ts-node/register/transpile-only"
+    ],
+    "extensions": [
+      "ts",
+      "js"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
     ]
   },
   "husky": {
     "hooks": {
       "commit-msg": "! git rev-parse --abbrev-ref HEAD | grep -q master || commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "! git rev-parse --abbrev-ref HEAD | grep -q master || (lint-staged && yarn build)"
+      "pre-commit": "! git rev-parse --abbrev-ref HEAD | grep -q master || (lint-staged && yarn build && yarn lint && yarn test)"
     }
   },
   "lint-staged": {
@@ -104,8 +114,23 @@
     "**/package.json": [
       "prettier-package-json --write"
     ],
-    "{*.js}": [
+    "{*.js,*.ts}": [
       "eslint --fix"
     ]
+  },
+  "nyc": {
+    "exclude": [
+      "**/*.d.ts"
+    ],
+    "all": true,
+    "include": [
+      "src/**/*.[jt]s"
+    ]
+  },
+  "prettier": {
+    "trailingComma": "all",
+    "bracketSpacing": false,
+    "arrowParens": "always",
+    "tabWidth": 2
   }
 }

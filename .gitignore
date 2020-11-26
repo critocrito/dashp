@@ -17,3 +17,7 @@ dist
 .vscode
 coverage
 .lcov.info
+*.d.ts
+*.d.ts.map
+./defs
+./internal

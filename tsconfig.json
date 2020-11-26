@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "declaration": true,
+    "stripInternal": true,
+    "downlevelIteration": true,
+    "lib": ["es2018"],
+
+    "strict": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "allowJs": true,
+
+    "esModuleInterop": true,
+    "sourceMap": true
+  },
+  "include": ["src/**/*", "test/**/*", "benchmarks/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

@@ -1,7 +1,7 @@
-import Benchmark from "benchmark";
-import {curry} from "lodash/fp";
+const Benchmark = require("benchmark");
+const {curry} = require("lodash/fp");
 
-import {curry2, curry3, curry4, curry5} from "../src/internal/curry";
+const {curry2, curry3, curry4, curry5} = require("../dist/cjs/internal/curry");
 
 const add2 = (a, b) => a + b;
 const add3 = (a, b, c) => a + b + c;

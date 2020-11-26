@@ -1,19 +1,23 @@
 {
-  "parser": "babel-eslint",
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
   "env": {
     "es6": true
   },
   "extends": [
-    "airbnb-base",
+    "airbnb-typescript/base",
+    "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:import/typescript",
     "plugin:promise/recommended",
-    "plugin:ava/recommended",
-    "plugin:unicorn/recommended"
+    "plugin:ava/recommended"
   ],
   "plugins": [
+    "@typescript-eslint",
     "import",
     "simple-import-sort",
     "promise",
@@ -39,15 +43,30 @@
       }
     ],
     "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-use-before-define": [
+      "error",
+      {
+        "functions": false,
+        "classes": true,
+        "variables": true,
+        "typedefs": true
+      }
+    ],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "quotes": "off",
+    "@typescript-eslint/quotes": ["error", "double"],
     "import/prefer-default-export": "off",
     "import/no-extraneous-dependencies": [
       "error",
       {
-        "devDependencies": [
-          "**/test/**/*.js",
-          "benchmarks/**/*.js",
-          "lint-staged.config.js"
-        ]
+        "devDependencies": ["**/test/**/*.[tj]s", "benchmarks/**/*.js"]
       }
     ],
     "import/order": "off",
@@ -57,5 +76,13 @@
     "unicorn/no-useless-undefined": "off",
     "unicorn/no-reduce": "off",
     "unicorn/no-fn-reference-in-iterator": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "rules": {
+        "@typescript-eslint/explicit-function-return-type": "error"
+      }
+    }
+  ]
 }

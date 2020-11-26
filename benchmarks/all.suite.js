@@ -1,7 +1,7 @@
-import Benchmark from "benchmark";
+const Benchmark = require("benchmark");
 
-import {allP, of} from "../src";
-import nameFn from "../src/internal/namefn";
+const {allP, of} = require("..");
+const nameFn = require("../dist/cjs/internal/namefn");
 
 const onePromise = () =>
   [...new Array(1).keys()].map((x) => Promise.resolve(x));
