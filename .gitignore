@@ -16,3 +16,4 @@ dist
 *.iml
 .vscode
 coverage
+.lcov.info

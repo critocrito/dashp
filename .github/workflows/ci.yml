@@ -1,17 +1,10 @@
 name: Build Status
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: ["push", "pull_request"]
 jobs:
   ci:
     name: Test the build
 
     runs-on: ubuntu-latest
-
-    env:
-      CI: true
 
     strategy:
       matrix:
@@ -25,10 +18,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: |
         yarn --frozen-lockfile
-        yarn lint
-        yarn test:coverage
-        yarn compile
-        node_modules/.bin/nyc report --reporter=text-lcov > lcov.info
+        yarn build
     - name: Coveralls
       uses: coverallsapp/github-action@master
       with:
@@ -36,3 +26,13 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         flag-name: unit-${{ matrix.node-version }}
         parallel: true
+
+  finish:
+    needs: ci
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        parallel-finished: true

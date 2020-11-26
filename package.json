@@ -17,7 +17,7 @@
     "benchmarks:all": "babel-node benchmarks/all.suite.js",
     "benchmarks:checkTypes": "babel-node benchmarks/check-types.suite.js",
     "benchmarks:curry": "babel-node benchmarks/curry.suite.js",
-    "build": "yarn lint && yarn test && yarn compile",
+    "build": "yarn verify && yarn compile",
     "clean": "rimraf dist",
     "precompile": "yarn clean",
     "compile": "babel --verbose -s -D -d dist src",
@@ -28,8 +28,9 @@
     "prerelease": "yarn build",
     "release": "standard-version -i Changelog.md -m \"chore(release): bumped to version %s\" --sign",
     "test": "ava",
-    "test:coverage": "nyc ava",
-    "test:watch": "yarn test -w"
+    "test:coverage": "nyc ava && nyc report --reporter=text-lcov > .lcov.info",
+    "test:watch": "yarn test -w",
+    "verify": "yarn lint && yarn test:coverage"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.8",
