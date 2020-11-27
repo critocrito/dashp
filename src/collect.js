@@ -44,16 +44,9 @@ const collectN = (atOnce) => (f, xs) =>
     }
   });
 
-export const {
-  collect,
-  collect2,
-  collect3,
-  collect4,
-  collect5,
-  collect6,
-  collect7,
-  collect8,
-} = [...new Array(8).keys()].reduce((memo, i) => {
+export const {collect, collect2, collect3, collect4, collect5, collect6, collect7, collect8} = [
+  ...new Array(8).keys(),
+].reduce((memo, i) => {
   const name = `collect${i === 0 ? "" : i + 1}`;
   return Object.assign(memo, {[name]: curry2(name, collectN(i + 1))});
 }, {});

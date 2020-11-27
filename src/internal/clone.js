@@ -16,10 +16,7 @@ const clone = (obj, hash = new WeakMap()) => {
     [...obj].map(([key, val]) => result.set(key, clone(val, hash)));
   }
 
-  return Object.assign(
-    result,
-    ...Object.keys(obj).map((key) => ({[key]: clone(obj[key], hash)})),
-  );
+  return Object.assign(result, ...Object.keys(obj).map((key) => ({[key]: clone(obj[key], hash)})));
 };
 
 export default clone;

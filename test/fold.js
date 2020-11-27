@@ -13,6 +13,5 @@ testProp(
 testProp(
   "produces the same result as reduce of Bluebird",
   [fc.array(fc.nat()), fc.nat()],
-  async (t, xs, y) =>
-    t.is(await fold(plusP, y, xs), await Bluebird.reduce(xs, plusP, y)),
+  async (t, xs, y) => t.is(await fold(plusP, y, xs), await Bluebird.reduce(xs, plusP, y)),
 );

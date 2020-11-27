@@ -58,31 +58,23 @@ testProp("unless is equivalent to if-not", [fc.boolean()], async (t, x) => {
   t.is(result, expected);
 });
 
-testProp(
-  "unlessElse is equivalent to if-not-else",
-  [fc.boolean()],
-  async (t, x) => {
-    const stubC = sinon.stub().returns(consequent);
-    const stubA = sinon.stub().returns(alternative);
-    const expected = pred(x)() ? unlessElseTable.true : unlessElseTable.false;
+testProp("unlessElse is equivalent to if-not-else", [fc.boolean()], async (t, x) => {
+  const stubC = sinon.stub().returns(consequent);
+  const stubA = sinon.stub().returns(alternative);
+  const expected = pred(x)() ? unlessElseTable.true : unlessElseTable.false;
 
-    const result = await unlessElse(pred(x), stubC, stubA, of(fixture));
+  const result = await unlessElse(pred(x), stubC, stubA, of(fixture));
 
-    t.is(result, expected);
-  },
-);
+  t.is(result, expected);
+});
 
 testProp(
   "whenElse allows synchronous and asynchronous function arguments",
   [fc.boolean(), fc.boolean(), fc.boolean(), fc.boolean()],
   async (t, x, rnd, rnd2, rnd3) => {
     const predicate = rnd ? pred(x) : predP(x);
-    const stubC = rnd2
-      ? sinon.stub().resolves(consequent)
-      : sinon.stub().returns(consequent);
-    const stubA = rnd3
-      ? sinon.stub().resolves(alternative)
-      : sinon.stub().returns(alternative);
+    const stubC = rnd2 ? sinon.stub().resolves(consequent) : sinon.stub().returns(consequent);
+    const stubA = rnd3 ? sinon.stub().resolves(alternative) : sinon.stub().returns(alternative);
     const expected = x ? consequent : alternative;
 
     const result = await whenElse(predicate, stubC, stubA, of(fixture));
@@ -96,12 +88,8 @@ testProp(
   [fc.boolean(), fc.boolean(), fc.boolean(), fc.boolean()],
   async (t, x, rnd, rnd2, rnd3) => {
     const predicate = rnd ? pred(x) : predP(x);
-    const stubC = rnd2
-      ? sinon.stub().resolves(consequent)
-      : sinon.stub().returns(consequent);
-    const stubA = rnd3
-      ? sinon.stub().resolves(alternative)
-      : sinon.stub().returns(alternative);
+    const stubC = rnd2 ? sinon.stub().resolves(consequent) : sinon.stub().returns(consequent);
+    const stubA = rnd3 ? sinon.stub().resolves(alternative) : sinon.stub().returns(alternative);
     const expected = x ? alternative : consequent;
 
     const result = await unlessElse(predicate, stubC, stubA, of(fixture));
@@ -115,9 +103,7 @@ testProp(
   [fc.boolean(), fc.boolean(), fc.boolean()],
   async (t, x, rnd, rnd2) => {
     const predicate = rnd ? pred(x) : predP(x);
-    const stubC = rnd2
-      ? sinon.stub().resolves(consequent)
-      : sinon.stub().returns(consequent);
+    const stubC = rnd2 ? sinon.stub().resolves(consequent) : sinon.stub().returns(consequent);
     const expected = x ? consequent : fixture;
 
     const result = await when(predicate, stubC, of(fixture));
@@ -131,9 +117,7 @@ testProp(
   [fc.boolean(), fc.boolean(), fc.boolean()],
   async (t, x, rnd, rnd2) => {
     const predicate = rnd ? pred(x) : predP(x);
-    const stubC = rnd2
-      ? sinon.stub().resolves(consequent)
-      : sinon.stub().returns(consequent);
+    const stubC = rnd2 ? sinon.stub().resolves(consequent) : sinon.stub().returns(consequent);
     const expected = x ? fixture : consequent;
 
     const result = await unless(predicate, stubC, of(fixture));

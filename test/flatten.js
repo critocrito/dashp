@@ -28,8 +28,6 @@ testProp("flattens only one level deep", [fc.array(fc.nat())], async (t, xs) =>
   t.deepEqual(await flatten([[xs]]), [xs]),
 );
 
-testProp(
-  "equivalency to lodash's flatten",
-  [fc.array(fc.nat()).map(nest)],
-  async (t, xxs) => t.deepEqual(await flatten(xxs), loFlatten(xxs)),
+testProp("equivalency to lodash's flatten", [fc.array(fc.nat()).map(nest)], async (t, xxs) =>
+  t.deepEqual(await flatten(xxs), loFlatten(xxs)),
 );

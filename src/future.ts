@@ -6,10 +6,8 @@ const of = nameFn("of", (x) => Promise.resolve(x));
 
 const map = curry2(
   "map",
-  <F extends (arg: any) => any>(
-    f: F,
-    p: Promise<Parameters<F>>,
-  ): Promise<ReturnType<F>> => p.then(f),
+  <F extends (arg: any) => any>(f: F, p: Promise<Parameters<F>>): Promise<ReturnType<F>> =>
+    p.then(f),
 );
 
 const bimap = curry3(
@@ -32,18 +30,14 @@ const bimap = curry3(
   },
 );
 
-const ap = curry2(
-  "ap",
-  <F extends (arg: any) => any>(pf: F, p: Promise<Parameters<F>>) =>
-    Promise.all([pf, p]).then(([f, x]) => f(x)),
+const ap = curry2("ap", <F extends (arg: any) => any>(pf: F, p: Promise<Parameters<F>>) =>
+  Promise.all([pf, p]).then(([f, x]) => f(x)),
 );
 
 const chain = curry2(
   "chain",
-  <F extends (arg: any) => any>(
-    f: F,
-    p: Promise<Parameters<F>>,
-  ): Promise<ReturnType<F>> => p.then(f),
+  <F extends (arg: any) => any>(f: F, p: Promise<Parameters<F>>): Promise<ReturnType<F>> =>
+    p.then(f),
 );
 
 export {ap, bimap, chain, map, of};

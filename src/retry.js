@@ -12,10 +12,7 @@ const retrier = (times, waitTime) => (action, ...args) => {
   const resolver = (iter, waitMs) => {
     if (iter <= 0) return f(...args);
     return caught(
-      () =>
-        delay(waitMs, undefined).then(() =>
-          resolver(iter - 1, waitMs * delayModifier),
-        ),
+      () => delay(waitMs, undefined).then(() => resolver(iter - 1, waitMs * delayModifier)),
       f(...args),
     );
   };

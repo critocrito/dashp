@@ -29,12 +29,7 @@ Object.keys(flows).forEach((k) => {
     const stub = sinon.stub().rejects();
     const f = flows[k];
     // The first mock will be skipped, since stub throws and jumps to caught.
-    const x = await f([stub, mock, caught(mock)])(
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-    );
+    const x = await f([stub, mock, caught(mock)])(undefined, undefined, undefined, undefined);
     t.true(isFixture(x) && mock.verify());
   });
 });

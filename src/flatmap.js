@@ -13,16 +13,7 @@ import flatten from "./internal/flatten";
 
 const flatmapN = (mapper, f, xs) => mapper(f, xs).then(flatten);
 
-export const {
-  flatmap,
-  flatmap2,
-  flatmap3,
-  flatmap4,
-  flatmap5,
-  flatmap6,
-  flatmap7,
-  flatmap8,
-} = [
+export const {flatmap, flatmap2, flatmap3, flatmap4, flatmap5, flatmap6, flatmap7, flatmap8} = [
   collect,
   collect2,
   collect3,

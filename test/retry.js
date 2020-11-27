@@ -23,13 +23,7 @@ test("retries a promise 5 times", async function (t) {
 });
 
 test("retries with a delay", async (t) => {
-  const mock = sinon
-    .mock()
-    .twice()
-    .onFirstCall()
-    .rejects("TypeError")
-    .onSecondCall()
-    .resolves();
+  const mock = sinon.mock().twice().onFirstCall().rejects("TypeError").onSecondCall().resolves();
   const end = timeSpan();
   await retry(mock);
   t.true(inRange(end(), {start: 250, end: 300}) && mock.verify());
@@ -38,16 +32,8 @@ test("retries with a delay", async (t) => {
 test("can retry functions with arguments", async (t) => {
   const mock2 = sinon.mock().once().withArgs(fixture).resolves();
   const mock3 = sinon.mock().once().withArgs(fixture, fixture).resolves();
-  const mock4 = sinon
-    .mock()
-    .once()
-    .withArgs(fixture, fixture, fixture)
-    .resolves();
-  const mock5 = sinon
-    .mock()
-    .once()
-    .withArgs(fixture, fixture, fixture, fixture)
-    .resolves();
+  const mock4 = sinon.mock().once().withArgs(fixture, fixture, fixture).resolves();
+  const mock5 = sinon.mock().once().withArgs(fixture, fixture, fixture, fixture).resolves();
 
   await Promise.all([
     retry2(mock2, fixture),

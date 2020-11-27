@@ -6,6 +6,4 @@ testProp("is equivalent to Promise.resolve", [fc.anything()], async (t, x) =>
   t.is(await of(x), await Promise.resolve(x)),
 );
 
-testProp("lifts any value into a promise", [fc.anything()], async (t, x) =>
-  t.is(await of(x), x),
-);
+testProp("lifts any value into a promise", [fc.anything()], async (t, x) => t.is(await of(x), x));
