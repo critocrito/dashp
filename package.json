@@ -28,10 +28,10 @@
     "release": "yarn build && standard-version -i Changelog.md -m \"chore(release): bumped to version %s\" --sign",
     "test": "nyc ava && nyc report --reporter=text-lcov > .lcov.info",
     "test:watch": "yarn test -w",
-    "ts:cjs": "yarn tsc -p ts/cjs.tsconfig.json",
-    "ts:es": "yarn tsc -p ts/es.tsconfig.json",
-    "ts:typedefs": "yarn tsc -p ts/types.tsconfig.json && mv defs/* . && rmdir defs",
-    "ts:watch": "yarn ts:cjs -w"
+    "ts:cjs": "tsc -p ts/cjs.tsconfig.json",
+    "ts:es": "tsc -p ts/es.tsconfig.json",
+    "ts:typedefs": "tsc -p ts/types.tsconfig.json && mv defs/* . && rmdir defs",
+    "ts:watch": "tsc --noEmit -w"
   },
   "types": "index.d.ts",
   "devDependencies": {
