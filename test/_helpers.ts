@@ -25,6 +25,8 @@ export const throws = async (
   return false;
 };
 
+export const identity = <T extends unknown>(x: T): T => x;
+
 export const plus = curry((x: number, y: number) => x + y);
 
 export const plusP = curry((x: number, y: number) => Promise.resolve(plus(x, y)));

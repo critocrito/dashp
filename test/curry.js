@@ -11,7 +11,7 @@ const randomApplication = (f, args) => {
   return randomApplication(f(...xs), args.slice(xs.length));
 };
 
-range(2, 11).forEach((i) => {
+range(2, 10).forEach((i) => {
   const arbs = times(() => fc.nat(), i);
 
   testProp(

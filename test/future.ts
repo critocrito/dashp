@@ -4,13 +4,14 @@ import sinon from "sinon";
 
 import comp from "../src/compose";
 import {ap, bimap, chain, map, of} from "../src/future";
-import {plus, plusP} from "./_helpers";
+import {DashFn} from "../src/internal/types";
+import {identity, plus, plusP} from "./_helpers";
 
 const fixture = Symbol("fixture");
 
 // https://github.com/rpominov/static-land/blob/master/docs/spec.md#functor
 testProp("identity of functor", [fc.anything()], async (t, a) =>
-  t.is(await map(<T extends unknown>(x: T): T => x, of(a)), a),
+  t.is(await map(identity, of(a)), a),
 );
 
 testProp("composition of functor", [fc.nat(), fc.nat(), fc.nat()], async (t, a, b, c) => {
@@ -22,29 +23,22 @@ testProp("composition of functor", [fc.nat(), fc.nat(), fc.nat()], async (t, a, 
 
 // https://github.com/rpominov/static-land/blob/master/docs/spec.md#bifunctor
 testProp("identity of bifunctor", [fc.anything()], async (t, a) =>
-  t.is(
-    await bimap(
-      <T extends unknown>(x: T): T => x,
-      <T extends unknown>(x: T): T => x,
-      of(a),
-    ),
-    await of(a),
-  ),
+  t.is(await bimap(identity, identity, of(a)), await of(a)),
 );
 
 testProp(
   "composition of bifunctor",
   [fc.nat(), fc.nat(), fc.nat(), fc.nat(), fc.nat()],
   async (t, a, b, c, d, e) => {
-    const f = plus(b);
-    const g = plus(c);
-    const h = plus(d);
-    const i = plus(e);
+    const f = plusP(b);
+    const g = plusP(c);
+    const h = plusP(d);
+    const i = plusP(e);
 
     return t.is(
       await bimap(
-        (x: number): number => f(g(x)),
-        (x: number): number => h(i(x)),
+        (x: number) => g(x).then(f),
+        (x: number) => i(x).then(h),
         of(a),
       ),
       await bimap(f, h, bimap(g, i, of(a))),
@@ -54,7 +48,7 @@ testProp(
 
 testProp("deriving Functors map", [fc.nat(), fc.nat()], async (t, a, b) => {
   const f = plus(b);
-  return t.is(await bimap((x: number): number => x, f, of(a)), await map(f, of(a)));
+  return t.is(await bimap(identity, f, of(a)), await map(f, of(a)));
 });
 
 test("maps the left function over the rejection value", async (t) => {
@@ -98,13 +92,7 @@ test("doesn't call the left function if the right one throws", async (t) => {
 // https://github.com/rpominov/static-land/blob/master/docs/spec.md#applicative
 testProp("identity applicative", [fc.nat()], async (t, a) => {
   const v = of(a);
-  return t.is(
-    await ap(
-      of((x: number): number => x),
-      v,
-    ),
-    a,
-  );
+  return t.is(await ap(of(identity), v), a);
 });
 
 testProp("homomorphism applicative", [fc.nat(), fc.nat()], async (t, a, b) => {
@@ -117,7 +105,7 @@ testProp("interchange applicative", [fc.nat()], async (t, a) => {
   return t.is(
     await ap(u, of(a)),
     await ap(
-      of(<T extends (x: number) => number>(f: T) => f(a)),
+      of((f: DashFn<[number], number>) => f(a)),
       u,
     ),
   );
