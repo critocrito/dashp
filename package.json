@@ -27,7 +27,7 @@
     "prepublishOnly": "yarn build",
     "release": "yarn build && standard-version -i Changelog.md -m \"chore(release): bumped to version %s\" --sign",
     "test": "nyc ava && nyc report --reporter=text-lcov > .lcov.info",
-    "test:watch": "yarn test -w",
+    "test:watch": "ava -w",
     "ts:cjs": "tsc -p ts/cjs.tsconfig.json",
     "ts:es": "tsc -p ts/es.tsconfig.json",
     "ts:typedefs": "tsc -p ts/types.tsconfig.json && mv defs/* . && rmdir defs",
