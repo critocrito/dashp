@@ -10,14 +10,14 @@ const isFixture = isEqual(fixture);
 
 test("resolves a promise after some time", async (t) => {
   const end = timeSpan();
-  const resolved = await delay(50, fixture);
-  return t.true(inRange(end(), {start: 50, end: 70})) && isFixture(resolved);
+  const result = await delay(50, fixture);
+  return t.true(inRange(end(), {start: 50, end: 70}) && isFixture(result));
 });
 
 test("can be used to delay a promise chain", async (t) => {
   const end = timeSpan();
-  const resolved = await Promise.resolve(fixture).then(delay(50));
-  return t.true(inRange(end(), {start: 50, end: 70})) && isFixture(resolved);
+  const result = await Promise.resolve(fixture).then(delay(50));
+  return t.true(inRange(end(), {start: 50, end: 70}) && isFixture(result));
 });
 
 test("can cancel a promise", (t) => {
