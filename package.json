@@ -69,7 +69,7 @@
     "rimraf": "^2.6.2",
     "sinon": "^9.2.1",
     "standard-version": "^8.0.1",
-    "time-span": "^3.0.0",
+    "time-span": "^4.0.0",
     "ts-node": "^9.0.0",
     "typescript": "^4.1.2",
     "typescript-language-server": "^0.4.0"

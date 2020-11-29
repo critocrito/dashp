@@ -1542,10 +1542,10 @@ conventional-recommended-bump@6.0.9:
     meow "^7.0.0"
     q "^1.5.1"
 
-convert-hrtime@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/convert-hrtime/-/convert-hrtime-2.0.0.tgz#19bfb2c9162f9e11c2f04c2c79de2b7e8095c627"
-  integrity sha1-Gb+yyRYvnhHC8Ewsed4rfoCVxic=
+convert-hrtime@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/convert-hrtime/-/convert-hrtime-3.0.0.tgz#62c7593f5809ca10be8da858a6d2f702bcda00aa"
+  integrity sha512-7V+KqSvMiHp8yWDuwfww06XleMWVVB9b9tURBx+G7UTADuo5hYPuowKloz4OzOqbPezxgo+fdQ1522WzPG4OeA==
 
 convert-source-map@^1.7.0:
   version "1.7.0"
@@ -5348,12 +5348,12 @@ through@2, "through@>=2.2.7 <3", through@^2.3.8:
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
 
-time-span@^3.0.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/time-span/-/time-span-3.1.0.tgz#7c33a0dcc3f46199c966f532ac48442bfc7f7c0d"
-  integrity sha512-iol7ZQkkMAtlveWFZdTmphGho2RZcUrrg8E3U+YfeDCjFil0sPFU4Q+iyi21HDPwY3vieXV2bjAla75uA6WW+w==
+time-span@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/time-span/-/time-span-4.0.0.tgz#fe74cd50a54e7998712f90ddfe47109040c985c4"
+  integrity sha512-MyqZCTGLDZ77u4k+jqg4UlrzPTPZ49NDlaekU6uuFaJLzPIN1woaRXCbGeqOfxwc3Y37ZROGAJ614Rdv7Olt+g==
   dependencies:
-    convert-hrtime "^2.0.0"
+    convert-hrtime "^3.0.0"
 
 time-zone@^1.0.0:
   version "1.0.0"
