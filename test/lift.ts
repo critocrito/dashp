@@ -4,7 +4,7 @@ import {sum} from "lodash/fp";
 import {lift2, lift3, lift4, of} from "../src";
 
 // plus must *not* be curried, hence the helpers version doesn't work here.
-const plus = (...args) => sum(args);
+const plus = (...args: number[]): number => sum(args);
 
 testProp("lifts two arguments", [fc.nat(), fc.nat()], async (t, x, y) =>
   t.is(await lift2(plus, of(x), of(y)), x + y),
