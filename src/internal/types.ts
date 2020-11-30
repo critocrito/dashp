@@ -1,6 +1,6 @@
 /* eslint @typescript-eslint/no-explicit-any: off */
 
-type Tuple<A = any> = ReadonlyArray<A>;
+export type Tuple<A = any> = ReadonlyArray<A>;
 
 export type Ret<T extends unknown> = T | Promise<T>;
 

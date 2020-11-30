@@ -1,10 +1,8 @@
 import {fc, testProp} from "ava-fast-check";
 import {identity, map, reduce, sum, times} from "lodash/fp";
 
-import {compose, flow, flow2, flow3, flow4, flow5, flow6, flow7, flow8, of} from "../src";
-import {plusP} from "./_helpers";
-
-const sumP = (...args) => of(sum(args));
+import {compose, flow, flow2, flow3, flow4, flow5, flow6, flow7, flow8} from "../src";
+import {plusP, sumP} from "./_helpers";
 
 testProp("chains a list of functions", [fc.array(fc.nat()), fc.nat()], async (t, xs, y) => {
   const fs = map(plusP, xs);

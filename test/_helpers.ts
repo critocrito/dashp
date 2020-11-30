@@ -36,3 +36,5 @@ export const minus = curry((x: number, y: number) => x - y);
 export const minusP = curry((x: number, y: number) => Promise.resolve(minus(x, y)));
 
 export const sum = (...xs: number[]): number => xs.reduce((memo, a) => memo + a, 0);
+
+export const sumP = (...xs: number[]): Promise<number> => Promise.resolve(sum(...xs));
