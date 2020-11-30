@@ -3,14 +3,14 @@ import {isEqual} from "lodash/fp";
 import sinon from "sinon";
 
 import caught from "../src/caught";
-import {flow, flow2, flow3, flow4} from "../src/flow";
+import {flow} from "../src/flow";
 
 const fixture = Symbol("fixture");
 const isFixture = isEqual(fixture);
-const flows = {flow, flow2, flow3, flow4};
 
 test("calls exception handlers when throwing an error", async (t) => {
-  const mock = sinon.mock().once().resolves(fixture);
+  const mock = sinon.mock();
+  mock.once().resolves(fixture);
   const stub = sinon.stub().rejects();
   const x = await caught(mock, stub());
   t.true(isFixture(x) && mock.verify());
@@ -23,13 +23,12 @@ test("doesn't call the exception handlers unless it throws", async (t) => {
   t.true(isFixture(x) && mock.verify());
 });
 
-Object.keys(flows).forEach((k) => {
-  test(`catches exceptions inside "${k}"`, async (t) => {
-    const mock = sinon.mock().once().resolves(fixture);
-    const stub = sinon.stub().rejects();
-    const f = flows[k];
-    // The first mock will be skipped, since stub throws and jumps to caught.
-    const x = await f([stub, mock, caught(mock)])(undefined, undefined, undefined, undefined);
-    t.true(isFixture(x) && mock.verify());
-  });
+test("catches exceptions inside 'flow'", async (t) => {
+  const mock = sinon.mock();
+  mock.once().resolves(fixture);
+  const stub = sinon.stub().rejects();
+
+  // The first mock will be skipped, since stub throws and jumps to caught.
+  const x = await flow([stub, mock, caught(mock)])(undefined);
+  t.true(isFixture(x) && mock.verify());
 });
