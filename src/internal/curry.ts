@@ -1,6 +1,6 @@
 /* eslint @typescript-eslint/no-explicit-any: off */
 import nameFn from "./namefn";
-import {DashFn, Func} from "./types";
+import {DashFn, Tuple} from "./types";
 
 export interface Curry1<T1, R> {
   (): Curry1<T1, R>;
@@ -97,12 +97,16 @@ export interface Curry10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R> {
   (t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9, t10: T10): R;
 }
 
-const ncurry = (n: number): Func => {
-  const localCurry = (name: string, f: Func, ...args: any[]): Func => {
+const ncurry = (n: number): DashFn<Tuple, unknown> => {
+  const localCurry = (
+    name: string,
+    f: DashFn<Tuple, unknown>,
+    ...args: Tuple
+  ): DashFn<Tuple, unknown> => {
     // This allows checkTypes to throw nicer error messages.
     const localF = nameFn(`Future#${name}`, f);
 
-    const g = (...largs: any[]): Func | any => {
+    const g = (...largs: any[]): DashFn<Tuple, unknown> | unknown => {
       const rest = args.concat(largs);
 
       if (rest.length < n || rest.length === 0) return localCurry(name, localF, ...rest);
