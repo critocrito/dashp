@@ -2,7 +2,7 @@
 export const isFunction = (f: unknown): f is (...args: any[]) => any => typeof f === "function";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const isThenable = (p: any): boolean =>
+export const isThenable = <T extends unknown>(p: any): p is Promise<T> =>
   p instanceof Promise ||
   (Boolean(p) && (typeof p === "object" || typeof p === "function") && isFunction(p.then));
 
